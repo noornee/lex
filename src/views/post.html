@@ -1,0 +1,104 @@
+{{range .Posts.Children}}
+    <div class="post">
+        <!--todo: awards-->
+        <p class="postdate">Posted by u/{{.Data.Author}}
+            {{if .Data.AuthorFlair}}
+                <span class="authorflair">{{.Data.AuthorFlair}}</span>
+            {{end}}
+            &bullet; {{.Data.Created|fmtHumanDate}}
+            {{if .Data.Distinguished}}
+                &bullet;
+                <span class="material-symbols-rounded modbadge">
+                    shield
+                </span>
+            {{end}}
+        </p>
+        <div class="post-content">
+            {{if .Data.PostFlair}}
+                <span class="post-flair" style="background-color: {{.Data.PostFlairHex}};">{{.Data.PostFlair}}</span>
+            {{end}}
+            <span class="post-title">{{.Data.Title}}</span>
+
+            {{if .Data.SelfText}}
+                <div style="margin-top: 10px;">
+                    <span style="font-size: 14px;">{{.Data.SelfText|sanitize}}</span>
+                </div>
+            {{end}}
+
+            {{if contains .Data.PostHint "link"}}
+                <div>
+                    <a href="{{.Data.LinkURL}}" style="font-size:12px; color:#909090;">{{.Data.LinkURL}} <span class="material-symbols-rounded gicon">open_in_new</span></a>
+                </div>
+            {{end}}
+
+            {{if and (not .Data.PostHint) (.Data.LinkURL)}}
+                <div>
+                    <a href="{{.Data.LinkURL}}" style="font-size:12px; color:#909090;">{{.Data.LinkURL}} <span class="material-symbols-rounded gicon">open_in_new</span></a>
+                </div>
+            {{end}}
+
+            {{if .Data.CrossPost}}
+                <p style="text-align: center;">Sorry, crossposting is not supported yet. here is a link to the original post: <a href="https://reddit.com{{(index .Data.CrossPost 0).Permalink}}">https://reddit.com{{(index .Data.CrossPost 0).Permalink}}</a></p>
+            {{end}}
+
+            {{if contains .Data.PostHint "image"}}
+                <div style="margin-top: 10px;">
+                    <img src="{{.Data.Preview.AutoChosenImageQuality|replaceAmp}}" style="max-height: 512px; display: block; margin: auto;">
+                </div>
+            {{end}}
+
+            <!--todo: gallery images: make a clickable slideshow instead of showing all images-->
+            {{if .Data.MediaMetaData}}
+                {{range .Data.VMediaMetaData}}
+                    <div style="margin-top: 10px;">
+                        <img src="{{.|replaceAmp}}" style="max-height: 512px; display: block; margin: auto;">
+                    </div>
+                {{end}}
+            {{end}}
+
+            <!--todo: hide controls when not hover. (css?)-->
+            {{if contains .Data.PostHint "hosted:video"}}
+                <div style="display: grid; place-items: center; margin-top: 10px;" class="vplayable">
+                        <video style="cursor: pointer;">
+                            <source src="{{.Data.SecureMedia.RedditVideo.MQ}}">
+                            <source src="{{.Data.SecureMedia.RedditVideo.LQ}}">
+                            <source src="{{.Data.SecureMedia.RedditVideo.FallbackURL}}">
+                        </video>
+                        <video style="width: 0; height: 0;">
+                            <source src="{{.Data.SecureMedia.RedditVideo.Audio}}">
+                        </video>
+                        <!--todo: fix controls being a *little* too big.-->
+                        <div style="background-color: #00000066; padding: 5px; width:fit-content; margin-top:-20px; position: relative;">
+                            <button style="filter: invert(100%);">Play/Pause</button>
+                            <input type="range" value="0.0" min="0.0" step="0.1" style="width: 50%;">
+                            <input type="range" value="0.50" min="0.0" step="0.01" max="1.0" style="width: 45px;" class="vctrl">
+                        </div>
+                </div>
+            {{end}}
+
+            {{if contains .Data.PostHint "rich:video"}}
+                <div style="display: grid; place-items: center; margin-top: 10px;">
+                    <iframe width="{{.Data.SecureMediaEmbed.Width}}" height="{{.Data.SecureMediaEmbed.Height}}" src="{{.Data.SecureMediaEmbed.MediaDomainURL}}" frameborder="0" scrolling="no" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+            {{end}}
+
+            <div class="post-footer">
+                <div class="l-hovergray">
+                    <span class="material-symbols-rounded gicon">
+                        chat_bubble
+                    </span>
+
+                    <span class="gtext">{{.Data.CommentCount}} comments</span>
+                </div>
+                <div class="l-hovergray">
+                    <span class="material-symbols-rounded gicon">
+                        share
+                    </span>
+
+                    <span class="gtext">Share</span>
+                </div>
+            </div>
+        </div>
+    </div>
+{{end}}
+<button id="LoadMorePosts" class="loadMorebtn" onclick="loadPosts('{{.Posts.After}}','{{.SubData.DisplayName}}')">Load More Posts</button>

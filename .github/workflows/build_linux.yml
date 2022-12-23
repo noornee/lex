@@ -1,0 +1,45 @@
+name: Linux Build
+
+on:
+  schedule:
+  - cron: '18 4 * * *'
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+    - name: "Checkout"
+      uses: actions/checkout@v3
+    
+    - name: "Setup Go Environment"
+      uses: actions/setup-go@v3
+      with:
+        go-version: 1.19
+        check-latest: true
+    
+    - name: Build for 64bit Linux
+      run: |
+        go build -v -o lex-amd64-linux main.go
+      working-directory: src/
+    
+    - name: Build for 32bit Linux
+      run: |
+        GOARCH=386 go build -v -o lex-i386-linux main.go
+      working-directory: src/
+      
+    - name: Minimize CSS & JS
+      run: |
+        go run minify.go
+      working-directory: src/minify
+      
+    - name: Zip Files
+      run: 7z a -mm=Deflate -mfb=258 -mpass=15 lex-linux.zip lex-i386-linux lex-amd64-linux views/* js/* css/*
+      working-directory: src/
+      
+    - name: Release
+      uses: softprops/action-gh-release@v0.1.15
+      with:
+        tag_name: 'snapshot'
+        files: |
+          src/lex-linux.zip

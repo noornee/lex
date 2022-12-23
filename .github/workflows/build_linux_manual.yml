@@ -1,4 +1,4 @@
-name: Linux Build
+name: Manual Linux Build
 
 on: [workflow_dispatch]
 jobs:

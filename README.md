@@ -1,3 +1,5 @@
+[![Windows Build](https://github.com/cmd777/lex/actions/workflows/build_windows.yml/badge.svg)](https://github.com/cmd777/lex/actions/workflows/build_windows.yml) [![Linux Build](https://github.com/cmd777/lex/actions/workflows/build_linux.yml/badge.svg)](https://github.com/cmd777/lex/actions/workflows/build_linux.yml) [![MacOS Build](https://github.com/cmd777/lex/actions/workflows/build_macos.yml/badge.svg)](https://github.com/cmd777/lex/actions/workflows/build_macos.yml)
+
 # LEX
 
 LEX | LazerEX is a lightweight, open source frontend for reddit written in Go.

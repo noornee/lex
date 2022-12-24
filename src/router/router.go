@@ -25,12 +25,28 @@ func StartServer() {
 	// region Load Files
 
 	router.SetFuncMap(template.FuncMap{
-		"sanitize":      sanitize,
-		"contains":      strings.Contains,
-		"replaceAmp":    replaceAmp,
-		"fmtEpochDate":  fmtEpochDate,
-		"fmtHumanComma": fmtHumanComma,
-		"fmtHumanDate":  fmtHumanDate,
+		"contains": strings.Contains,
+		"sanitize": func(input string) template.HTML {
+			Markdown := blackfriday.Run([]byte(input))
+			SHTML := bluemonday.UGCPolicy().SanitizeBytes(Markdown)
+			return template.HTML(SHTML)
+		},
+		"replaceAmp": func(input string) string {
+			return strings.Replace(input, "&amp;", "&", -1)
+		},
+		"fmtEpochDate": func(input float64) string {
+			return time.Unix(int64(input), 0).Format("Created Jan 02, 2006")
+		},
+		"fmtHumanComma": func(input int64) string {
+			return humanize.Comma(input)
+		},
+		"fmtHumanDate": func(input float64) string {
+			return humanize.Time(time.Unix(int64(input), 0))
+		},
+		"toPercentage": func(input float64) string {
+			input *= 100
+			return fmt.Sprintf("%.0f", input)
+		},
 	})
 
 	router.LoadHTMLGlob("views/*")
@@ -140,25 +156,4 @@ func StartServer() {
 
 	// localhost:9090
 	router.Run(":9090")
-}
-
-func replaceAmp(input string) string {
-	return strings.Replace(input, "&amp;", "&", -1)
-}
-func fmtEpochDate(input float64) string {
-	return time.Unix(int64(input), 0).Format("Created Jan 02, 2006")
-}
-
-func fmtHumanComma(input int64) string {
-	return humanize.Comma(input)
-}
-
-func fmtHumanDate(input float64) string {
-	return humanize.Time(time.Unix(int64(input), 0))
-}
-
-func sanitize(input string) template.HTML {
-	Markdown := blackfriday.Run([]byte(input))
-	SHTML := bluemonday.UGCPolicy().SanitizeBytes(Markdown)
-	return template.HTML(SHTML)
 }

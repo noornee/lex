@@ -109,4 +109,4 @@
         </div>
     </div>
 {{end}}
-<button id="LoadMorePosts" class="loadMorebtn" onclick="loadPosts('{{.Posts.After}}','{{.SubData.DisplayName}}')">Load More Posts</button>
+<button id="LoadMorePosts" class="loadMorebtn" onclick="loadPosts('{{.Posts.After}}','{{(index .Posts.Children 0).Data.Subreddit}}')">Load More Posts</button>

@@ -71,10 +71,9 @@ func StartServer() {
 
 	router.GET("/r/:sub", func(ctx *gin.Context) {
 		subname := url.QueryEscape(ctx.Param("sub"))
-		after := url.QueryEscape(ctx.Query("after"))
 
 		Sub := logic.GetSubredditData(subname)
-		Posts := logic.GetPosts(after, subname)
+		Posts := logic.GetPosts("", subname)
 
 		if len(Posts.Data.Children) == 0 {
 			ctx.String(http.StatusNotFound, "The subreddit 'r/%v' was banned, or doesn't exist. (Did you make a typo - exceeded the rate limit?)", subname)
@@ -115,8 +114,8 @@ func StartServer() {
 		})
 	})
 
-	router.GET("/loadPosts", func(ctx *gin.Context) {
-		subname := url.QueryEscape(ctx.Query("sub"))
+	router.GET("/r/:sub/loadPosts", func(ctx *gin.Context) {
+		subname := url.QueryEscape(ctx.Param("sub"))
 		after := url.QueryEscape(ctx.Query("after"))
 
 		Posts := logic.GetPosts(after, subname)
@@ -149,7 +148,7 @@ func StartServer() {
 			}
 		}
 
-		ctx.HTML(http.StatusOK, "post.html", gin.H{
+		ctx.HTML(http.StatusOK, "loadedposts.html", gin.H{
 			"Posts": Posts.Data,
 		})
 	})

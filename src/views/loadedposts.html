@@ -1,7 +1,13 @@
 {{range .Posts.Children}}
     <div class="post">
-        <!--todo: awards-->
-        <p class="postdate">Posted by u/{{.Data.Author}}
+        <p class="postdate">
+            {{if .Data.Pinned}}
+                <span class="material-symbols-rounded pinned">
+                    push_pin
+                </span>
+                Pinned by Moderators &bullet;
+            {{end}}
+            Posted by u/{{.Data.Author}}
             {{if .Data.AuthorFlair}}
                 <span class="authorflair">{{.Data.AuthorFlair}}</span>
             {{end}}
@@ -11,6 +17,41 @@
                 <span class="material-symbols-rounded modbadge">
                     shield
                 </span>
+            {{end}}
+
+            {{if .Data.Archived}}
+                <span class="material-symbols-rounded goldicon">
+                    inventory_2
+                </span>
+            {{end}}
+
+            {{if .Data.Locked}}
+                <span class="material-symbols-rounded goldicon">
+                    lock
+                </span>
+            {{end}}
+
+            {{if .Data.Awardings}}
+                {{range .Data.Awardings}}
+                    {{if contains .AwardSubType "MODERATOR"}}
+                        <span style="color:#909090; font-size: 12px;">
+                            <img class="malign" width="16" height="16" src="{{(index .ResizedIcons 0).URL|replaceAmp}}"> {{.Name}}
+                        </span>
+                    {{end}}
+                {{end}}
+
+                <div style="margin-left: 15px; text-indent: 0px; line-height: 25px; color:#909090; font-size: 12px; display: table;">
+                    {{range .Data.Awardings}}
+                        {{if notcontains .AwardSubType "MODERATOR"}}
+                            <span>
+                                <img class="malign" width="16" height="16" src="{{(index .ResizedIcons 0).URL|replaceAmp}}">
+                                {{if gt .Count 1}}
+                                    {{.Count}}
+                                {{end}}
+                            </span>
+                        {{end}}
+                    {{end}}
+                </div>
             {{end}}
         </p>
         <div class="post-content">

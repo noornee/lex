@@ -8,6 +8,7 @@ import (
 	"log"
 	"main/logic/types"
 	"net/http"
+	"strings"
 )
 
 var (
@@ -50,10 +51,17 @@ func GetSubredditData(subreddit string) types.Subreddit {
 	return Sub
 }
 
-func GetPosts(after, subreddit string) types.Posts {
+func GetPosts(after, sort, subreddit string) types.Posts {
 	url := fmt.Sprintf("https://reddit.com/r/%v.json", subreddit)
+	if len(sort) != 0 {
+		url = fmt.Sprintf("https://reddit.com/r/%v/top.json?t=%v", subreddit, sort)
+	}
 	if len(after) != 0 {
-		url += fmt.Sprintf("?after=%v", after)
+		if strings.Contains(url, "?") {
+			url += fmt.Sprintf("&after=%v", after)
+		} else {
+			url += fmt.Sprintf("?after=%v", after)
+		}
 	}
 
 	req, err := http.NewRequest(http.MethodGet, url, nil)

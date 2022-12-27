@@ -15,7 +15,7 @@
             <div class="ext">
                 <img src="{{.SubData.CommunityIcon|replaceAmp}}" class="img">
                 <span class="ltext ltype1">{{.SubData.Title}}</span>
-                <span class="ltext ltype2">{{.SubData.DisplayNamePrefixed}} &bullet; {{.SubData.Created|fmtEpochDate}} ({{.SubData.Created|fmtHumanDate}}) &bullet; {{.SubData.ActiveUserCount|fmtHumanComma}} Active Users &bullet; {{.SubData.MemberCount|fmtHumanComma}} Members &bullet; <span class="primarycolorcase" style="background-color: {{.SubData.PrimaryColor}};">&nbsp;</span> {{.SubData.PrimaryColor}} Primary color</span>
+                <span class="ltext ltype2">{{.SubData.DisplayNamePrefixed}} &bullet; {{.SubData.Created|fmtEpochDate}} ({{.SubData.Created|fmtHumanDate}}) &bullet; {{.SubData.ActiveUserCount|fmtHumanComma}} Active Users &bullet; {{.SubData.MemberCount|fmtHumanComma}} Members {{if .SubData.PrimaryColor}} &bullet; <span class="primarycolorcase" style="background-color: {{.SubData.PrimaryColor}};">&nbsp;</span> {{.SubData.PrimaryColor}} Primary color {{end}}</span>
                 <span class="ltext ltype2">{{.SubData.Description}}</span>
             </div>
         </div>   

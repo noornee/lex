@@ -26,6 +26,9 @@ func StartServer() {
 
 	router.SetFuncMap(template.FuncMap{
 		"contains": strings.Contains,
+		"notcontains": func(input, of string) bool {
+			return !strings.Contains(input, of)
+		},
 		"sanitize": func(input string) template.HTML {
 			Markdown := blackfriday.Run([]byte(input))
 			SHTML := bluemonday.UGCPolicy().SanitizeBytes(Markdown)
@@ -70,10 +73,12 @@ func StartServer() {
 	})
 
 	router.GET("/r/:sub", func(ctx *gin.Context) {
+		after := url.QueryEscape(ctx.Query("after"))
+		sort := url.QueryEscape(ctx.Query("t"))
 		subname := url.QueryEscape(ctx.Param("sub"))
 
 		Sub := logic.GetSubredditData(subname)
-		Posts := logic.GetPosts("", subname)
+		Posts := logic.GetPosts(after, sort, subname)
 
 		if len(Posts.Data.Children) == 0 {
 			ctx.String(http.StatusNotFound, "The subreddit 'r/%v' was banned, or doesn't exist. (Did you make a typo - exceeded the rate limit?)", subname)
@@ -117,8 +122,9 @@ func StartServer() {
 	router.GET("/r/:sub/loadPosts", func(ctx *gin.Context) {
 		subname := url.QueryEscape(ctx.Param("sub"))
 		after := url.QueryEscape(ctx.Query("after"))
+		sort := url.QueryEscape(ctx.Query("t"))
 
-		Posts := logic.GetPosts(after, subname)
+		Posts := logic.GetPosts(after, sort, subname)
 
 		for i := 0; i < len(Posts.Data.Children); i++ {
 			if len(Posts.Data.Children[i].Data.Preview.Images) != 0 {

@@ -29,10 +29,17 @@ type Posts struct {
 				UpvoteRatio  float64 `json:"upvote_ratio"`
 				Ups          int64   `json:"ups"`
 				Created      float64 `json:"created"`
+				Pinned       bool    `json:"stickied"`
+				Locked       bool    `json:"locked"`
+				Archived     bool    `json:"archived"`
+				TotalAwards  int64   `json:"total_awards_received"`
 				Awardings    []struct {
+					AwardSubType string `json:"award_sub_type"`
+					Count        int64  `json:"count"`
+					Name         string `json:"name"` // todo hover
+					//Description string `json:"description"` todo hover
 					ResizedIcons []struct {
 						URL string `json:"url"`
-						//Description string `json:"description"` todo hover
 					} `json:"resized_icons"`
 				} `json:"all_awardings"`
 				Author        string `json:"author"`

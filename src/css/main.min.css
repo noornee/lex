@@ -200,6 +200,25 @@ div.post {
     font-weight: 700;
 }
 
+.gridcenter {
+    display: grid;
+    place-items: center;
+    margin-top: 10px;
+}
+
+.m-top10 {
+    margin-top: 10px;
+}
+
+.fitimg {
+    max-height: 512px;
+    max-width: -moz-available;
+    max-width: -webkit-fill-available;
+    max-width: fill-available;
+    display: block;
+    margin: auto;
+}
+
 input[type="range"]::-webkit-slider-runnable-track, input[type="range"]::-moz-range-track {
     background-color: #9d9d9d;
     height: 10px;

@@ -53,8 +53,8 @@ type Posts struct {
 				Subreddit     string `json:"subreddit"`
 
 				// videos
-				SecureMedia struct {
-					RedditVideo struct {
+				SecureMedia *struct {
+					RedditVideo *struct {
 						FallbackURL string `json:"fallback_url"`
 						LQ          string
 						MQ          string
@@ -72,11 +72,23 @@ type Posts struct {
 				// images
 				Preview struct {
 					Images []struct {
+						Source struct {
+							URL string `json:"url"`
+						} `json:"source"`
 						Resolutions []struct {
 							URL string `json:"url"`
 						} `json:"resolutions"`
+						Variants struct {
+							GIF struct {
+								Source struct {
+									URL string `json:"url"`
+								} `json:"source"`
+								Resolutions []struct {
+									URL string `json:"url"`
+								} `json:"resolutions"`
+							} `json:"gif"`
+						} `json:"variants"`
 					} `json:"images"`
-
 					AutoChosenImageQuality string
 				} `json:"preview"`
 

@@ -86,18 +86,33 @@ func StartServer() {
 		}
 
 		for i := 0; i < len(Posts.Data.Children); i++ {
-			if len(Posts.Data.Children[i].Data.Preview.Images) != 0 {
-				Posts.Data.Children[i].Data.Preview.AutoChosenImageQuality = Posts.Data.Children[i].Data.Preview.Images[0].Resolutions[int(math.Round(float64(len(Posts.Data.Children[i].Data.Preview.Images[0].Resolutions)/2)))].URL
+			if Posts.Data.Children[i].Data.Preview.Images != nil {
+				if len(Posts.Data.Children[i].Data.Preview.Images[0].Resolutions) != 0 {
+					Posts.Data.Children[i].Data.Preview.AutoChosenImageQuality = Posts.Data.Children[i].Data.Preview.Images[0].Resolutions[int(math.Round(float64(len(Posts.Data.Children[i].Data.Preview.Images[0].Resolutions)/2)))].URL
+					if strings.Contains(Posts.Data.Children[i].Data.Preview.AutoChosenImageQuality, ".gif") {
+						if len(Posts.Data.Children[i].Data.Preview.Images[0].Variants.GIF.Resolutions) != 0 {
+							Posts.Data.Children[i].Data.Preview.AutoChosenImageQuality = Posts.Data.Children[i].Data.Preview.Images[0].Variants.GIF.Resolutions[int(math.Round(float64(len(Posts.Data.Children[i].Data.Preview.Images[0].Variants.GIF.Resolutions)/2)))].URL
+						} else {
+							Posts.Data.Children[i].Data.Preview.AutoChosenImageQuality = Posts.Data.Children[i].Data.Preview.Images[0].Variants.GIF.Source.URL
+						}
+					}
+				} else {
+					Posts.Data.Children[i].Data.Preview.AutoChosenImageQuality = Posts.Data.Children[i].Data.Preview.Images[0].Source.URL
+					if strings.Contains(Posts.Data.Children[i].Data.Preview.AutoChosenImageQuality, ".gif") {
+						if len(Posts.Data.Children[i].Data.Preview.Images[0].Variants.GIF.Resolutions) != 0 {
+							Posts.Data.Children[i].Data.Preview.AutoChosenImageQuality = Posts.Data.Children[i].Data.Preview.Images[0].Variants.GIF.Source.URL
+						}
+					}
+				}
 			}
 
-			if len(Posts.Data.Children[i].Data.SecureMedia.RedditVideo.FallbackURL) != 0 {
+			if Posts.Data.Children[i].Data.SecureMedia != nil && Posts.Data.Children[i].Data.SecureMedia.RedditVideo != nil {
 				Posts.Data.Children[i].Data.SecureMedia.RedditVideo.LQ = fmt.Sprintf("%v/DASH_360.mp4", Posts.Data.Children[i].Data.LinkURL)
 				Posts.Data.Children[i].Data.SecureMedia.RedditVideo.MQ = fmt.Sprintf("%v/DASH_480.mp4", Posts.Data.Children[i].Data.LinkURL)
 				Posts.Data.Children[i].Data.SecureMedia.RedditVideo.Audio = fmt.Sprintf("%v/DASH_audio.mp4", Posts.Data.Children[i].Data.LinkURL)
 			}
 
-			if len(Posts.Data.Children[i].Data.MediaMetaData) != 0 {
-
+			if Posts.Data.Children[i].Data.MediaMetaData != nil {
 				MMD := make(map[string]string)
 
 				for n := range Posts.Data.Children[i].Data.MediaMetaData {
@@ -127,18 +142,33 @@ func StartServer() {
 		Posts := logic.GetPosts(after, sort, subname)
 
 		for i := 0; i < len(Posts.Data.Children); i++ {
-			if len(Posts.Data.Children[i].Data.Preview.Images) != 0 {
-				Posts.Data.Children[i].Data.Preview.AutoChosenImageQuality = Posts.Data.Children[i].Data.Preview.Images[0].Resolutions[int(math.Round(float64(len(Posts.Data.Children[i].Data.Preview.Images[0].Resolutions)/2)))].URL
+			if Posts.Data.Children[i].Data.Preview.Images != nil {
+				if len(Posts.Data.Children[i].Data.Preview.Images[0].Resolutions) != 0 {
+					Posts.Data.Children[i].Data.Preview.AutoChosenImageQuality = Posts.Data.Children[i].Data.Preview.Images[0].Resolutions[int(math.Round(float64(len(Posts.Data.Children[i].Data.Preview.Images[0].Resolutions)/2)))].URL
+					if strings.Contains(Posts.Data.Children[i].Data.Preview.AutoChosenImageQuality, ".gif") {
+						if len(Posts.Data.Children[i].Data.Preview.Images[0].Variants.GIF.Resolutions) != 0 {
+							Posts.Data.Children[i].Data.Preview.AutoChosenImageQuality = Posts.Data.Children[i].Data.Preview.Images[0].Variants.GIF.Resolutions[int(math.Round(float64(len(Posts.Data.Children[i].Data.Preview.Images[0].Variants.GIF.Resolutions)/2)))].URL
+						} else {
+							Posts.Data.Children[i].Data.Preview.AutoChosenImageQuality = Posts.Data.Children[i].Data.Preview.Images[0].Variants.GIF.Source.URL
+						}
+					}
+				} else {
+					Posts.Data.Children[i].Data.Preview.AutoChosenImageQuality = Posts.Data.Children[i].Data.Preview.Images[0].Source.URL
+					if strings.Contains(Posts.Data.Children[i].Data.Preview.AutoChosenImageQuality, ".gif") {
+						if len(Posts.Data.Children[i].Data.Preview.Images[0].Variants.GIF.Resolutions) != 0 {
+							Posts.Data.Children[i].Data.Preview.AutoChosenImageQuality = Posts.Data.Children[i].Data.Preview.Images[0].Variants.GIF.Source.URL
+						}
+					}
+				}
 			}
 
-			if len(Posts.Data.Children[i].Data.SecureMedia.RedditVideo.FallbackURL) != 0 {
+			if Posts.Data.Children[i].Data.SecureMedia != nil && Posts.Data.Children[i].Data.SecureMedia.RedditVideo != nil {
 				Posts.Data.Children[i].Data.SecureMedia.RedditVideo.LQ = fmt.Sprintf("%v/DASH_360.mp4", Posts.Data.Children[i].Data.LinkURL)
 				Posts.Data.Children[i].Data.SecureMedia.RedditVideo.MQ = fmt.Sprintf("%v/DASH_480.mp4", Posts.Data.Children[i].Data.LinkURL)
 				Posts.Data.Children[i].Data.SecureMedia.RedditVideo.Audio = fmt.Sprintf("%v/DASH_audio.mp4", Posts.Data.Children[i].Data.LinkURL)
 			}
 
-			if len(Posts.Data.Children[i].Data.MediaMetaData) != 0 {
-
+			if Posts.Data.Children[i].Data.MediaMetaData != nil {
 				MMD := make(map[string]string)
 
 				for n := range Posts.Data.Children[i].Data.MediaMetaData {

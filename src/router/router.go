@@ -47,8 +47,7 @@ func StartServer() {
 			return humanize.Time(time.Unix(int64(input), 0))
 		},
 		"toPercentage": func(input float64) string {
-			input *= 100
-			return fmt.Sprintf("%.0f", input)
+			return fmt.Sprintf("%.0f", input*100)
 		},
 	})
 
@@ -99,9 +98,7 @@ func StartServer() {
 				} else {
 					Posts.Data.Children[i].Data.Preview.AutoChosenImageQuality = Posts.Data.Children[i].Data.Preview.Images[0].Source.URL
 					if strings.Contains(Posts.Data.Children[i].Data.Preview.AutoChosenImageQuality, ".gif") {
-						if len(Posts.Data.Children[i].Data.Preview.Images[0].Variants.GIF.Resolutions) != 0 {
-							Posts.Data.Children[i].Data.Preview.AutoChosenImageQuality = Posts.Data.Children[i].Data.Preview.Images[0].Variants.GIF.Source.URL
-						}
+						Posts.Data.Children[i].Data.Preview.AutoChosenImageQuality = Posts.Data.Children[i].Data.Preview.Images[0].Variants.GIF.Source.URL
 					}
 				}
 			}
@@ -155,9 +152,7 @@ func StartServer() {
 				} else {
 					Posts.Data.Children[i].Data.Preview.AutoChosenImageQuality = Posts.Data.Children[i].Data.Preview.Images[0].Source.URL
 					if strings.Contains(Posts.Data.Children[i].Data.Preview.AutoChosenImageQuality, ".gif") {
-						if len(Posts.Data.Children[i].Data.Preview.Images[0].Variants.GIF.Resolutions) != 0 {
-							Posts.Data.Children[i].Data.Preview.AutoChosenImageQuality = Posts.Data.Children[i].Data.Preview.Images[0].Variants.GIF.Source.URL
-						}
+						Posts.Data.Children[i].Data.Preview.AutoChosenImageQuality = Posts.Data.Children[i].Data.Preview.Images[0].Variants.GIF.Source.URL
 					}
 				}
 			}

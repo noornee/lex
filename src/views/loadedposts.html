@@ -61,7 +61,7 @@
             <span class="post-title">{{.Data.Title}}</span>
 
             {{if .Data.SelfText}}
-                <div style="margin-top: 10px;">
+                <div class="m-top10">
                     <span style="font-size: 14px;">{{.Data.SelfText|sanitize}}</span>
                 </div>
             {{end}}
@@ -83,23 +83,35 @@
             {{end}}
 
             {{if contains .Data.PostHint "image"}}
-                <div style="margin-top: 10px;">
-                    <img src="{{.Data.Preview.AutoChosenImageQuality|replaceAmp}}" style="max-height: 512px; display: block; margin: auto;">
+                <div class="m-top10">
+                    <img src="{{.Data.Preview.AutoChosenImageQuality|replaceAmp}}" class="fitimg">
                 </div>
             {{end}}
 
-            <!--todo: gallery images: make a clickable slideshow instead of showing all images-->
-            {{if .Data.MediaMetaData}}
+            <!--only filter galleries with 2 or more images.-->
+            {{$lenc := len .Data.MediaMetaData}}
+            {{if gt $lenc 1}}
+                <div class="vgallery m-top10">
+                    <div style="display: flex; align-items: center;">
+                        <button style="text-align: center; width: 44px; height: 44px; border-radius: 100%;"><span class="material-symbols-rounded">arrow_back_ios</span></button>
+                        {{range .Data.VMediaMetaData}}
+                            <img src="{{.|replaceAmp}}" class="fitimg">
+                        {{end}}
+                        <button style="text-align: center; width: 44px; height: 44px; border-radius: 100%;"><span class="material-symbols-rounded">arrow_forward_ios</span></button>
+                    </div>
+                    <span style="float: right; user-select: none;">0 / ??</span>
+                </div>
+            {{else}}
                 {{range .Data.VMediaMetaData}}
-                    <div style="margin-top: 10px;">
-                        <img src="{{.|replaceAmp}}" style="max-height: 512px; display: block; margin: auto;">
+                    <div class="m-top10">
+                        <img src="{{.|replaceAmp}}" class="fitimg">
                     </div>
                 {{end}}
             {{end}}
 
             <!--todo: hide controls when not hover. (css?)-->
             {{if contains .Data.PostHint "hosted:video"}}
-                <div style="display: grid; place-items: center; margin-top: 10px;" class="vplayable">
+                <div class="gridcenter vplayable">
                         <video style="cursor: pointer;">
                             <source src="{{.Data.SecureMedia.RedditVideo.MQ}}">
                             <source src="{{.Data.SecureMedia.RedditVideo.LQ}}">
@@ -118,7 +130,7 @@
             {{end}}
 
             {{if contains .Data.PostHint "rich:video"}}
-                <div style="display: grid; place-items: center; margin-top: 10px;">
+                <div class="gridcenter">
                     <iframe width="{{.Data.SecureMediaEmbed.Width}}" height="{{.Data.SecureMediaEmbed.Height}}" src="{{.Data.SecureMediaEmbed.MediaDomainURL}}" frameborder="0" scrolling="no" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
             {{end}}

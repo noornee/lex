@@ -117,6 +117,7 @@ div.post {
     text-indent: 0px;
     margin-left: 15px;
     width: 95%;
+    overflow-wrap: break-word;
 }
 
 .post-flair {

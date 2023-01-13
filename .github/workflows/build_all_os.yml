@@ -1,0 +1,139 @@
+name: Building for all OSs
+
+on:
+  schedule:
+  - cron: '18 4 * * *'
+  workflow_dispatch:
+  pull_request:
+  push:
+
+jobs:
+  linuxbuild:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    
+    - name: Setup Go Environment
+      uses: actions/setup-go@v3
+      with:
+        go-version: 1.19
+        check-latest: true
+        
+    - name: Main Linux Build
+      run: |
+        echo "Updating Go Dependencies"
+        go get -u
+        
+        echo "Building for 64bit Linux"
+        go build -v -o lex-amd64-linux main.go
+        
+        echo "Building for 32bit Linux"
+        GOARCH=386 go build -v -o lex-i386-linux main.go
+        
+        echo "Minifying CSS & JS"
+        cd minify
+        go run minify.go
+        cd ..
+        
+        echo "Zipping Files"
+        7z a -mm=Deflate -mfb=258 -mpass=15 lex-linux.zip lex-i386-linux lex-amd64-linux views/* js/* css/*
+        
+        echo "Ok."
+      working-directory: src/
+                                  
+    - name: Release
+      uses: softprops/action-gh-release@v0.1.15
+      with:
+        tag_name: 'snapshot'
+        files: |
+          src/lex-linux.zip
+          
+  macbuild:
+    runs-on: macos-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    
+    - name: Setup Go Environment
+      uses: actions/setup-go@v3
+      with:
+        go-version: 1.19
+        check-latest: true
+    
+    - name: Main MacOS Build
+      run: |
+        echo "Updating Go Dependencies"
+        go get -u
+        
+        echo "Building for Intel OSX"
+        go build -v -o lex-amd64-osx main.go
+        
+        echo "Building for M1 OSX"
+        GOARCH=arm64 go build -v -o lex-arm64-osx main.go
+        
+        echo "Minifying CSS & JS"
+        cd minify
+        go run minify.go
+        cd ..
+        
+        echo "Zipping Files"
+        7z a -mm=Deflate -mfb=258 -mpass=15 lex-osx.zip lex-amd64-osx lex-arm64-osx views/* js/* css/*
+        
+        echo "Ok."
+      working-directory: src/
+                          
+    - name: Release
+      uses: softprops/action-gh-release@v0.1.15
+      with:
+        tag_name: 'snapshot'
+        files: |
+          src/lex-osx.zip
+          
+  winbuild:
+    runs-on: windows-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    
+    - name: Setup Go Environment
+      uses: actions/setup-go@v3
+      with:
+        go-version: 1.19
+        check-latest: true
+
+    - name: Main Windows Build
+      run: |
+        echo "Updating Go Dependencies"
+        go get -u
+        
+        echo "Adding Time to Github Env"
+        echo "RNAME=$(Get-Date -UFormat 'snapshot %Y-%m-%d %H:%M')" >> $env:GITHUB_ENV
+        echo "RTXT=$(Get-Date -UFormat '### This release was automatically generated on %A %Y/%m/%d at %H:%M')" >> $env:GITHUB_ENV
+        
+        echo "Building for Windows x64"
+        go build -v -o lex-amd64-windows.exe main.go
+        
+        echo "Building for Windows x32"
+        $Env:GOARCH = '386'
+        go build -v -o lex-i386-windows.exe main.go
+        
+        echo "Minifying CSS & JS"
+        cd minify
+        go run minify.go
+        cd ..
+        
+        echo "Zipping Files"
+        7z a -mm=Deflate -mfb=258 -mpass=15 lex-windows.zip lex-i386-windows.exe lex-amd64-windows.exe views/* js/* css/*
+        
+        echo "Ok."
+      working-directory: src/
+                                
+    - name: Release
+      uses: softprops/action-gh-release@v0.1.15
+      with:
+        name: ${{ env.RNAME }}
+        body: ${{ env.RTXT }}
+        tag_name: 'snapshot'
+        files: |
+          src/lex-windows.zip

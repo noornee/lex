@@ -1,9 +1,6 @@
 name: Building for all OSs
 
 on:
-  schedule:
-  - cron: '18 4 * * *'
-  workflow_dispatch:
   pull_request:
   push:
 

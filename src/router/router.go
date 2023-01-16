@@ -17,6 +17,10 @@ import (
 	"github.com/russross/blackfriday/v2"
 )
 
+const (
+	CommonExtNoNSH = blackfriday.NoIntraEmphasis | blackfriday.Tables | blackfriday.FencedCode | blackfriday.Autolink | blackfriday.Strikethrough | blackfriday.HeadingIDs | blackfriday.BackslashLineBreak | blackfriday.DefinitionLists
+)
+
 func StartServer() {
 	router := gin.Default()
 
@@ -30,7 +34,7 @@ func StartServer() {
 			return !strings.Contains(input, of)
 		},
 		"sanitize": func(input string) template.HTML {
-			Markdown := blackfriday.Run([]byte(input))
+			Markdown := blackfriday.Run([]byte(input), blackfriday.WithExtensions(CommonExtNoNSH))
 			SHTML := bluemonday.UGCPolicy().SanitizeBytes(Markdown)
 			return template.HTML(SHTML)
 		},

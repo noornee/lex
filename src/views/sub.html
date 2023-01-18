@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/main.min.css">
+    <link rel="stylesheet" href="/css/main.min.css">
     <title>lex | {{.SubData.Title}}</title>
 </head>
 <body>
@@ -19,11 +19,21 @@
                 <span class="ltext ltype2">{{.SubData.Description}}</span>
             </div>
         </div>   
-        <div id="posts">
+        {{if not .NSFWAllowed}}
+            <div class="gridcenter">
+                <form action="/config" method="post">
+                    <p style="color: white;">Hello, this appears to be an NSFW Subreddit.</p>
+                    <p style="color: white;">Don't worry, we aren't gonna ID you, but we do need to confirm that you are over 18. <br>This is only shown once, or until cookies are cleared.</p>
+                    <input type="submit" value="Yes, I am over 18.">
+                    <input type="button" value="No, Take me back to safety." onclick="window.location.href = 'https://google.com'">
+                </form>
+            </div>
+        {{end}}
+        <div id="posts" {{if not .NSFWAllowed}} style="filter: blur(64px); pointer-events: none;" {{end}}>
             {{template "posts" .}}
         </div>
     </div>
 
-    <script src="../js/main.min.js"></script>
+    <script src="/js/main.min.js"></script>
 </body>
 </html>

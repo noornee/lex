@@ -12,6 +12,7 @@ type Subreddit struct {
 		CommunityIcon       string  `json:"community_icon"`
 		Banner              string  `json:"banner_background_image"`
 		Created             float64 `json:"created"`
+		NSFW                bool    `json:"over18"`
 	} `json:"data"`
 }
 

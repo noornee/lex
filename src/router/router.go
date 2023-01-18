@@ -24,7 +24,9 @@ const (
 func StartServer() {
 	router := gin.Default()
 
-	router.Use(gzip.Gzip(gzip.BestCompression))
+	router.Use(
+		gzip.Gzip(gzip.BestCompression),
+	)
 
 	// region Load Files
 
@@ -57,13 +59,13 @@ func StartServer() {
 
 	router.LoadHTMLGlob("views/*")
 
-	router.GET("js/:id", func(ctx *gin.Context) {
+	router.GET("/js/:id", func(ctx *gin.Context) {
 		id := ctx.Param("id")
 		ctx.Header("Content-Type", "application/javascript")
 		ctx.File(fmt.Sprintf("js/%v", id))
 	})
 
-	router.GET("css/:id", func(ctx *gin.Context) {
+	router.GET("/css/:id", func(ctx *gin.Context) {
 		id := ctx.Param("id")
 		ctx.Header("Content-Type", "text/css")
 		ctx.File(fmt.Sprintf("css/%v", id))
@@ -73,6 +75,22 @@ func StartServer() {
 
 	router.GET("/", func(ctx *gin.Context) {
 		ctx.HTML(http.StatusOK, "index.html", gin.H{})
+	})
+
+	router.GET("/config", func(ctx *gin.Context) {
+		ctx.String(http.StatusOK, "Will be implemented soon™")
+	})
+
+	// dev -> will probably keep this.
+	router.POST("/byecookies", func(ctx *gin.Context) {
+		ctx.Header("Set-Cookie", "nsfw_allowed=0")
+		ctx.Redirect(http.StatusMovedPermanently, ctx.Request.Referer())
+	})
+
+	// for now, it's only purpose is to set cookies to nsfw subreddits (expand later™)
+	router.POST("/config", func(ctx *gin.Context) {
+		ctx.Header("Set-Cookie", "nsfw_allowed=1")
+		ctx.Redirect(http.StatusMovedPermanently, ctx.Request.Referer())
 	})
 
 	router.GET("/r/:sub", func(ctx *gin.Context) {
@@ -129,9 +147,12 @@ func StartServer() {
 			}
 		}
 
+		nsfwallowed, _ := ctx.Cookie("nsfw_allowed")
+
 		ctx.HTML(http.StatusOK, "sub.html", gin.H{
-			"SubData": Sub.Data,
-			"Posts":   Posts.Data,
+			"SubData":     Sub.Data,
+			"Posts":       Posts.Data,
+			"NSFWAllowed": nsfwallowed == "1" || !Sub.Data.NSFW,
 		})
 	})
 

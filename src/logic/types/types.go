@@ -46,6 +46,7 @@ type Posts struct {
 				Author        string `json:"author"`
 				AuthorFlair   string `json:"author_flair_text"`
 				PostHint      string `json:"post_hint"`
+				URLDest       string `json:"url_overridden_by_dest"`
 				Distinguished string `json:"distinguished"`
 				PostID        string `json:"id"`
 				CommentCount  int64  `json:"num_comments"`

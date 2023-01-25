@@ -56,7 +56,7 @@
         </p>
         <div class="post-content">
             {{if .Data.PostFlair}}
-                <span class="post-flair" style="background-color: {{.Data.PostFlairHex}};">{{.Data.PostFlair}}</span>
+                <span class="post-flair" style="background-color: {{if .Data.PostFlairHex}}{{.Data.PostFlairHex}}{{else}}#777{{end}};">{{.Data.PostFlair}}</span>
             {{end}}
             <span class="post-title">{{.Data.Title}}</span>
 
@@ -83,9 +83,15 @@
             {{end}}
 
             {{if contains .Data.PostHint "image"}}
-                <div class="m-top10">
-                    <img src="{{.Data.Preview.AutoChosenImageQuality|replaceAmp}}" class="fitimg">
-                </div>
+                {{if and (notcontains .Data.Preview.AutoChosenImageQuality ".gif") (contains .Data.URLDest ".gif")}}
+                    <div class="m-top10">
+                        <img src="{{.Data.URLDest|replaceAmp}}" class="fitimg">
+                    </div>
+                {{else}}
+                    <div class="m-top10">
+                        <img src="{{.Data.Preview.AutoChosenImageQuality|replaceAmp}}" class="fitimg">
+                    </div>
+                {{end}}
             {{end}}
 
             <!--only filter galleries with 2 or more images.-->

@@ -28,10 +28,12 @@ jobs:
         echo "Building for 32bit Linux"
         GOARCH=386 go build -v -o lex-i386-linux main.go
         
-        echo "Minifying CSS & JS"
-        cd minify
-        go run minify.go
-        cd ..
+        echo "Installing Sass"
+        npm install -g sass
+        
+        echo "Converting SCSS to CSS"
+        sass --style=compressed --no-source-map css/main.scss css/main.min.css
+        rm css/main.scss
         
         echo "Zipping Files"
         7z a -mm=Deflate -mfb=258 -mpass=15 lex-linux.zip lex-i386-linux lex-amd64-linux views/* js/* css/*
@@ -69,10 +71,12 @@ jobs:
         echo "Building for M1 OSX"
         GOARCH=arm64 go build -v -o lex-arm64-osx main.go
         
-        echo "Minifying CSS & JS"
-        cd minify
-        go run minify.go
-        cd ..
+        echo "Installing Sass"
+        npm install -g sass
+        
+        echo "Converting SCSS to CSS"
+        sass --style=compressed --no-source-map css/main.scss css/main.min.css
+        rm css/main.scss
         
         echo "Zipping Files"
         7z a -mm=Deflate -mfb=258 -mpass=15 lex-osx.zip lex-amd64-osx lex-arm64-osx views/* js/* css/*
@@ -115,10 +119,12 @@ jobs:
         $Env:GOARCH = '386'
         go build -v -o lex-i386-windows.exe main.go
         
-        echo "Minifying CSS & JS"
-        cd minify
-        go run minify.go
-        cd ..
+        echo "Installing Sass"
+        npm install -g sass
+        
+        echo "Converting SCSS to CSS"
+        sass --style=compressed --no-source-map css/main.scss css/main.min.css
+        del css/main.scss
         
         echo "Zipping Files"
         7z a -mm=Deflate -mfb=258 -mpass=15 lex-windows.zip lex-i386-windows.exe lex-amd64-windows.exe views/* js/* css/*

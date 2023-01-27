@@ -81,6 +81,11 @@ type Posts struct {
 							URL string `json:"url"`
 						} `json:"resolutions"`
 						Variants struct {
+							MP4 struct {
+								Source struct {
+									URL string `json:"url"`
+								} `json:"source"`
+							} `json:"mp4"`
 							GIF struct {
 								Source struct {
 									URL string `json:"url"`

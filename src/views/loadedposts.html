@@ -118,7 +118,7 @@
             <!--todo: hide controls when not hover. (css?)-->
             {{if contains .Data.PostHint "hosted:video"}}
                 <div class="gridcenter vplayable">
-                        <video style="cursor: pointer;">
+                        <video style="cursor: pointer; width: 100%;">
                             <source src="{{.Data.SecureMedia.RedditVideo.MQ}}">
                             <source src="{{.Data.SecureMedia.RedditVideo.LQ}}">
                             <source src="{{.Data.SecureMedia.RedditVideo.FallbackURL}}">
@@ -129,8 +129,8 @@
                         <!--todo: fix controls being a *little* too big.-->
                         <div style="padding: 10px;">
                             <button style="filter: invert(100%);">Play/Pause</button>
-                            <input type="range" value="0.0" min="0.0" step="0.1" style="width: 50%;">
-                            <input type="range" value="0.50" min="0.0" step="0.01" max="1.0" style="width: 45px;" class="vctrl">
+                            <input type="range" value="0.0" min="0.0" step="0.1">
+                            <input type="range" value="0.50" min="0.0" step="0.01" max="1.0">
                         </div>
                 </div>
             {{end}}
@@ -164,6 +164,56 @@
 
                     <span class="gtext"> {{.Data.Ups|fmtHumanComma}} Upvotes &bullet; {{.Data.UpvoteRatio|toPercentage}}% Upvote Ratio</span>
                 </div>
+
+                {{if contains .Data.PostHint "image"}}
+                    {{if (index .Data.Preview.Images 0).Variants.GIF.Source.URL}}
+                    <a href="{{(index .Data.Preview.Images 0).Variants.GIF.Source.URL|replaceAmp}}">
+                        <div class="l-hovergray">
+                            <span class="material-symbols-rounded gicon">
+                                open_in_full
+                            </span>
+
+                            <span class="gtext">GIF</span>
+                        </div>
+                    </a>
+                    {{end}}
+
+                    {{if (index .Data.Preview.Images 0).Variants.MP4.Source.URL}}
+                    <a href="{{(index .Data.Preview.Images 0).Variants.MP4.Source.URL|replaceAmp}}">
+                        <div class="l-hovergray">
+                            <span class="material-symbols-rounded gicon">
+                                open_in_full
+                            </span>
+
+                            <span class="gtext">MP4</span>
+                        </div>
+                    </a>
+                    {{end}}
+
+                    <!--todo: source image for galleries-->
+                    {{if (index .Data.Preview.Images 0).Source.URL}}
+                        <a href="{{(index .Data.Preview.Images 0).Source.URL|replaceAmp}}">
+                            <div class="l-hovergray">
+                                <span class="material-symbols-rounded gicon">
+                                    open_in_full
+                                </span>
+
+                                <span class="gtext">Source Image</span>
+                            </div>
+                        </a>
+                    {{end}}
+                {{end}}
+                {{if contains .Data.PostHint "hosted:video"}}
+                    <a href="{{.Data.SecureMedia.RedditVideo.FallbackURL}}">
+                        <div class="l-hovergray">
+                            <span class="material-symbols-rounded gicon">
+                                open_in_full
+                            </span>
+
+                            <span class="gtext">Source Video</span>
+                        </div>
+                    </a>
+                {{end}}
             </div>
         </div>
     </div>

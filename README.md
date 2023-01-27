@@ -18,7 +18,9 @@
 
 [**🔨 Technologies that were used to create Lex**](#-technologies-that-were-used-to-create-lex)
 
-# [🇭🇺 Magyar README](https://github.com/cmd777/lex/blob/main/README_hu.md)
+---
+
+**[🇭🇺 Magyar README](https://github.com/cmd777/lex/blob/main/README_hu.md)**
 
 ---
 

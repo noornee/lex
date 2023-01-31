@@ -135,7 +135,9 @@ func StartServer() {
 				MMD := make(map[string]string)
 
 				for n := range Posts.Data.Children[i].Data.MediaMetaData {
-					MMD[n] = Posts.Data.Children[i].Data.MediaMetaData[n].P[int(math.Round(float64(len(Posts.Data.Children[i].Data.MediaMetaData[n].P)/2)))].U
+					if Posts.Data.Children[i].Data.MediaMetaData[n].P != nil {
+						MMD[n] = Posts.Data.Children[i].Data.MediaMetaData[n].P[int(math.Round(float64(len(Posts.Data.Children[i].Data.MediaMetaData[n].P)/2)))].U
+					}
 				}
 
 				Posts.Data.Children[i].Data.VMediaMetaData = MMD

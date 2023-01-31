@@ -235,22 +235,3 @@ html, body {
 .fitimg {
     @extend %img-fit;
 }
-
-input[type="range"] {
-    appearance: none;
-    cursor: pointer;
-    background-color: transparent;
-    ::-webkit-slider-runnable-track, ::-moz-range-track {
-        background-color: #9d9d9d;
-        height: 10px;
-        border-radius: 5px;
-    }
-    ::-webkit-slider-thumb, ::-moz-range-thumb {
-        background-color: #000;
-    }
-    ::-moz-range-progress {
-        background-color: #d80c0c;
-        height: 10px;
-        border-radius: 5px;
-    }
-}

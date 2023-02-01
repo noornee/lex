@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	LEX_VERSION = 299736
+	LEX_VERSION = 299737
 )
 
 func CheckForUpdates() (ok bool, latest int) {

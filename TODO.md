@@ -20,14 +20,18 @@
 - [ ] Implement Share button (Permalink to reddit post)
 - [ ] Add `Resolution Quality` config (1->5->source)
 - [ ] Implement settings page
+- [ ] Use SVG instead of Google Icons
+- [ ] Comments: Achievements
+- [ ] Comments: Starred Comments
 
 ## GO
 - [ ] Fix the horrible for loop, or just make it readable
 - [ ] Don't use range in MediaMetaData (or try using sort?)
-- [ ] Use at least the 3rd resolution? (anything less is pretty blurry.)
+- [ ] Use at least the 3rd resolution? (anything less is pretty blurry)
 - [ ] Imgur: Drop v from gifv
 - [ ] Galleries: if it's a RedditVideo, then grab the id, and use `https://v.redd.it/id/DASH_q.mp4`
 - [ ] Serve posts.html instead of loadedposts.html
+- [ ] Error Handling: Skip post if it errors out
 
 ## WORKFLOWS
 - [ ] Automatically append +1 to the VERSION files?

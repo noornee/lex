@@ -1,223 +1,221 @@
-{{define "posts"}}
-    {{range .Posts.Children}}
-        <div class="post">
-            <p class="postdate">
-                {{if .Data.Pinned}}
-                    <span class="material-symbols-rounded pinned">
-                        push_pin
-                    </span>
-                    Pinned by Moderators &bullet;
-                {{end}}
-                Posted by u/{{.Data.Author}}
-                {{if .Data.AuthorFlair}}
-                    <span class="authorflair">{{.Data.AuthorFlair}}</span>
-                {{end}}
-                &bullet; {{.Data.Created|fmtHumanDate}}
-                {{if .Data.Distinguished}}
-                    &bullet;
-                    <span class="material-symbols-rounded modbadge">
-                        shield
-                    </span>
+{{range .Posts.Children}}
+    <div class="post">
+        <p class="postdate">
+            {{if .Data.Pinned}}
+                <span class="material-symbols-rounded pinned">
+                    push_pin
+                </span>
+                Pinned by Moderators &bullet;
+            {{end}}
+            Posted by u/{{.Data.Author}}
+            {{if .Data.AuthorFlair}}
+                <span class="authorflair">{{.Data.AuthorFlair}}</span>
+            {{end}}
+            &bullet; {{.Data.Created|fmtHumanDate}}
+            {{if .Data.Distinguished}}
+                &bullet;
+                <span class="material-symbols-rounded modbadge">
+                    shield
+                </span>
+            {{end}}
+
+            {{if .Data.Archived}}
+                <span class="material-symbols-rounded goldicon">
+                    inventory_2
+                </span>
+            {{end}}
+
+            {{if .Data.Locked}}
+                <span class="material-symbols-rounded goldicon">
+                    lock
+                </span>
+            {{end}}
+
+            {{if .Data.Awardings}}
+                {{range .Data.Awardings}}
+                    {{if contains .AwardSubType "MODERATOR"}}
+                        <span style="color:#909090; font-size: 12px;">
+                            <img class="malign" width="16" height="16" src="{{(index .ResizedIcons 0).URL|replaceAmp}}"> {{.Name}}
+                        </span>
+                    {{end}}
                 {{end}}
 
-                {{if .Data.Archived}}
-                    <span class="material-symbols-rounded goldicon">
-                        inventory_2
-                    </span>
-                {{end}}
-
-                {{if .Data.Locked}}
-                    <span class="material-symbols-rounded goldicon">
-                        lock
-                    </span>
-                {{end}}
-
-                {{if .Data.Awardings}}
+                <div style="margin-left: 15px; text-indent: 0px; line-height: 25px; color:#909090; font-size: 12px; display: table;">
                     {{range .Data.Awardings}}
-                        {{if contains .AwardSubType "MODERATOR"}}
-                            <span style="color:#909090; font-size: 12px;">
-                                <img class="malign" width="16" height="16" src="{{(index .ResizedIcons 0).URL|replaceAmp}}"> {{.Name}}
+                        {{if notcontains .AwardSubType "MODERATOR"}}
+                            <span>
+                                <img class="malign" width="16" height="16" src="{{(index .ResizedIcons 0).URL|replaceAmp}}">
+                                {{if gt .Count 1}}
+                                    {{.Count}}
+                                {{end}}
                             </span>
                         {{end}}
                     {{end}}
+                </div>
+            {{end}}
+        </p>
+        <div class="post-content">
+            {{if .Data.PostFlair}}
+                <span class="post-flair" style="background-color: {{if .Data.PostFlairHex}}{{.Data.PostFlairHex}}{{else}}#777{{end}};">{{.Data.PostFlair}}</span>
+            {{end}}
+            <span class="post-title">{{.Data.Title}}</span>
 
-                    <div style="margin-left: 15px; text-indent: 0px; line-height: 25px; color:#909090; font-size: 12px; display: table;">
-                        {{range .Data.Awardings}}
-                            {{if notcontains .AwardSubType "MODERATOR"}}
-                                <span>
-                                    <img class="malign" width="16" height="16" src="{{(index .ResizedIcons 0).URL|replaceAmp}}">
-                                    {{if gt .Count 1}}
-                                        {{.Count}}
-                                    {{end}}
-                                </span>
-                            {{end}}
-                        {{end}}
-                    </div>
-                {{end}}
-            </p>
-            <div class="post-content">
-                {{if .Data.PostFlair}}
-                    <span class="post-flair" style="background-color: {{if .Data.PostFlairHex}}{{.Data.PostFlairHex}}{{else}}#777{{end}};">{{.Data.PostFlair}}</span>
-                {{end}}
-                <span class="post-title">{{.Data.Title}}</span>
+            {{if .Data.SelfText}}
+                <div class="m-top10">
+                    <span style="font-size: 14px;">{{.Data.SelfText|sanitize}}</span>
+                </div>
+            {{end}}
 
-                {{if .Data.SelfText}}
+            {{if contains .Data.PostHint "link"}}
+                <div>
+                    <a href="{{.Data.LinkURL}}" style="font-size:12px; color:#909090;">{{.Data.LinkURL}} <span class="material-symbols-rounded gicon">open_in_new</span></a>
+                </div>
+            {{end}}
+
+            {{if and (not .Data.PostHint) (.Data.LinkURL)}}
+                <div>
+                    <a href="{{.Data.LinkURL}}" style="font-size:12px; color:#909090;">{{.Data.LinkURL}} <span class="material-symbols-rounded gicon">open_in_new</span></a>
+                </div>
+            {{end}}
+
+            {{if .Data.CrossPost}}
+                <p style="text-align: center;">Sorry, crossposting is not supported yet. here is a link to the original post: <a href="https://reddit.com{{(index .Data.CrossPost 0).Permalink}}">https://reddit.com{{(index .Data.CrossPost 0).Permalink}}</a></p>
+            {{end}}
+
+            {{if contains .Data.PostHint "image"}}
+                {{if and (notcontains .Data.Preview.AutoChosenImageQuality ".gif") (contains .Data.URLDest ".gif")}}
                     <div class="m-top10">
-                        <span style="font-size: 14px;">{{.Data.SelfText|sanitize}}</span>
-                    </div>
-                {{end}}
-
-                {{if contains .Data.PostHint "link"}}
-                    <div>
-                        <a href="{{.Data.LinkURL}}" style="font-size:12px; color:#909090;">{{.Data.LinkURL}} <span class="material-symbols-rounded gicon">open_in_new</span></a>
-                    </div>
-                {{end}}
-
-                {{if and (not .Data.PostHint) (.Data.LinkURL)}}
-                    <div>
-                        <a href="{{.Data.LinkURL}}" style="font-size:12px; color:#909090;">{{.Data.LinkURL}} <span class="material-symbols-rounded gicon">open_in_new</span></a>
-                    </div>
-                {{end}}
-
-                {{if .Data.CrossPost}}
-                    <p style="text-align: center;">Sorry, crossposting is not supported yet. here is a link to the original post: <a href="https://reddit.com{{(index .Data.CrossPost 0).Permalink}}">https://reddit.com{{(index .Data.CrossPost 0).Permalink}}</a></p>
-                {{end}}
-
-                {{if contains .Data.PostHint "image"}}
-                    {{if and (notcontains .Data.Preview.AutoChosenImageQuality ".gif") (contains .Data.URLDest ".gif")}}
-                        <div class="m-top10">
-                            <img src="{{.Data.URLDest|replaceAmp}}" class="fitimg">
-                        </div>
-                    {{else}}
-                        <div class="m-top10">
-                            <img src="{{.Data.Preview.AutoChosenImageQuality|replaceAmp}}" class="fitimg">
-                        </div>
-                    {{end}}
-                {{end}}
-
-                <!--only filter galleries with 2 or more images.-->
-                {{$lenc := len .Data.MediaMetaData}}
-                {{if gt $lenc 1}}
-                    <div class="vgallery m-top10">
-                        <div style="display: flex; align-items: center;">
-                            <button style="text-align: center; width: 44px; height: 44px; border-radius: 100%;"><span class="material-symbols-rounded">arrow_back_ios</span></button>
-                            {{range .Data.VMediaMetaData}}
-                                <img src="{{.|replaceAmp}}" class="fitimg">
-                            {{end}}
-                            <button style="text-align: center; width: 44px; height: 44px; border-radius: 100%;"><span class="material-symbols-rounded">arrow_forward_ios</span></button>
-                        </div>
-                        <span style="float: right; user-select: none;">0 / ??</span>
+                        <img src="{{.Data.URLDest|replaceAmp}}" class="fitimg">
                     </div>
                 {{else}}
-                    {{range .Data.VMediaMetaData}}
-                        <div class="m-top10">
+                    <div class="m-top10">
+                        <img src="{{.Data.Preview.AutoChosenImageQuality|replaceAmp}}" class="fitimg">
+                    </div>
+                {{end}}
+            {{end}}
+
+            <!--only filter galleries with 2 or more images.-->
+            {{$lenc := len .Data.MediaMetaData}}
+            {{if gt $lenc 1}}
+                <div class="vgallery m-top10">
+                    <div style="display: flex; align-items: center;">
+                        <button style="text-align: center; width: 44px; height: 44px; border-radius: 100%;"><span class="material-symbols-rounded">arrow_back_ios</span></button>
+                        {{range .Data.VMediaMetaData}}
                             <img src="{{.|replaceAmp}}" class="fitimg">
-                        </div>
-                    {{end}}
-                {{end}}
-
-                <!--todo: hide controls when not hover. (css?)-->
-                {{if contains .Data.PostHint "hosted:video"}}
-                    <div class="gridcenter vplayable">
-                            <video style="cursor: pointer; width: 100%;">
-                                <source src="{{.Data.SecureMedia.RedditVideo.MQ}}">
-                                <source src="{{.Data.SecureMedia.RedditVideo.LQ}}">
-                                <source src="{{.Data.SecureMedia.RedditVideo.FallbackURL}}">
-                            </video>
-                            <video style="width: 0; height: 0;">
-                                <source src="{{.Data.SecureMedia.RedditVideo.Audio}}">
-                            </video>
-                            <!--todo: fix controls being a *little* too big.-->
-                            <div style="padding: 10px;">
-                                <button style="filter: invert(100%);">Play/Pause</button>
-                                <input type="range" value="0.0" min="0.0" step="0.1">
-                                <input type="range" value="0.50" min="0.0" step="0.01" max="1.0">
-                            </div>
-                    </div>
-                {{end}}
-
-                {{if contains .Data.PostHint "rich:video"}}
-                    <div class="gridcenter">
-                        <iframe width="{{.Data.SecureMediaEmbed.Width}}" height="{{.Data.SecureMediaEmbed.Height}}" src="{{.Data.SecureMediaEmbed.MediaDomainURL}}" frameborder="0" scrolling="no" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    </div>
-                {{end}}
-
-                <div class="post-footer">
-                    <div class="l-hovergray">
-                        <span class="material-symbols-rounded gicon">
-                            chat_bubble
-                        </span>
-
-                        <span class="gtext">{{.Data.CommentCount|fmtHumanComma}} Comments</span>
-                    </div>
-                    <div class="l-hovergray">
-                        <span class="material-symbols-rounded gicon">
-                            share
-                        </span>
-
-                        <span class="gtext">Share</span>
-                    </div>
-                                
-                    <div style="float: left; padding: 5px; margin-right: 15px;">
-                        <span class="material-symbols-rounded gicon">
-                            arrow_upward
-                        </span>
-
-                        <span class="gtext"> {{.Data.Ups|fmtHumanComma}} Upvotes &bullet; {{.Data.UpvoteRatio|toPercentage}}% Upvote Ratio</span>
-                    </div>
-
-                    {{if contains .Data.PostHint "image"}}
-                        {{if (index .Data.Preview.Images 0).Variants.GIF.Source.URL}}
-                        <a href="{{(index .Data.Preview.Images 0).Variants.GIF.Source.URL|replaceAmp}}">
-                            <div class="l-hovergray">
-                                <span class="material-symbols-rounded gicon">
-                                    open_in_full
-                                </span>
-
-                                <span class="gtext">GIF</span>
-                            </div>
-                        </a>
                         {{end}}
-
-                        {{if (index .Data.Preview.Images 0).Variants.MP4.Source.URL}}
-                        <a href="{{(index .Data.Preview.Images 0).Variants.MP4.Source.URL|replaceAmp}}">
-                            <div class="l-hovergray">
-                                <span class="material-symbols-rounded gicon">
-                                    open_in_full
-                                </span>
-
-                                <span class="gtext">MP4</span>
-                            </div>
-                        </a>
-                        {{end}}
-
-                        <!--todo: source image for galleries-->
-                        {{if (index .Data.Preview.Images 0).Source.URL}}
-                            <a href="{{(index .Data.Preview.Images 0).Source.URL|replaceAmp}}">
-                                <div class="l-hovergray">
-                                    <span class="material-symbols-rounded gicon">
-                                        open_in_full
-                                    </span>
-
-                                    <span class="gtext">Source Image</span>
-                                </div>
-                            </a>
-                        {{end}}
-                    {{end}}
-                    {{if contains .Data.PostHint "hosted:video"}}
-                        <a href="{{.Data.SecureMedia.RedditVideo.FallbackURL}}">
-                            <div class="l-hovergray">
-                                <span class="material-symbols-rounded gicon">
-                                    open_in_full
-                                </span>
-
-                                <span class="gtext">Source Video</span>
-                            </div>
-                        </a>
-                    {{end}}
+                        <button style="text-align: center; width: 44px; height: 44px; border-radius: 100%;"><span class="material-symbols-rounded">arrow_forward_ios</span></button>
+                    </div>
+                    <span style="float: right; user-select: none;">0 / ??</span>
                 </div>
+            {{else}}
+                {{range .Data.VMediaMetaData}}
+                    <div class="m-top10">
+                        <img src="{{.|replaceAmp}}" class="fitimg">
+                    </div>
+                {{end}}
+            {{end}}
+
+            <!--todo: hide controls when not hover. (css?)-->
+            {{if contains .Data.PostHint "hosted:video"}}
+                <div class="gridcenter vplayable">
+                        <video style="cursor: pointer; width: 100%;">
+                            <source src="{{.Data.SecureMedia.RedditVideo.MQ}}">
+                            <source src="{{.Data.SecureMedia.RedditVideo.LQ}}">
+                            <source src="{{.Data.SecureMedia.RedditVideo.FallbackURL}}">
+                        </video>
+                        <video style="width: 0; height: 0;">
+                            <source src="{{.Data.SecureMedia.RedditVideo.Audio}}">
+                        </video>
+                        <!--todo: fix controls being a *little* too big.-->
+                        <div style="padding: 10px;">
+                            <button style="filter: invert(100%);">Play/Pause</button>
+                            <input type="range" value="0.0" min="0.0" step="0.1">
+                            <input type="range" value="0.50" min="0.0" step="0.01" max="1.0">
+                        </div>
+                </div>
+            {{end}}
+
+            {{if contains .Data.PostHint "rich:video"}}
+                <div class="gridcenter">
+                    <iframe width="{{.Data.SecureMediaEmbed.Width}}" height="{{.Data.SecureMediaEmbed.Height}}" src="{{.Data.SecureMediaEmbed.MediaDomainURL}}" frameborder="0" scrolling="no" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+            {{end}}
+
+            <div class="post-footer">
+                <div class="l-hovergray">
+                    <span class="material-symbols-rounded gicon">
+                        chat_bubble
+                    </span>
+
+                    <span class="gtext">{{.Data.CommentCount|fmtHumanComma}} Comments</span>
+                </div>
+                <div class="l-hovergray">
+                    <span class="material-symbols-rounded gicon">
+                        share
+                    </span>
+
+                    <span class="gtext">Share</span>
+                </div>
+                            
+                <div style="float: left; padding: 5px; margin-right: 15px;">
+                    <span class="material-symbols-rounded gicon">
+                        arrow_upward
+                    </span>
+
+                    <span class="gtext"> {{.Data.Ups|fmtHumanComma}} Upvotes &bullet; {{.Data.UpvoteRatio|toPercentage}}% Upvote Ratio</span>
+                </div>
+
+                {{if contains .Data.PostHint "image"}}
+                    {{if (index .Data.Preview.Images 0).Variants.GIF.Source.URL}}
+                    <a href="{{(index .Data.Preview.Images 0).Variants.GIF.Source.URL|replaceAmp}}">
+                        <div class="l-hovergray">
+                            <span class="material-symbols-rounded gicon">
+                                open_in_full
+                            </span>
+
+                            <span class="gtext">GIF</span>
+                        </div>
+                    </a>
+                    {{end}}
+
+                    {{if (index .Data.Preview.Images 0).Variants.MP4.Source.URL}}
+                    <a href="{{(index .Data.Preview.Images 0).Variants.MP4.Source.URL|replaceAmp}}">
+                        <div class="l-hovergray">
+                            <span class="material-symbols-rounded gicon">
+                                open_in_full
+                            </span>
+
+                            <span class="gtext">MP4</span>
+                        </div>
+                    </a>
+                    {{end}}
+
+                    <!--todo: source image for galleries-->
+                    {{if (index .Data.Preview.Images 0).Source.URL}}
+                        <a href="{{(index .Data.Preview.Images 0).Source.URL|replaceAmp}}">
+                            <div class="l-hovergray">
+                                <span class="material-symbols-rounded gicon">
+                                    open_in_full
+                                </span>
+
+                                <span class="gtext">Source Image</span>
+                            </div>
+                        </a>
+                    {{end}}
+                {{end}}
+                {{if contains .Data.PostHint "hosted:video"}}
+                    <a href="{{.Data.SecureMedia.RedditVideo.FallbackURL}}">
+                        <div class="l-hovergray">
+                            <span class="material-symbols-rounded gicon">
+                                open_in_full
+                            </span>
+
+                            <span class="gtext">Source Video</span>
+                        </div>
+                    </a>
+                {{end}}
             </div>
         </div>
-    {{end}}
-    <button id="LoadMorePosts" class="loadMorebtn" onclick="loadPosts('{{.Posts.After}}')">Load More Posts</button>
+    </div>
 {{end}}
+<button id="LoadMorePosts" class="loadMorebtn" onclick="loadPosts('{{.Posts.After}}')">Load More Posts</button>

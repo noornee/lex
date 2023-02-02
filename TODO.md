@@ -30,7 +30,7 @@
 - [ ] Use at least the 3rd resolution? (anything less is pretty blurry)
 - [ ] Imgur: Drop v from gifv
 - [ ] Galleries: if it's a RedditVideo, then grab the id, and use `https://v.redd.it/id/DASH_q.mp4`
-- [ ] Serve posts.html instead of loadedposts.html
+- [X] Serve posts.html instead of loadedposts.html
 - [ ] Error Handling: Skip post if it errors out
 
 ## WORKFLOWS

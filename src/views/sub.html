@@ -30,7 +30,7 @@
             </div>
         {{end}}
         <div id="posts" {{if not .NSFWAllowed}} style="filter: blur(64px); pointer-events: none;" {{end}}>
-            {{template "posts" .}}
+            {{template "posts.html" .}}
         </div>
     </div>
 

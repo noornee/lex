@@ -22,6 +22,8 @@ const (
 )
 
 func StartServer() {
+	gin.SetMode(gin.ReleaseMode)
+
 	router := gin.Default()
 
 	router.Use(
@@ -206,7 +208,7 @@ func StartServer() {
 			}
 		}
 
-		ctx.HTML(http.StatusOK, "loadedposts.html", gin.H{
+		ctx.HTML(http.StatusOK, "posts.html", gin.H{
 			"Posts": Posts.Data,
 		})
 	})

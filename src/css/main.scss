@@ -29,7 +29,7 @@ $josefin-sans: 'Josefin Sans', sans-serif;
 
 %grid-template {
     display: grid;
-    grid-template-columns: auto auto auto;
+    grid-template: 1fr / auto auto auto;
 }
 
 %img-fit {
@@ -50,6 +50,8 @@ html, body {
     background-color: #181818;
 }
 
+$navmap: (1: left, 2: center, 3: right);
+
 .stickbox {
     background-color: #303030;
     position: fixed;
@@ -57,17 +59,21 @@ html, body {
     left: 0;
     width: $max-width;
     z-index: 9;
-}
 
-.navbox {
-    @extend %grid-template;
-    gap: 45%;
-    padding: 15px;
-    a {
-        color: #108dcc;
-        font-size: x-large;
-        font-family: $josefin-sans;
-        text-decoration: none;
+    .navbox {
+        @extend %grid-template;
+        padding: 15px;
+        a {
+            color: #108dcc;
+            font-size: x-large;
+            font-family: $josefin-sans;
+            text-decoration: none;
+        }
+        @each $child, $align in $navmap {
+            a:nth-child(#{$child}) {
+                text-align: $align;
+            }
+        }
     }
 }
 

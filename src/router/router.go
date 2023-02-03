@@ -110,10 +110,10 @@ func StartServer() {
 
 		for i := 0; i < len(Posts.Data.Children); i++ {
 			if Posts.Data.Children[i].Data.Preview.Images != nil {
-				if len(Posts.Data.Children[i].Data.Preview.Images[0].Resolutions) != 0 {
+				if Posts.Data.Children[i].Data.Preview.Images[0].Resolutions != nil {
 					Posts.Data.Children[i].Data.Preview.AutoChosenImageQuality = Posts.Data.Children[i].Data.Preview.Images[0].Resolutions[int(math.Round(float64(len(Posts.Data.Children[i].Data.Preview.Images[0].Resolutions)/2)))].URL
 					if strings.Contains(Posts.Data.Children[i].Data.Preview.AutoChosenImageQuality, ".gif") {
-						if len(Posts.Data.Children[i].Data.Preview.Images[0].Variants.GIF.Resolutions) != 0 {
+						if Posts.Data.Children[i].Data.Preview.Images[0].Variants.GIF.Resolutions != nil {
 							Posts.Data.Children[i].Data.Preview.AutoChosenImageQuality = Posts.Data.Children[i].Data.Preview.Images[0].Variants.GIF.Resolutions[int(math.Round(float64(len(Posts.Data.Children[i].Data.Preview.Images[0].Variants.GIF.Resolutions)/2)))].URL
 						} else {
 							Posts.Data.Children[i].Data.Preview.AutoChosenImageQuality = Posts.Data.Children[i].Data.Preview.Images[0].Variants.GIF.Source.URL
@@ -169,10 +169,10 @@ func StartServer() {
 
 		for i := 0; i < len(Posts.Data.Children); i++ {
 			if Posts.Data.Children[i].Data.Preview.Images != nil {
-				if len(Posts.Data.Children[i].Data.Preview.Images[0].Resolutions) != 0 {
+				if Posts.Data.Children[i].Data.Preview.Images[0].Resolutions != nil {
 					Posts.Data.Children[i].Data.Preview.AutoChosenImageQuality = Posts.Data.Children[i].Data.Preview.Images[0].Resolutions[int(math.Round(float64(len(Posts.Data.Children[i].Data.Preview.Images[0].Resolutions)/2)))].URL
 					if strings.Contains(Posts.Data.Children[i].Data.Preview.AutoChosenImageQuality, ".gif") {
-						if len(Posts.Data.Children[i].Data.Preview.Images[0].Variants.GIF.Resolutions) != 0 {
+						if Posts.Data.Children[i].Data.Preview.Images[0].Variants.GIF.Resolutions != nil {
 							Posts.Data.Children[i].Data.Preview.AutoChosenImageQuality = Posts.Data.Children[i].Data.Preview.Images[0].Variants.GIF.Resolutions[int(math.Round(float64(len(Posts.Data.Children[i].Data.Preview.Images[0].Variants.GIF.Resolutions)/2)))].URL
 						} else {
 							Posts.Data.Children[i].Data.Preview.AutoChosenImageQuality = Posts.Data.Children[i].Data.Preview.Images[0].Variants.GIF.Source.URL

@@ -102,3 +102,9 @@ I also work on Lex in my free time as a hobby, so development may be slow, thank
 - [Bluemonday](https://github.com/microcosm-cc/bluemonday) ➡️ HTML Sanitizer
 - [Blackfriday](https://github.com/russross/blackfriday/tree/v2) ➡️ Markdown Processor
 - [SASS](https://sass-lang.com) ➡️ CSS Extension
+
+<sub>Also used to create LEX:</sub>
+
+- [Josefin Sans](https://fonts.google.com/specimen/Josefin+Sans) ➡️ Navbar, index font
+- [Open Sans](https://fonts.google.com/specimen/Open+Sans) ➡️ Subreddit font
+- [SVGRepo](https://www.svgrepo.com) ➡️ SVGs

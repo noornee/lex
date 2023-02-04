@@ -100,4 +100,10 @@ Szabadidőmben hobbiból dolgozom a Lexen, így lehet, hogy lassú a fejlődés,
 - [Blackfriday](https://github.com/russross/blackfriday/tree/v2) ➡️ Markdown processzor
 - [SASS](https://sass-lang.com) ➡️ CSS Kiterjesztés
 
+<sub>Ezenkívül ezeket használtam a LEX létrehozásához:</sub>
+
+- [Josefin Sans](https://fonts.google.com/specimen/Josefin+Sans) ➡️ Navigációs sáv, index betűtípus
+- [Open Sans](https://fonts.google.com/specimen/Open+Sans) ➡️ Subreddit betűtípus
+- [SVGRepo](https://www.svgrepo.com) ➡️ SVGs
+
 ⚠️ <sub>A fordítás nagy része a google fordító volt (A fordítási munka felgyorsítása érdekében), szóval lehet hogy nem a legjobb fordítás lett.</sub>

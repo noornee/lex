@@ -25,7 +25,7 @@
 - [ ] Comments: Starred Comments
 
 ## GO
-- [ ] Fix the horrible for loop, or just make it readable
+- [:heavy_minus_sign:] Fix the horrible for loop, or just make it readable
 - [ ] Don't use range in MediaMetaData (or try using sort?)
 - [ ] Use at least the 3rd resolution? (anything less is pretty blurry)
 - [ ] Imgur: Drop v from gifv

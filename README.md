@@ -108,3 +108,4 @@ I also work on Lex in my free time as a hobby, so development may be slow, thank
 - [Josefin Sans](https://fonts.google.com/specimen/Josefin+Sans) ➡️ Navbar, index font
 - [Open Sans](https://fonts.google.com/specimen/Open+Sans) ➡️ Subreddit font
 - [SVGRepo](https://www.svgrepo.com) ➡️ SVGs
+- [Yqnn's SVG Path Editor](https://github.com/Yqnn/svg-path-editor) ➡️ Was used to edit almost all SVGs

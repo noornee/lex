@@ -13,12 +13,9 @@ $josefin-sans: 'Josefin Sans', sans-serif;
     color: $color;
 }
 
-@mixin badgesettings($color, $size, $transform, $valign, $indent) {
-    color: $color;
-    font-size: $size;
-    transform: $transform;
-    vertical-align: $valign;
-    text-indent: $indent;
+%badge {
+    vertical-align: middle;
+    text-indent: 5px;
 }
 
 %max-view {
@@ -170,31 +167,31 @@ $navmap: (1: left, 2: center, 3: right);
     }
 }
 
-.modbadge {
-    @include badgesettings(#75d377, 16px, scaleX(1.2), middle, 5px);
-}
+.licon {
+    @extend %badge;
+    fill: #75d377;
 
-.pinned {
-    @include badgesettings(#75d377, 16px, rotate(45deg), middle, 0px);
-    text-decoration: none;
+    &.scale {
+        transform: scaleX(1.4)
+    }
 }
 
 .goldicon {
-    @include badgesettings(#ffd635, 16px, initial, middle, 5px);
-    text-decoration: none;
-}
-
-.malign {
-    vertical-align: middle;
+    @extend %badge;
+    fill: #ffd635;
 }
 
 .gicon {
-    @include badgesettings(#909090, 16px, initial, middle, initial);
-    text-decoration: none;
+    @extend %badge;
+    fill: #909090;
 }
 
 .gtext {
     @include fontsettings(12px, 700, initial, #909090);
+}
+
+.malign {
+    vertical-align: middle;
 }
 
 .post-footer {

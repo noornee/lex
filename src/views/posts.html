@@ -2,9 +2,9 @@
     <div class="post">
         <p class="postdate">
             {{if .Data.Pinned}}
-                <span class="material-symbols-rounded pinned">
-                    push_pin
-                </span>
+                <svg width="16" height="16" viewBox="0 0 512 512" version="1.1" class="licon">
+                    <path fill-rule="evenodd" d="M335.719 0l-49.953 49.953 26.453 26.438c0 0-20.563 20.578-55.844 55.828-61.688 61.703-133.813 48.891-165.859 16.828l-45.406 45.406 272.438 272.453 45.406-45.422c-32.047-32.047-44.859-104.172 16.828-165.859 35.25-35.266 55.828-55.828 55.828-55.828l26.438 26.438L512 176.297 335.719 0M158 306 3.719 460.234 0 512 51.781 508.297 202 350z"></path>
+                </svg>
                 Pinned by Moderators &bullet;
             {{end}}
             Posted by u/{{.Data.Author}}
@@ -14,21 +14,21 @@
             &bullet; {{.Data.Created|fmtHumanDate}}
             {{if .Data.Distinguished}}
                 &bullet;
-                <span class="material-symbols-rounded modbadge">
-                    shield
-                </span>
+                <svg width="16" height="16" viewBox="0 0 32 32" version="1.1" class="licon scale">
+                    <path fill-rule="evenodd" d="M16 1c1.562 1.5 6.25 4.5 9.375 4.5 0 1.5 0 4.5 0 6 0 6-4.688 15-9.375 19.5-4.688-4.5-9.375-13.5-9.375-19.5 0-1.5 0-4.5 0-6 3.126 0.001 7.813-2.999 9.375-4.5v0z"></path>
+                </svg>
             {{end}}
 
             {{if .Data.Archived}}
-                <span class="material-symbols-rounded goldicon">
-                    inventory_2
-                </span>
+                <svg width="16" height="16" viewBox="0 0 24 24" version="1.1" class="goldicon">
+                    <path fill-rule="evenodd" d="M0 4.6A2.6 2.6 0 0 1 2.6 2h18.8A2.6 2.6 0 0 1 24 4.6v.8A2.6 2.6 0 0 1 21.4 8H21v10.6c0 1.33-1.07 2.4-2.4 2.4H5.4C4.07 21 3 19.93 3 18.6V8h-.4A2.6 2.6 0 0 1 0 5.4v-.8ZM2.6 4a.6.6 0 0 0-.6.6v.8a.6.6 0 0 0 .6.6h18.8a.6.6 0 0 0 .6-.6v-.8a.6.6 0 0 0-.6-.6H2.6ZM8 10a1 1 0 1 0 0 2h8a1 1 0 1 0 0-2H8z"></path>
+                </svg>
             {{end}}
 
             {{if .Data.Locked}}
-                <span class="material-symbols-rounded goldicon">
-                    lock
-                </span>
+                <svg width="16" height="16" viewBox="0 0 1024 1024" version="1.1" class="goldicon">
+                    <path fill-rule="evenodd" d="M829.4 1024H194.6c-60.3 0-109.3-49-109.3-109.3v-464c0-60.3 49-109.3 109.3-109.3h634.7c60.3 0 109.3 49 109.3 109.3v464c.1 60.3-49 109.3-109.2 109.3zM726 385c-18-18-17-17-42.7-42.7V256c0-94.1-76.6-170.7-170.7-170.7S341.3 161.9 341.3 256v88S341 344 256 342V256C256 114.8 370.8 0 512 0s256 114.8 256 256v87zc-17-17-26-26-42.7-42.7z"></path>
+                </svg>
             {{end}}
 
             {{if .Data.Awardings}}
@@ -68,13 +68,21 @@
 
             {{if contains .Data.PostHint "link"}}
                 <div>
-                    <a href="{{.Data.LinkURL}}" style="font-size:12px; color:#909090;">{{.Data.LinkURL}} <span class="material-symbols-rounded gicon">open_in_new</span></a>
+                    <a href="{{.Data.LinkURL}}" style="font-size:12px; color:#909090;">{{.Data.LinkURL}}
+                        <svg height="16" width="16" version="1.1" viewBox="0 0 512 512" class="gicon">
+                            <path fill-rule="evenodd" d="M96 0v416h416V0H96zM472 376H136V40h336V376M40 472 40 296 40 136 40 96 0 96 0 512 416 512 416 472 376 472M232 312 350 194 350 279 390 279 390 126 237 126 237 166 322 166 204 284z"/>
+                        </svg>
+                    </a>
                 </div>
             {{end}}
 
             {{if and (not .Data.PostHint) (.Data.LinkURL)}}
                 <div>
-                    <a href="{{.Data.LinkURL}}" style="font-size:12px; color:#909090;">{{.Data.LinkURL}} <span class="material-symbols-rounded gicon">open_in_new</span></a>
+                    <a href="{{.Data.LinkURL}}" style="font-size:12px; color:#909090;">{{.Data.LinkURL}}
+                        <svg height="16" width="16" version="1.1" viewBox="0 0 512 512" class="gicon">
+                            <path fill-rule="evenodd" d="M96 0v416h416V0H96zM472 376H136V40h336V376M40 472 40 296 40 136 40 96 0 96 0 512 416 512 416 472 376 472M232 312 350 194 350 279 390 279 390 126 237 126 237 166 322 166 204 284z"/>
+                        </svg>
+                    </a>
                 </div>
             {{end}}
 
@@ -143,24 +151,24 @@
 
             <div class="post-footer">
                 <div class="l-hovergray">
-                    <span class="material-symbols-rounded gicon">
-                        chat_bubble
-                    </span>
+                    <svg width="16" height="16" viewBox="0 0 32 32" version="1.1" class="gicon">
+                        <path fill-rule="evenodd" d="M25.785 4.952h-19.57c-1.235 0-2.236 1.002-2.236 2.236v12.488c0 1.234 1.001 2.236 2.236 2.236h3.729l.001 5.137 5.704-5.137h10.137c1.236 0 2.236-1.002 2.236-2.236v-12.488c-.001-1.234-1.001-2.236-2.237-2.236z"></path>
+                    </svg>
 
                     <span class="gtext">{{.Data.CommentCount|fmtHumanComma}} Comments</span>
                 </div>
                 <div class="l-hovergray">
-                    <span class="material-symbols-rounded gicon">
-                        share
-                    </span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" version="1.1" class="gicon">
+                        <path fill-rule="evenodd" d="M18 1C15.7909 1 14 2.79086 14 5C14 5.19436 14.0139 5.38549 14.0407 5.57244L8.4479 8.83625C7.77136 8.31202 6.92212 8 6 8C3.79086 8 2 9.79086 2 12C2 14.2091 3.79086 16 6 16C6.92229 16 7.77167 15.6879 8.44827 15.1635L14.0414 18.4227C14.0141 18.6112 14 18.8039 14 19C14 21.2091 15.7909 23 18 23C20.2091 23 22 21.2091 22 19C22 16.7909 20.2091 15 18 15C17.0797 15 16.232 15.3108 15.5561 15.8332L9.95943 12.5719C9.98617 12.3851 10 12.1942 10 12C10 11.8057 9.98614 11.6146 9.95936 11.4277L15.5522 8.16382C16.2287 8.688 17.0779 9 18 9C20.2091 9 22 7.20914 22 5C22 2.79086 20.2091 1 18 1z"></path>
+                    </svg>
 
                     <span class="gtext">Share</span>
                 </div>
                             
                 <div style="float: left; padding: 5px; margin-right: 15px;">
-                    <span class="material-symbols-rounded gicon">
-                        arrow_upward
-                    </span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" version="1.1" class="gicon">
+                        <path fill-rule="evenodd" d="M11.2929 4.29289C11.6834 3.90237 12.3166 3.90237 12.7071 4.29289L18.7071 10.2929C19.0976 10.6834 19.0976 11.3166 18.7071 11.7071C18.3166 12.0976 17.6834 12.0976 17.2929 11.7071L13 7.41421V19C13 19.5523 12.5523 20 12 20C11.4477 20 11 19.5523 11 19V7.41421L6.70711 11.7071C6.31658 12.0976 5.68342 12.0976 5.29289 11.7071C4.90237 11.3166 4.90237 10.6834 5.29289 10.2929L11.2929 4.29289z"></path>
+                    </svg>
 
                     <span class="gtext"> {{.Data.Ups|fmtHumanComma}} Upvotes &bullet; {{.Data.UpvoteRatio|toPercentage}}% Upvote Ratio</span>
                 </div>
@@ -169,9 +177,9 @@
                     {{if (index .Data.Preview.Images 0).Variants.GIF.Source.URL}}
                     <a href="{{(index .Data.Preview.Images 0).Variants.GIF.Source.URL|replaceAmp}}">
                         <div class="l-hovergray">
-                            <span class="material-symbols-rounded gicon">
-                                open_in_full
-                            </span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" version="1.1" class="gicon">
+                                <path fill-rule="evenodd" d="M21.7092 2.295C21.8041 2.3904 21.8757 2.5001 21.9241 2.6172 21.9727 2.7342 21.9996 2.8625 22 2.997L22 3V9C22 9.5523 21.5523 10 21 10 20.4477 10 20 9.5523 20 9V5.4142L14.7071 10.7071C14 10 14 10 13.2929 9.2929L18.5858 4H15C14.4477 4 14 3.5523 14 3 14 2.4477 14.4477 2 15 2H20.9998C21.2749 2 21.5242 2.1111 21.705 2.2908L21.7092 2.295M14.709 10.707 5.4142 20H9C9.5523 20 10 20.4477 10 21 10 21.5523 9.5523 22 9 22H3.0007L2.997 22C2.743 21.9992 2.4892 21.9023 2.295 21.7092L2.2908 21.705C2.1959 21.6096 2.1243 21.4999 2.0759 21.3828 2.027 21.2649 2 21.1356 2 21V15C2 14.4477 2.4477 14 3 14 3.5523 14 4 14.4477 4 15V18.5858L13.291 9.292z"></path>
+                            </svg>
 
                             <span class="gtext">GIF</span>
                         </div>
@@ -181,9 +189,9 @@
                     {{if (index .Data.Preview.Images 0).Variants.MP4.Source.URL}}
                     <a href="{{(index .Data.Preview.Images 0).Variants.MP4.Source.URL|replaceAmp}}">
                         <div class="l-hovergray">
-                            <span class="material-symbols-rounded gicon">
-                                open_in_full
-                            </span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" version="1.1" class="gicon">
+                                <path fill-rule="evenodd" d="M21.7092 2.295C21.8041 2.3904 21.8757 2.5001 21.9241 2.6172 21.9727 2.7342 21.9996 2.8625 22 2.997L22 3V9C22 9.5523 21.5523 10 21 10 20.4477 10 20 9.5523 20 9V5.4142L14.7071 10.7071C14 10 14 10 13.2929 9.2929L18.5858 4H15C14.4477 4 14 3.5523 14 3 14 2.4477 14.4477 2 15 2H20.9998C21.2749 2 21.5242 2.1111 21.705 2.2908L21.7092 2.295M14.709 10.707 5.4142 20H9C9.5523 20 10 20.4477 10 21 10 21.5523 9.5523 22 9 22H3.0007L2.997 22C2.743 21.9992 2.4892 21.9023 2.295 21.7092L2.2908 21.705C2.1959 21.6096 2.1243 21.4999 2.0759 21.3828 2.027 21.2649 2 21.1356 2 21V15C2 14.4477 2.4477 14 3 14 3.5523 14 4 14.4477 4 15V18.5858L13.291 9.292z"></path>
+                            </svg>
 
                             <span class="gtext">MP4</span>
                         </div>
@@ -194,9 +202,9 @@
                     {{if (index .Data.Preview.Images 0).Source.URL}}
                         <a href="{{(index .Data.Preview.Images 0).Source.URL|replaceAmp}}">
                             <div class="l-hovergray">
-                                <span class="material-symbols-rounded gicon">
-                                    open_in_full
-                                </span>
+                                <svg width="16" height="16" viewBox="0 0 24 24" version="1.1" class="gicon">
+                                    <path fill-rule="evenodd" d="M21.7092 2.295C21.8041 2.3904 21.8757 2.5001 21.9241 2.6172 21.9727 2.7342 21.9996 2.8625 22 2.997L22 3V9C22 9.5523 21.5523 10 21 10 20.4477 10 20 9.5523 20 9V5.4142L14.7071 10.7071C14 10 14 10 13.2929 9.2929L18.5858 4H15C14.4477 4 14 3.5523 14 3 14 2.4477 14.4477 2 15 2H20.9998C21.2749 2 21.5242 2.1111 21.705 2.2908L21.7092 2.295M14.709 10.707 5.4142 20H9C9.5523 20 10 20.4477 10 21 10 21.5523 9.5523 22 9 22H3.0007L2.997 22C2.743 21.9992 2.4892 21.9023 2.295 21.7092L2.2908 21.705C2.1959 21.6096 2.1243 21.4999 2.0759 21.3828 2.027 21.2649 2 21.1356 2 21V15C2 14.4477 2.4477 14 3 14 3.5523 14 4 14.4477 4 15V18.5858L13.291 9.292z"></path>
+                                </svg>
 
                                 <span class="gtext">Source Image</span>
                             </div>
@@ -206,9 +214,9 @@
                 {{if contains .Data.PostHint "hosted:video"}}
                     <a href="{{.Data.SecureMedia.RedditVideo.FallbackURL}}">
                         <div class="l-hovergray">
-                            <span class="material-symbols-rounded gicon">
-                                open_in_full
-                            </span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" version="1.1" class="gicon">
+                                <path fill-rule="evenodd" d="M21.7092 2.295C21.8041 2.3904 21.8757 2.5001 21.9241 2.6172 21.9727 2.7342 21.9996 2.8625 22 2.997L22 3V9C22 9.5523 21.5523 10 21 10 20.4477 10 20 9.5523 20 9V5.4142L14.7071 10.7071C14 10 14 10 13.2929 9.2929L18.5858 4H15C14.4477 4 14 3.5523 14 3 14 2.4477 14.4477 2 15 2H20.9998C21.2749 2 21.5242 2.1111 21.705 2.2908L21.7092 2.295M14.709 10.707 5.4142 20H9C9.5523 20 10 20.4477 10 21 10 21.5523 9.5523 22 9 22H3.0007L2.997 22C2.743 21.9992 2.4892 21.9023 2.295 21.7092L2.2908 21.705C2.1959 21.6096 2.1243 21.4999 2.0759 21.3828 2.027 21.2649 2 21.1356 2 21V15C2 14.4477 2.4477 14 3 14 3.5523 14 4 14.4477 4 15V18.5858L13.291 9.292z"></path>
+                            </svg>
 
                             <span class="gtext">Source Video</span>
                         </div>

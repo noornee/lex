@@ -20,7 +20,8 @@
 - [ ] Implement Share button (Permalink to reddit post)
 - [ ] Add `Resolution Quality` config (1->5->source)
 - [ ] Implement settings page
-- [ ] Use SVG instead of Google Icons
+- [X] Use SVG instead of Google Icons
+    - [ ] Tinker with SVGs a bit more (adj. size, change looks, etc.)
 - [ ] Comments: Achievements
 - [ ] Comments: Starred Comments
 

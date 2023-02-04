@@ -105,5 +105,6 @@ Szabadidőmben hobbiból dolgozom a Lexen, így lehet, hogy lassú a fejlődés,
 - [Josefin Sans](https://fonts.google.com/specimen/Josefin+Sans) ➡️ Navigációs sáv, index betűtípus
 - [Open Sans](https://fonts.google.com/specimen/Open+Sans) ➡️ Subreddit betűtípus
 - [SVGRepo](https://www.svgrepo.com) ➡️ SVGs
+- [Yqnn's SVG Path Editor](https://github.com/Yqnn/svg-path-editor) ➡️ Szinte az összes SVG szerkesztéséhez
 
 ⚠️ <sub>A fordítás nagy része a google fordító volt (A fordítási munka felgyorsítása érdekében), szóval lehet hogy nem a legjobb fordítás lett.</sub>

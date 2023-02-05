@@ -91,9 +91,11 @@
             {{end}}
 
             {{if contains .Data.PostHint "image"}}
-                {{if and (notcontains .Data.Preview.AutoChosenImageQuality ".gif") (contains .Data.URLDest ".gif")}}
+                {{if or (contains .Data.Preview.AutoChosenImageQuality ".gif") (contains .Data.URLDest ".gif")}}
                     <div class="m-top10">
-                        <img src="{{.Data.URLDest|replaceAmp}}" class="fitimg">
+                        <video class="fitimg" preload="metadata" controls loop>
+                            <source src="{{.Data.Preview.AutoChosenImageQuality|replaceAmp}}" type="video/mp4">
+                        </video>
                     </div>
                 {{else}}
                     <div class="m-top10">

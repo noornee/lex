@@ -85,14 +85,14 @@ type Posts struct {
 								Source struct {
 									URL string `json:"url"`
 								} `json:"source"`
+								Resolutions []struct {
+									URL string `json:"url"`
+								} `json:"resolutions"`
 							} `json:"mp4"`
 							GIF struct {
 								Source struct {
 									URL string `json:"url"`
 								} `json:"source"`
-								Resolutions []struct {
-									URL string `json:"url"`
-								} `json:"resolutions"`
 							} `json:"gif"`
 						} `json:"variants"`
 					} `json:"images"`

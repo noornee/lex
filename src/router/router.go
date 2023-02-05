@@ -114,10 +114,10 @@ func StartServer() {
 				Image := Post.Preview.Images[0]
 
 				if strings.Contains(Image.Source.URL, ".gif") {
-					if Image.Variants.GIF.Resolutions != nil {
-						Post.Preview.AutoChosenImageQuality = Image.Variants.GIF.Resolutions[int(math.Round(float64(len(Image.Variants.GIF.Resolutions)/2)))].URL
+					if Image.Variants.MP4.Resolutions != nil {
+						Post.Preview.AutoChosenImageQuality = Image.Variants.MP4.Resolutions[int(math.Round(float64(len(Image.Variants.MP4.Resolutions)/2)))].URL
 					} else {
-						Post.Preview.AutoChosenImageQuality = Image.Variants.GIF.Source.URL
+						Post.Preview.AutoChosenImageQuality = Image.Variants.MP4.Source.URL
 					}
 				} else {
 					if Image.Resolutions != nil {
@@ -175,10 +175,10 @@ func StartServer() {
 				Image := Post.Preview.Images[0]
 
 				if strings.Contains(Image.Source.URL, ".gif") {
-					if Image.Variants.GIF.Resolutions != nil {
-						Post.Preview.AutoChosenImageQuality = Image.Variants.GIF.Resolutions[int(math.Round(float64(len(Image.Variants.GIF.Resolutions)/2)))].URL
+					if Image.Variants.MP4.Resolutions != nil {
+						Post.Preview.AutoChosenImageQuality = Image.Variants.MP4.Resolutions[int(math.Round(float64(len(Image.Variants.MP4.Resolutions)/2)))].URL
 					} else {
-						Post.Preview.AutoChosenImageQuality = Image.Variants.GIF.Source.URL
+						Post.Preview.AutoChosenImageQuality = Image.Variants.MP4.Source.URL
 					}
 				} else {
 					if Image.Resolutions != nil {

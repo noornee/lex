@@ -2,13 +2,13 @@ package logic
 
 import (
 	"crypto/tls"
-	"encoding/json"
 	"fmt"
-	"io"
 	"log"
 	"main/logic/types"
 	"net/http"
 	"strings"
+
+	"github.com/goccy/go-json"
 )
 
 var (
@@ -36,16 +36,11 @@ func GetSubredditData(subreddit string) types.Subreddit {
 
 	defer resp.Body.Close()
 
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		log.Println(err)
-	}
-
 	var Sub types.Subreddit
 
-	errum := json.Unmarshal(body, &Sub)
-	if errum != nil {
-		log.Println(errum)
+	err = json.NewDecoder(resp.Body).Decode(&Sub)
+	if err != nil {
+		log.Println(err)
 	}
 
 	return Sub
@@ -78,16 +73,11 @@ func GetPosts(after, sort, subreddit string) types.Posts {
 
 	defer resp.Body.Close()
 
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		log.Println(err)
-	}
-
 	var Posts types.Posts
 
-	errum := json.Unmarshal(body, &Posts)
-	if errum != nil {
-		log.Println(errum)
+	err = json.NewDecoder(resp.Body).Decode(&Posts)
+	if err != nil {
+		log.Println(err)
 	}
 
 	return Posts

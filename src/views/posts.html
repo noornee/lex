@@ -107,11 +107,15 @@
             {{if gt $lenc 1}}
                 <div class="vgallery m-top10">
                     <div style="display: flex; align-items: center;">
-                        <button style="text-align: center; width: 44px; height: 44px; border-radius: 100%;"><span class="material-symbols-rounded">arrow_back_ios</span></button>
+                        <svg width="16" height="16" viewBox="0 0 96 96" version="1.1" class="gallerynav">
+                            <path fill-rule="evenodd" d="M39.3756 48.0022l30.47-25.39a6.0035 6.0035 0 00-7.6878-9.223L26.1563 43.3906a6.0092 6.0092 0 000 9.2231L62.1578 82.615a6.0035 6.0035 0 007.6878-9.2231z"></path>
+                        </svg>
                         {{range .Data.VMediaMetaData}}
                             <img src="{{.|replaceAmp}}" class="fitimg">
                         {{end}}
-                        <button style="text-align: center; width: 44px; height: 44px; border-radius: 100%;"><span class="material-symbols-rounded">arrow_forward_ios</span></button>
+                        <svg width="16" height="16" viewBox="0 0 96 96" version="1.1" class="gallerynav">
+                            <path fill-rule="evenodd" d="M69.8437 43.3876 33.8422 13.3863a6.0035 6.0035 0 00-7.6878 9.223l30.47 25.39-30.47 25.39a6.0035 6.0035 0 007.6878 9.2231L69.8437 52.6106a6.0091 6.0091 0 000-9.223z"></path>
+                        </svg>
                     </div>
                     <span style="float: right; user-select: none;">0 / ??</span>
                 </div>

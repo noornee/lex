@@ -234,6 +234,16 @@ $navmap: (1: left, 2: center, 3: right);
     margin-top: 10px;
 }
 
+.gallerynav {
+    background-color: darken($color: #ffffff, $amount: 60);
+    padding: 12px;
+    border-radius: 100%;
+    transition: 0.5s;
+    &:hover {
+        background-color: lighten($color: #000000, $amount: 60)
+    }
+}
+
 .fitimg {
     @extend %img-fit;
 }

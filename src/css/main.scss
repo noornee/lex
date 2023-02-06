@@ -28,15 +28,6 @@ $josefin-sans: 'Josefin Sans', sans-serif;
     grid-template: 1fr / auto auto auto;
 }
 
-%img-fit {
-    max-height: 512px;
-    max-width: -moz-available;
-    max-width: -webkit-fill-available;
-    max-width: fill-available;
-    display: block;
-    margin: auto;
-}
-
 html, body {
     margin: 0;
     padding: 0;
@@ -245,5 +236,10 @@ $navmap: (1: left, 2: center, 3: right);
 }
 
 .fitimg {
-    @extend %img-fit;
+    max-height: 512px;
+    max-width: -moz-available;
+    max-width: -webkit-fill-available;
+    max-width: fill-available;
+    display: block;
+    margin: auto;
 }

@@ -46,7 +46,6 @@ type Posts struct {
 				Author        string `json:"author"`
 				AuthorFlair   string `json:"author_flair_text"`
 				PostHint      string `json:"post_hint"`
-				URLDest       string `json:"url_overridden_by_dest"`
 				Distinguished string `json:"distinguished"`
 				PostID        string `json:"id"`
 				CommentCount  int64  `json:"num_comments"`
@@ -63,13 +62,6 @@ type Posts struct {
 						Audio       string
 					} `json:"reddit_video"`
 				} `json:"secure_media"`
-
-				//embedded video
-				SecureMediaEmbed struct {
-					Width          int64  `json:"width"`
-					Height         int64  `json:"height"`
-					MediaDomainURL string `json:"media_domain_url"`
-				} `json:"secure_media_embed"`
 
 				// images
 				Preview struct {
@@ -96,7 +88,8 @@ type Posts struct {
 							} `json:"gif"`
 						} `json:"variants"`
 					} `json:"images"`
-					AutoChosenImageQuality string
+					AutoChosenImageQuality  string
+					AutoChosenPosterQuality string
 				} `json:"preview"`
 
 				// gallery

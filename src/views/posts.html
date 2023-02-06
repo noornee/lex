@@ -91,9 +91,9 @@
             {{end}}
 
             {{if contains .Data.PostHint "image"}}
-                {{if or (contains .Data.Preview.AutoChosenImageQuality ".gif") (contains .Data.URLDest ".gif")}}
+                {{if or (contains .Data.Preview.AutoChosenImageQuality ".gif") (contains .Data.LinkURL ".gif")}}
                     <div class="m-top10">
-                        <video class="fitimg" preload="metadata" controls loop>
+                        <video class="fitimg" preload="none" poster="{{.Data.Preview.AutoChosenPosterQuality|replaceAmp}}" controls loop>
                             <source src="{{.Data.Preview.AutoChosenImageQuality|replaceAmp}}" type="video/mp4">
                         </video>
                     </div>
@@ -151,7 +151,8 @@
 
             {{if contains .Data.PostHint "rich:video"}}
                 <div class="gridcenter">
-                    <iframe width="{{.Data.SecureMediaEmbed.Width}}" height="{{.Data.SecureMediaEmbed.Height}}" src="{{.Data.SecureMediaEmbed.MediaDomainURL}}" frameborder="0" scrolling="no" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <img src="{{.Data.Preview.AutoChosenPosterQuality|replaceAmp}}" class="fitimg">
+                    <a href="{{.Data.LinkURL}}">{{.Data.LinkURL}}</a>
                 </div>
             {{end}}
 

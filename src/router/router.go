@@ -4,10 +4,12 @@ import (
 	"fmt"
 	"html/template"
 	"main/logic"
+	"main/logic/types"
 	"math"
 	"net/http"
 	"net/url"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/dustin/go-humanize"
@@ -108,52 +110,7 @@ func StartServer() {
 			return
 		}
 
-		for i := 0; i < len(Posts.Data.Children); i++ {
-			Post := Posts.Data.Children[i].Data
-			if Post.Preview.Images != nil {
-				Image := Post.Preview.Images[0]
-
-				if Image.Resolutions != nil {
-					Post.Preview.AutoChosenImageQuality = Image.Resolutions[int(math.Round(float64(len(Image.Resolutions)/2)))].URL
-					Post.Preview.AutoChosenPosterQuality = Image.Resolutions[int(math.Round(float64(len(Image.Resolutions)/2)))].URL
-				} else {
-					Post.Preview.AutoChosenImageQuality = Image.Source.URL
-					Post.Preview.AutoChosenPosterQuality = Image.Source.URL
-				}
-
-				if strings.Contains(Image.Source.URL, ".gif") {
-					if Image.Variants.MP4.Resolutions != nil {
-						Post.Preview.AutoChosenImageQuality = Image.Variants.MP4.Resolutions[int(math.Round(float64(len(Image.Variants.MP4.Resolutions)/2)))].URL
-					} else {
-						Post.Preview.AutoChosenImageQuality = Image.Variants.MP4.Source.URL
-					}
-				}
-			}
-
-			if Post.SecureMedia != nil && Post.SecureMedia.RedditVideo != nil {
-				Post.SecureMedia.RedditVideo.LQ = fmt.Sprintf("%v/DASH_360.mp4", Post.LinkURL)
-				Post.SecureMedia.RedditVideo.MQ = fmt.Sprintf("%v/DASH_480.mp4", Post.LinkURL)
-				Post.SecureMedia.RedditVideo.Audio = fmt.Sprintf("%v/DASH_audio.mp4", Post.LinkURL)
-			}
-
-			if Post.MediaMetaData != nil {
-				MMD := make(map[string]string)
-
-				for n := range Post.MediaMetaData {
-					if Post.MediaMetaData[n].P != nil {
-						MMD[n] = Post.MediaMetaData[n].P[int(math.Round(float64(len(Post.MediaMetaData[n].P)/2)))].U
-					}
-				}
-
-				Post.VMediaMetaData = MMD
-			}
-
-			if len(Post.SelfText) != 0 {
-				// invisible character, blackfriday doesn't recognize it, and just displays &#x200B; which is pretty distracting in some cases.
-				Post.SelfText = strings.Replace(Post.SelfText, "&amp;#x200B;", "", -1)
-			}
-			Posts.Data.Children[i].Data = Post
-		}
+		SortPostData(&Posts)
 
 		nsfwallowed, _ := ctx.Cookie("nsfw_allowed")
 
@@ -171,22 +128,41 @@ func StartServer() {
 
 		Posts := logic.GetPosts(after, sort, subname)
 
-		for i := 0; i < len(Posts.Data.Children); i++ {
+		SortPostData(&Posts)
+
+		ctx.HTML(http.StatusOK, "posts.html", gin.H{
+			"Posts": Posts.Data,
+		})
+	})
+
+	// localhost:9090
+	router.Run(":9090")
+}
+
+func SortPostData(Posts *types.Posts) {
+	var wg sync.WaitGroup
+	for i := 0; i < len(Posts.Data.Children); i++ {
+		wg.Add(1)
+
+		go func(i int, wg *sync.WaitGroup) {
+			defer wg.Done()
 			Post := Posts.Data.Children[i].Data
 			if Post.Preview.Images != nil {
 				Image := Post.Preview.Images[0]
 
+				if Image.Resolutions != nil {
+					Post.Preview.AutoChosenImageQuality = Image.Resolutions[int(math.Ceil(float64(len(Image.Resolutions)/2)))].URL
+					Post.Preview.AutoChosenPosterQuality = Image.Resolutions[int(math.Ceil(float64(len(Image.Resolutions)/2)))].URL
+				} else {
+					Post.Preview.AutoChosenImageQuality = Image.Source.URL
+					Post.Preview.AutoChosenPosterQuality = Image.Source.URL
+				}
+
 				if strings.Contains(Image.Source.URL, ".gif") {
 					if Image.Variants.MP4.Resolutions != nil {
-						Post.Preview.AutoChosenImageQuality = Image.Variants.MP4.Resolutions[int(math.Round(float64(len(Image.Variants.MP4.Resolutions)/2)))].URL
+						Post.Preview.AutoChosenImageQuality = Image.Variants.MP4.Resolutions[int(math.Ceil(float64(len(Image.Variants.MP4.Resolutions)/2)))].URL
 					} else {
 						Post.Preview.AutoChosenImageQuality = Image.Variants.MP4.Source.URL
-					}
-				} else {
-					if Image.Resolutions != nil {
-						Post.Preview.AutoChosenImageQuality = Image.Resolutions[int(math.Round(float64(len(Image.Resolutions)/2)))].URL
-					} else {
-						Post.Preview.AutoChosenImageQuality = Image.Source.URL
 					}
 				}
 			}
@@ -202,7 +178,7 @@ func StartServer() {
 
 				for n := range Post.MediaMetaData {
 					if Post.MediaMetaData[n].P != nil {
-						MMD[n] = Post.MediaMetaData[n].P[int(math.Round(float64(len(Post.MediaMetaData[n].P)/2)))].U
+						MMD[n] = Post.MediaMetaData[n].P[int(math.Ceil(float64(len(Post.MediaMetaData[n].P)/2)))].U
 					}
 				}
 
@@ -214,13 +190,7 @@ func StartServer() {
 				Post.SelfText = strings.Replace(Post.SelfText, "&amp;#x200B;", "", -1)
 			}
 			Posts.Data.Children[i].Data = Post
-		}
-
-		ctx.HTML(http.StatusOK, "posts.html", gin.H{
-			"Posts": Posts.Data,
-		})
-	})
-
-	// localhost:9090
-	router.Run(":9090")
+		}(i, &wg)
+	}
+	wg.Wait()
 }

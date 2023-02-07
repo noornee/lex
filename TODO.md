@@ -24,6 +24,8 @@
     - [ ] Tinker with SVGs a bit more (adj. size, change looks, etc.)
 - [X] Remove iframes (add a thumbnail?) (top priority)
     - [ ] Try to use reddit_video_preview (preview), if available.
+- [ ] Source image for galleries
+- [ ] Hide video controls when not hovering
 - [ ] Limit img width to 512px(?)
 - [ ] Comments: Achievements
 - [ ] Comments: Starred Comments

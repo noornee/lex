@@ -152,10 +152,10 @@ func SortPostData(Posts *types.Posts) {
 
 				if Image.Resolutions != nil {
 					Post.Preview.AutoChosenImageQuality = Image.Resolutions[int(math.Ceil(float64(len(Image.Resolutions)/2)))].URL
-					Post.Preview.AutoChosenPosterQuality = Image.Resolutions[int(math.Ceil(float64(len(Image.Resolutions)/2)))].URL
+					Post.Preview.AutoChosenPosterQuality = Post.Preview.AutoChosenImageQuality
 				} else {
 					Post.Preview.AutoChosenImageQuality = Image.Source.URL
-					Post.Preview.AutoChosenPosterQuality = Image.Source.URL
+					Post.Preview.AutoChosenPosterQuality = Post.Preview.AutoChosenImageQuality
 				}
 
 				if strings.Contains(Image.Source.URL, ".gif") {

@@ -177,6 +177,10 @@ $navmap: (1: left, 2: center, 3: right);
     fill: #909090;
 }
 
+.nsfwicon {
+    fill: #C0C0C0;
+}
+
 .gtext {
     @include fontsettings(12px, 700, initial, #909090);
 }
@@ -224,14 +228,17 @@ $navmap: (1: left, 2: center, 3: right);
 .m-top10 {
     margin-top: 10px;
 }
+.pad-10 {
+    padding: 10px;
+}
 
 .gallerynav {
-    background-color: darken($color: #ffffff, $amount: 60);
+    background-color: darken($color: #fff, $amount: 60);
     padding: 12px;
     border-radius: 100%;
     transition: 0.5s;
     &:hover {
-        background-color: lighten($color: #000000, $amount: 60)
+        background-color: lighten($color: #000, $amount: 60)
     }
 }
 

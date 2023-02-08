@@ -135,6 +135,10 @@ func StartServer() {
 		})
 	})
 
+	router.NoRoute(func(ctx *gin.Context) {
+		ctx.HTML(http.StatusNotFound, "404.html", gin.H{})
+	})
+
 	// localhost:9090
 	router.Run(":9090")
 }

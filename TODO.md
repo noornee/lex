@@ -26,7 +26,7 @@
     - [ ] Try to use reddit_video_preview (preview), if available.
 - [ ] Source image for galleries
 - [ ] Hide video controls when not hovering
-- [ ] Limit img width to 512px(?)
+- [X] Limit img width to 512px(?)
 - [ ] Comments: Achievements
 - [ ] Comments: Starred Comments
 

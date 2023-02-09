@@ -136,7 +136,7 @@ $navmap: (1: left, 2: center, 3: right);
     border-radius: 2px;
 }
 
-.postdate {
+.postdata {
     @include fontsettings(12px, normal, 40px, #909090);
     text-indent: 15px;
     display: table-cell;
@@ -190,6 +190,8 @@ $navmap: (1: left, 2: center, 3: right);
 }
 
 .post-footer {
+    text-indent: 0px;
+    margin-left: 10px;
     margin-top: 10px;
     line-height: 10px;
     height: 40px;
@@ -219,10 +221,34 @@ $navmap: (1: left, 2: center, 3: right);
     font-weight: 700;
 }
 
-.gridcenter {
-    display: grid;
-    place-items: center;
-    margin-top: 10px;
+.flexbox {
+    display: flex;
+} .row {
+    flex-direction: row;
+}; .column {
+    flex-direction: column;
+}; .flex-start {
+    align-self: flex-start;
+}; .flex-center {
+    align-items: center;
+}; .flex-auto {
+    flex: 1 1 auto;
+}
+
+.position-relative {
+    position: relative;
+}
+
+.extlinkicon {
+    width: 20px;
+    height:20px;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    background-color: #0079D3;
+    text-align: center;
+    border-radius: 4px 0px;
+    fill: white;
 }
 
 .m-top10 {
@@ -244,9 +270,13 @@ $navmap: (1: left, 2: center, 3: right);
 
 .fitimg {
     max-height: 512px;
-    max-width: -moz-available;
-    max-width: -webkit-fill-available;
-    max-width: fill-available;
+    max-width: 512px;
     display: block;
     margin: auto;
+
+    &.preview {
+        box-shadow: 0 0 2px #0079D3;
+        border-radius: 4px;
+        width: 144px
+    }
 }

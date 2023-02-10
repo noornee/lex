@@ -125,7 +125,6 @@ $navmap: (1: left, 2: center, 3: right);
         color: white;
         background-color: #292828;
         border-radius: 4px;
-        text-indent: 10px;
     }
 }
 
@@ -137,9 +136,10 @@ $navmap: (1: left, 2: center, 3: right);
 }
 
 .postdata {
-    @include fontsettings(12px, normal, 40px, #909090);
-    text-indent: 15px;
-    display: table-cell;
+    font-size: 12px;
+    color: #909090;
+    display: block;
+    padding: 15px;
 }
 
 .post-content {

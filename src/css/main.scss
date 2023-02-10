@@ -271,7 +271,8 @@ $navmap: (1: left, 2: center, 3: right);
 .fitimg {
     max-height: 512px;
     max-width: 512px;
-    display: block;
+    display: flex;
+    flex-direction: column;
     margin: auto;
 
     &.preview {

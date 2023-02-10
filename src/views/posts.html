@@ -152,7 +152,7 @@
 
             {{if contains .Data.PostHint "hosted:video"}}
                 <div class="fitimg vplayable pad-10">
-                        <video style="cursor: pointer; width: 100%;">
+                        <video style="cursor: pointer; max-width: 100%;">
                             <source src="{{.Data.SecureMedia.RedditVideo.MQ}}">
                             <source src="{{.Data.SecureMedia.RedditVideo.LQ}}">
                             <source src="{{.Data.SecureMedia.RedditVideo.FallbackURL}}">

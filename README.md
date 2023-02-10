@@ -18,6 +18,8 @@
 
 [**🚩 Bugs, Issues, and other Important Information**](#-bugs-issues-and-other-important-information)
 
+[**📜 Legal Disclaimer**](#-legal-disclaimer)
+
 [**🧰 Technologies that were used to create Lex**](#-technologies-that-were-used-to-create-lex)
 
 ---
@@ -108,6 +110,14 @@ For the features that are planned to be added, or the things that need to be fix
 <sub>**The list is not in order of priority.**</sub>
 
 I also work on Lex in my free time as a hobby, so development may be slow, thank you for your patience!
+
+# 📜 Legal Disclaimer
+
+LEX is not affiliated with, sponsored, or endorsed by Reddit.
+
+All content that is displayed on LEX has been sourced from Reddit. LEX does not host any of the content
+
+In case of any issues with a post, such as copyright infringement, trademark infringement, or violation of Reddit's community rules, the reports should be directed to Reddit.
 
 # 🧰 Technologies that were used to create Lex
 

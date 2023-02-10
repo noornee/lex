@@ -19,6 +19,8 @@
 
 [**🚩 Hibák, problémák és egyéb fontos információk**](#-hib%C3%A1k-probl%C3%A9m%C3%A1k-%C3%A9s-egy%C3%A9b-fontos-inform%C3%A1ci%C3%B3k)
 
+[**📜 Jogi nyilatkozat**](#-jogi-nyilatkozat)
+
 [**🧰 A Lex létrehozásához használt technológiák**](#-a-lex-l%C3%A9trehoz%C3%A1s%C3%A1hoz-haszn%C3%A1lt-technol%C3%B3gi%C3%A1k)
 
 ---
@@ -105,6 +107,14 @@ A tervezett új funkciókra vagy a javítandó dolgokra vonatkozóan tekintse me
 <sub>**A lista nem prioritás szerint van rendezve.**</sub>
 
 Szabadidőmben hobbiból dolgozom a Lexen, így lehet, hogy lassú a fejlődés, köszönöm a türelmet!
+
+# 📜 Jogi nyilatkozat
+
+A LEX nem összefüggő, nem támogatott, és nem jóváhagyott a Reddit által.
+
+A LEX-en megjelenő összes tartalom a Redditről származik. LEX nem őriz semmilyen tartalmat.
+
+Bármely bejegyzéshez kapcsolódó probléma esetén, például szerzői jogi sértés, védjegyjogi sértés vagy a Reddit közösségi szabályainak megsértése esetén, a jelentéseket a Redditnek kell címezni.
 
 # 🧰 A Lex létrehozásához használt technológiák
 

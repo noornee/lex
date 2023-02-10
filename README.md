@@ -92,6 +92,8 @@ After launching, navigate to `localhost:9090/r/{subreddit}`, and you're done.
 |:-----: | :--: | :----: | :------: | :---:  | :--: |
 | > 25   | > 18 | > 6    |  > 48    | > 12.1 | ❌  |
 
+<sub>The table displays the recommended versions for browsers, though older versions *may* be compatible to an extent.</sub>
+
 <sub>Based on [Can I Use](https://caniuse.com) data</sub>
 
 # 🚩 Bugs, Issues, and other Important Information
@@ -101,8 +103,9 @@ Lex is still in very early stages of development, a lot of features are missing,
 I try to fix most of the critical bugs before pushing any changes, but if you find a bug, feel free to [create an issue](https://github.com/cmd777/lex/issues) for it.
 
 For the features that are planned to be added, or the things that need to be fixed, you can refer to the [TODO List](https://github.com/cmd777/lex/blob/main/TODO.md)
-<sub>** This list is not complete. Things are added when I find any problems, need to fix something, or from an idea I have. **</sub>
-<sub>** The list is not in order of priority. **</sub>
+<sub>**This list is not complete. Things are added when I find any problems, need to fix something, or from an idea I have.**</sub>
+
+<sub>**The list is not in order of priority.**</sub>
 
 I also work on Lex in my free time as a hobby, so development may be slow, thank you for your patience!
 

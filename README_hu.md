@@ -89,6 +89,8 @@ Az indítás után navigáljon a `localhost:9090/r/{subreddit}` címre, és kés
 |:-----: | :--: | :----: | :------: | :---:  | :--: |
 | > 25   | > 18 | > 6    |  > 48    | > 12.1 | ❌  |
 
+<sub>A táblázat a böngészők ajánlott verzióit jeleníti meg, bár a régebbi verziók *lehet*, hogy valamelyest kompatibilisek.</sub>
+
 <sub>A [Can I Use](https://caniuse.com) adatok alapján</sub>
 
 # 🚩 Hibák, problémák és egyéb fontos információk
@@ -98,8 +100,9 @@ A Lex még nagyon korai fejlesztési szakaszban van, sok funkció hiányzik, és
 Igyekszem kijavítani a legtöbb kritikus hibát, mielőtt bármilyen változtatást végrehajtanék, de ha hibát talál, nyugodtan [hozzon létre egy problémát a githubon](https://github.com/cmd777/lex/issues).
 
 A tervezett új funkciókra vagy a javítandó dolgokra vonatkozóan tekintse meg a [TODO Listát](https://github.com/cmd777/lex/blob/main/TODO.md)
-<sub>** A lista nem teljes. Az új funkciók vagy a javítandó hibák felfedezésekor, vagy új ötletek alapján kerülnek hozzáadásra **</sub>
-<sub>** A lista nem prioritás szerint van rendezve. **</sub>
+<sub>**A lista nem teljes. Az új funkciók vagy a javítandó hibák felfedezésekor, vagy új ötletek alapján kerülnek hozzáadásra**</sub>
+
+<sub>**A lista nem prioritás szerint van rendezve.**</sub>
 
 Szabadidőmben hobbiból dolgozom a Lexen, így lehet, hogy lassú a fejlődés, köszönöm a türelmet!
 

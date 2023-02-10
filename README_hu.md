@@ -15,9 +15,11 @@
 - [Építési útmutató](#%EF%B8%8F-telep%C3%ADt%C3%A9si-%C3%BAtmutat%C3%B3)
 - [Binárisok letöltése](#bin%C3%A1ris-f%C3%A1jlok-let%C3%B6lt%C3%A9se)
 
+[**🔬 Böngésző kompatibilitás**](#-b%C3%B6ng%C3%A9sz%C5%91-kompatibilit%C3%A1s)
+
 [**🚩 Hibák, problémák és egyéb fontos információk**](#-hib%C3%A1k-probl%C3%A9m%C3%A1k-%C3%A9s-egy%C3%A9b-fontos-inform%C3%A1ci%C3%B3k)
 
-[**🔨 A Lex létrehozásához használt technológiák**](#-a-lex-l%C3%A9trehoz%C3%A1s%C3%A1hoz-haszn%C3%A1lt-technol%C3%B3gi%C3%A1k)
+[**🧰 A Lex létrehozásához használt technológiák**](#-a-lex-l%C3%A9trehoz%C3%A1s%C3%A1hoz-haszn%C3%A1lt-technol%C3%B3gi%C3%A1k)
 
 ---
 
@@ -82,15 +84,26 @@ Ha a LEX-et automatikusan felépített bináris fájlokon keresztül szeretné t
 
 Az indítás után navigáljon a `localhost:9090/r/{subreddit}` címre, és kész.
 
+# 🔬 Böngésző kompatibilitás
+|Chrome  | Edge | Safari | Firefox  | Opera  | IE   |
+|:-----: | :--: | :----: | :------: | :---:  | :--: |
+| > 25   | > 18 | > 6    |  > 48    | > 12.1 | ❌  |
+
+<sub>A [Can I Use](https://caniuse.com) adatok alapján</sub>
+
 # 🚩 Hibák, problémák és egyéb fontos információk
 
 A Lex még nagyon korai fejlesztési szakaszban van, sok funkció hiányzik, és hajlamos lehet a hibákra, mint például a szöveg túlcsordulása, a galéria gombjai furcsán működnek, és így tovább.
 
 Igyekszem kijavítani a legtöbb kritikus hibát, mielőtt bármilyen változtatást végrehajtanék, de ha hibát talál, nyugodtan [hozzon létre egy problémát a githubon](https://github.com/cmd777/lex/issues).
 
+A tervezett új funkciókra vagy a javítandó dolgokra vonatkozóan tekintse meg a [TODO Listát](https://github.com/cmd777/lex/blob/main/TODO.md)
+<sub>** A lista nem teljes. Az új funkciók vagy a javítandó hibák felfedezésekor, vagy új ötletek alapján kerülnek hozzáadásra **</sub>
+<sub>** A lista nem prioritás szerint van rendezve. **</sub>
+
 Szabadidőmben hobbiból dolgozom a Lexen, így lehet, hogy lassú a fejlődés, köszönöm a türelmet!
 
-# 🔨 A Lex létrehozásához használt technológiák
+# 🧰 A Lex létrehozásához használt technológiák
 
 - [Go](https://go.dev/) ➡️ Körülbelül minden futtatásához
 - [Humanize (go-humanize)](https://github.com/dustin/go-humanize) ➡️ Formázás emberbarát egységekre

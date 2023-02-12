@@ -99,7 +99,13 @@ type Posts struct {
 					} `json:"p"`
 				} `json:"media_metadata"`
 
-				VMediaMetaData map[string]string
+				GalleryData struct {
+					Items []struct {
+						MediaID string `json:"media_id"`
+					} `json:"items"`
+				} `json:"gallery_data"`
+
+				VMediaMetaData []string
 				CrossPost      []struct {
 					//todo: finish
 					Permalink string `json:"permalink"`

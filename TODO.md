@@ -32,7 +32,7 @@
 
 ## GO
 - [X] Fix the horrible for loop, or just make it readable
-- [ ] Don't use range in MediaMetaData (or try using sort?)
+- [X] Don't use range in MediaMetaData (or try using sort?)
 - [ ] Use at least the 3rd resolution? (anything less is pretty blurry)
 - [:question:] Imgur: Drop v from gifv
 - [ ] Galleries: if it's a RedditVideo, then grab the id, and use `https://v.redd.it/id/DASH_q.mp4`

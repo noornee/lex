@@ -5,7 +5,6 @@ import (
 	"html/template"
 	"main/logic"
 	"main/logic/types"
-	"math"
 	"net/http"
 	"net/url"
 	"strings"
@@ -155,7 +154,11 @@ func SortPostData(Posts *types.Posts) {
 				Image := Post.Preview.Images[0]
 
 				if Image.Resolutions != nil {
-					Post.Preview.AutoChosenImageQuality = Image.Resolutions[int(math.Ceil(float64(len(Image.Resolutions)/2)))].URL
+					Mid := (len(Image.Resolutions) >> 1) + 1
+					if Mid >= len(Image.Resolutions) {
+						Mid = len(Image.Resolutions) - 1
+					}
+					Post.Preview.AutoChosenImageQuality = Image.Resolutions[Mid].URL
 					Post.Preview.AutoChosenPosterQuality = Post.Preview.AutoChosenImageQuality
 				} else {
 					Post.Preview.AutoChosenImageQuality = Image.Source.URL
@@ -164,7 +167,11 @@ func SortPostData(Posts *types.Posts) {
 
 				if strings.Contains(Image.Source.URL, ".gif") {
 					if Image.Variants.MP4.Resolutions != nil {
-						Post.Preview.AutoChosenImageQuality = Image.Variants.MP4.Resolutions[int(math.Ceil(float64(len(Image.Variants.MP4.Resolutions)/2)))].URL
+						Mid := (len(Image.Variants.MP4.Resolutions) >> 1) + 1
+						if Mid >= len(Image.Variants.MP4.Resolutions) {
+							Mid = len(Image.Variants.MP4.Resolutions) - 1
+						}
+						Post.Preview.AutoChosenImageQuality = Image.Variants.MP4.Resolutions[Mid].URL
 					} else {
 						Post.Preview.AutoChosenImageQuality = Image.Variants.MP4.Source.URL
 					}
@@ -178,15 +185,21 @@ func SortPostData(Posts *types.Posts) {
 			}
 
 			if Post.MediaMetaData != nil {
-				MMD := make(map[string]string)
+				var MediaLinks []string
 
-				for n := range Post.MediaMetaData {
-					if Post.MediaMetaData[n].P != nil {
-						MMD[n] = Post.MediaMetaData[n].P[int(math.Ceil(float64(len(Post.MediaMetaData[n].P)/2)))].U
+				for i := 0; i < len(Post.GalleryData.Items); i++ {
+					ItemID := Post.GalleryData.Items[i].MediaID
+					MediaData := Post.MediaMetaData[ItemID]
+					if MediaData.P != nil {
+						Mid := (len(MediaData.P) >> 1) + 1
+						if Mid >= len(MediaData.P) {
+							Mid = len(MediaData.P) - 1
+						}
+						MediaLinks = append(MediaLinks, MediaData.P[Mid].U)
 					}
 				}
 
-				Post.VMediaMetaData = MMD
+				Post.VMediaMetaData = MediaLinks
 			}
 
 			if len(Post.SelfText) != 0 {

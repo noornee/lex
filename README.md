@@ -4,13 +4,12 @@
 # Table of Contents
 **🇺🇸 English**
 
-[**ℹ️ Information about the project**](#%E2%84%B9%EF%B8%8F-information-about-the-project)
+[**ℹ️ Information about the project**](#-information-about-the-project)
 - [What is Lex?](#what-is-lex)
   - [Why create Lex?](#why-create-lex)
 - [How do I use Lex?](#how-do-i-use-lex)
-  - [Is Lex Free to Use? Do I need to pay to use Lex?](#is-lex-free-to-use-do-i-need-to-pay-to-use-lex)
   
-[**⚙️ Installation Instructions**](#%EF%B8%8F-installation-instructions)
+[**⚙️ Installation Instructions**](#-installation-instructions)
 - [Building Instructions](#building-instructions)
 - [Downloading Binaries](#downloading-binaries)
 
@@ -21,6 +20,10 @@
 [**📜 Legal Disclaimer**](#-legal-disclaimer)
 
 [**🧰 Technologies that were used to create Lex**](#-technologies-that-were-used-to-create-lex)
+
+[**📝 Other Information**](#-other-information)
+- [Do I need a reddit account to use Lex?](#do-i-need-a-reddit-account-to-use-lex)
+- [Can I upvote / comment on posts?](#can-i-upvote--comment-on-posts)
 
 ---
 
@@ -35,9 +38,7 @@ LEX (LazerEX) is a lightweight, open source frontend for reddit written in Go.
 
 ## Why create Lex?
 
-Reddit can be very slow, and is very bloated, that's no secret. It was really annoying to either wait a super long time for a single post to load, or the UI freezing up for no apparent reason, these were just some of the issues that were common for me in every browser I tried (Chrome, Firefox, Brave, etc.) so, I decided to try to re-create it. I did try to re-create it previously, and named it Lazer, but that attempt failed miserably, and I decided to give it one last shot. And so LazerEX was created, which is a far superior version than the previous attempt.
-
-Lex can use up to 60% less bandwidth, while keeping the same image/video quality
+Reddit can be very slow, and is very bloated, that's no secret. It was really annoying to either wait a super long time for a single post to load, or the UI freezing up for no apparent reason, these were just some of the issues that were common for me in every browser I tried (Chrome, Firefox, Brave, etc.), even more annoying, is that it uses a ton of data, meaning on slower internet connections, getting posts to load can take extremely long. Lex can save up to 60% more bandwidth, while keeping very similar image/video quality, and the time to interactive is about 800ms-1.2s on average (with all images, scripts, stylesheets loaded, note: videos are not preloaded.)
 
 As for the UI, I went for the newer reddit redesign, but with a little tweaking.
 
@@ -47,12 +48,6 @@ Unfortunately, unlike other open source reddit frontends, **Lex does not provide
 
 1. [Downloading a Binary and running it](#downloading-binaries)
 2. [Building Lex yourself](#building-instructions)
-
-## Is Lex Free to Use? Do I need to pay to use Lex?
-
-**Lex is, and always will be open source, and free to use either commercially, and/or privately, as long as the origin of the software is not misrepresented.**
-
-For more information, refer to the [LICENSE](https://github.com/cmd777/lex/blob/main/LICENSE).
 
 # ⚙️ Installation Instructions
 
@@ -105,6 +100,7 @@ Lex is still in very early stages of development, a lot of features are missing,
 I try to fix most of the critical bugs before pushing any changes, but if you find a bug, feel free to [create an issue](https://github.com/cmd777/lex/issues) for it.
 
 For the features that are planned to be added, or the things that need to be fixed, you can refer to the [TODO List](https://github.com/cmd777/lex/blob/main/TODO.md)
+
 <sub>**This list is not complete. Things are added when I find any problems, need to fix something, or from an idea I have.**</sub>
 
 <sub>**The list is not in order of priority.**</sub>
@@ -121,10 +117,10 @@ In case of any issues with a post, such as copyright infringement, trademark inf
 
 # 🧰 Technologies that were used to create Lex
 
-- [Go](https://go.dev/) ➡️ Powering just About Everything
-- [Humanize (go-humanize)](https://github.com/dustin/go-humanize) ➡️ Formatting to Human Friendly Units 
-- [Gzip (gin-contrib)](https://github.com/gin-contrib/gzip) ➡️ Gin Middleware to Enable Gzip Support
-- [Gin](https://github.com/gin-gonic/gin) ➡️ HTTP Web Framework
+- [Go](https://go.dev) ➡️ Programming Language
+- [Humanize (go-humanize)](https://github.com/dustin/go-humanize) ➡️ Formatting time, numbers, etc.. to Human Friendly Units 
+- [Fiber](https://github.com/gofiber/fiber) ➡️ HTTP Web Framework
+- [Go-JSON](https://github.com/goccy/go-json) ➡️ Fast JSON Decoder
 - [Bluemonday](https://github.com/microcosm-cc/bluemonday) ➡️ HTML Sanitizer
 - [Blackfriday](https://github.com/russross/blackfriday/tree/v2) ➡️ Markdown Processor
 - [SASS](https://sass-lang.com) ➡️ CSS Extension
@@ -135,3 +131,13 @@ In case of any issues with a post, such as copyright infringement, trademark inf
 - [Open Sans](https://fonts.google.com/specimen/Open+Sans) ➡️ Subreddit font
 - [SVGRepo](https://www.svgrepo.com) ➡️ SVGs
 - [Yqnn's SVG Path Editor](https://github.com/Yqnn/svg-path-editor) ➡️ Was used to edit almost all SVGs
+
+# 📝 Other Information
+
+## Do I need a reddit account to use Lex?
+
+No, a reddit account is not required to use Lex.
+
+## Can I upvote / comment on posts?
+
+Sorry, there are currently no plans to add support to upvoting and commenting.

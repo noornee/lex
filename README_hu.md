@@ -5,23 +5,25 @@
 
 **🇭🇺 Magyar**
 
-[**ℹ️ Információk a projektről**](#%E2%84%B9%EF%B8%8F-inform%C3%A1ci%C3%B3k-a-projektr%C5%91l)
+[**ℹ️ Információk a projektről**](#-információk-a-projektről)
 - [Mi az a Lex?](#mi-az-a-lex)
-  - [Miért hoztad létre a Lexet?](#mi%C3%A9rt-hoztad-l%C3%A9tre-a-lexet)
-- [Hogyan használom a Lexet?](#hogyan-kell-haszn%C3%A1lni-a-lexet)
-  - [Ingyenesen használható a Lex? Fizetnem kell a Lex használatáért?](#a-lex-ingyenesen-haszn%C3%A1lhat%C3%B3-fizetnem-kell-a-lex-haszn%C3%A1lat%C3%A1%C3%A9rt)
+  - [Miért hoztad létre a Lexet?](#miért-hoztad-létre-a-lexet)
   
-[**⚙️ Telepítési útmutató**](#%EF%B8%8F-telep%C3%ADt%C3%A9si-%C3%BAtmutat%C3%B3)
-- [Építési útmutató](#%EF%B8%8F-telep%C3%ADt%C3%A9si-%C3%BAtmutat%C3%B3)
-- [Binárisok letöltése](#bin%C3%A1ris-f%C3%A1jlok-let%C3%B6lt%C3%A9se)
+[**⚙️ Telepítési útmutató**](#-telepítési-útmutató)
+- [Építési útmutató](#építési-útmutató)
+- [Binárisok letöltése](#bináris-fájlok-letöltése)
 
-[**🔬 Böngésző kompatibilitás**](#-b%C3%B6ng%C3%A9sz%C5%91-kompatibilit%C3%A1s)
+[**🔬 Böngésző kompatibilitás**](#-böngésző-kompatibilitás)
 
-[**🚩 Hibák, problémák és egyéb fontos információk**](#-hib%C3%A1k-probl%C3%A9m%C3%A1k-%C3%A9s-egy%C3%A9b-fontos-inform%C3%A1ci%C3%B3k)
+[**🚩 Hibák, problémák és egyéb fontos információk**](#-hibák-problémák-és-egyéb-fontos-információk)
 
 [**📜 Jogi nyilatkozat**](#-jogi-nyilatkozat)
 
-[**🧰 A Lex létrehozásához használt technológiák**](#-a-lex-l%C3%A9trehoz%C3%A1s%C3%A1hoz-haszn%C3%A1lt-technol%C3%B3gi%C3%A1k)
+[**🧰 A Lex létrehozásához használt technológiák**](#-a-lex-létrehozásához-használt-technológiák)
+
+[**📝 Egyéb Információk**](#-egyéb-információk)
+- [Szükségem van-e reddit fiókra a Lex használatához?](#szükségem-van-e-reddit-fiókra-a-lex-használatához)
+- [Upvoteolhatom / Kommentelhetek posztokra?](#upvoteolhatom--kommentelhetek-posztokra)
 
 ---
 
@@ -32,9 +34,7 @@ A LEX (LazerEX) egy könnyű, nyílt forráskódú kezelőfelület a reddithez, 
 
 ## Miért hoztad létre a Lexet?
 
-A Reddit nagyon lassú tud lenni, és rengeteg internetet használ, ez nem titok. Nagyon bosszantó volt, hogy vagy nagyon sokáig vártam, amíg egy poszt betöltődik, vagy a felhasználói felület nyilvánvaló ok nélkül lefagyott. Ez csak néhány olyan probléma, amit én néhány böngészőben (Chrome, Firefox, Brave stb.) tapasztaltam, ezért úgy döntöttem, hogy megpróbálom újra csinálni. Korábban megpróbáltam újra csinálni a redditet, és Lazernek neveztem el, de az a próbálkozás nem sikerült, és úgy döntöttem, adok neki egy utolsó esélyt. Így jött létre a LazerEX, ami egy sokkal jobb verzió, mint az előző próbálkozás.
-
-A Lex akár 60%-kal kevesebb internetet tud használni, miközben megőrzi ugyanazt a kép/videó minőséget
+A Reddit nagyon lassú tud lenni, és rengeteg internetet használ, ez nem titok. Nagyon bosszantó volt, hogy vagy nagyon sokáig vártam, amíg egy poszt betöltődik, vagy a felhasználói felület nyilvánvaló ok nélkül lefagyott. Ez csak néhány olyan probléma, amit én néhány böngészőben (Chrome, Firefox, Brave stb.) tapasztaltam. A Lex akár 60%-kal kevesebb internetet használhat fel, miközben nagyon hasonló kép-/videóminőséget biztosít, és az interaktívvá válás ideje átlagosan körülbelül 800 ms-1,2s (az összes kép, szkript, stíluslap betöltésével együtt, megjegyzés: a videók nincsenek előre betöltve.)
 
 Ami a felhasználói felületet illeti, az újabb reddit újratervezést választottam, de egy kis finomítással.
 
@@ -42,14 +42,8 @@ Ami a felhasználói felületet illeti, az újabb reddit újratervezést válasz
 
 Sajnos, ellentétben más nyílt forráskódú reddit frontendekkel, a **Lex nem biztosít bemutató webhelyet**, és kétféleképpen lehet létrehozni/használni.
 
-1. [Bináris letöltése és futtatása](#bin%C3%A1ris-f%C3%A1jlok-let%C3%B6lt%C3%A9se)
-2. [A Lex elkészítése magadnak](#%EF%B8%8F-telep%C3%ADt%C3%A9si-%C3%BAtmutat%C3%B3)
-
-## A Lex ingyenesen használható? Fizetnem kell a Lex használatáért?
-
-**A Lex nyílt forráskódú, és mindig is az lesz, és szabadon használható kereskedelmi és/vagy magáncélú indokokért, mindaddig, amíg a szoftver eredetét félre nem ábrázolják.**
-
-További információért tekintse meg a [LICENSE](https://github.com/cmd777/lex/blob/main/LICENSE) dokumentumot.
+1. [Bináris letöltése és futtatása](#bináris-fájlok-letöltése)
+2. [A Lex elkészítése magadnak](#építési-útmutató)
 
 # ⚙️ Telepítési útmutató
 
@@ -102,6 +96,7 @@ A Lex még nagyon korai fejlesztési szakaszban van, sok funkció hiányzik, és
 Igyekszem kijavítani a legtöbb kritikus hibát, mielőtt bármilyen változtatást végrehajtanék, de ha hibát talál, nyugodtan [hozzon létre egy problémát a githubon](https://github.com/cmd777/lex/issues).
 
 A tervezett új funkciókra vagy a javítandó dolgokra vonatkozóan tekintse meg a [TODO Listát](https://github.com/cmd777/lex/blob/main/TODO.md)
+
 <sub>**A lista nem teljes. Az új funkciók vagy a javítandó hibák felfedezésekor, vagy új ötletek alapján kerülnek hozzáadásra**</sub>
 
 <sub>**A lista nem prioritás szerint van rendezve.**</sub>
@@ -118,10 +113,10 @@ Bármely bejegyzéshez kapcsolódó probléma esetén, például szerzői jogi s
 
 # 🧰 A Lex létrehozásához használt technológiák
 
-- [Go](https://go.dev/) ➡️ Körülbelül minden futtatásához
-- [Humanize (go-humanize)](https://github.com/dustin/go-humanize) ➡️ Formázás emberbarát egységekre
-- [Gzip (gin-contrib)](https://github.com/gin-contrib/gzip) ➡️ Gin Köztes szoftver a Gzip támogatás engedélyezéséhez
-- [Gin](https://github.com/gin-gonic/gin) ➡️ HTTP Webes Keretrendszer
+- [Go](https://go.dev) ➡️ Programozási Nyelv
+- [Humanize (go-humanize)](https://github.com/dustin/go-humanize) ➡️ Idő, számok stb. formázása emberbarát egységekre
+- [Fiber](https://github.com/gofiber/fiber) ➡️ HTTP Webes Keretrendszer
+- [Go-JSON](https://github.com/goccy/go-json) ➡️ Gyors JSON dekóder
 - [Bluemonday](https://github.com/microcosm-cc/bluemonday) ➡️ HTML-fertőtlenítő
 - [Blackfriday](https://github.com/russross/blackfriday/tree/v2) ➡️ Markdown processzor
 - [SASS](https://sass-lang.com) ➡️ CSS Kiterjesztés
@@ -132,5 +127,15 @@ Bármely bejegyzéshez kapcsolódó probléma esetén, például szerzői jogi s
 - [Open Sans](https://fonts.google.com/specimen/Open+Sans) ➡️ Subreddit betűtípus
 - [SVGRepo](https://www.svgrepo.com) ➡️ SVGs
 - [Yqnn's SVG Path Editor](https://github.com/Yqnn/svg-path-editor) ➡️ Szinte az összes SVG szerkesztéséhez
+
+# 📝 Egyéb információk
+
+## Szükségem van-e reddit fiókra a Lex használatához?
+
+Nem, nem szükséges reddit fiók a Lex használatához.
+
+## Upvoteolhatom / Kommentelhetek posztokra?
+
+Sajnos, jelenleg nem tervezem az upvoteolás és a kommentálás fejlesztését.
 
 ⚠️ <sub>A fordítás nagy része a google fordító volt (A fordítási munka felgyorsítása érdekében), szóval lehet hogy nem a legjobb fordítás lett.</sub>

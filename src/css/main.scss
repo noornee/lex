@@ -66,14 +66,12 @@ $navmap: (1: left, 2: center, 3: right);
 
 .l-index {
     font-family: $josefin-sans;
+    font-size: 36px;
     text-align: center;
-    @extend %grid-template;
-    @extend %max-view;
+    color: #fff;
+    justify-content: space-around;
 
-    @include fontsettings(36px, normal, normal, white);
-
-    align-items: center;
-    justify-content: center;
+    @extend %max-view
 }
 
 .content {
@@ -99,13 +97,13 @@ $navmap: (1: left, 2: center, 3: right);
 .ltype1 {
     display: block;
     text-indent: 15px;
-    @include fontsettings(24px, 700, 1.7em, white);
+    @include fontsettings(24px, 700, 1.7em, #fff);
 }
 
 .ltype2 {
     display: block;
     text-indent: 15px;
-    @include fontsettings(13px, 600, 20px, gray);
+    @include fontsettings(13px, 600, 20px, #808080);
 }
 
 .primarycolorcase {
@@ -122,7 +120,7 @@ $navmap: (1: left, 2: center, 3: right);
         margin-top: 25px;
         width: 720px;
         height: auto;
-        color: white;
+        color: #fff;
         background-color: #292828;
         border-radius: 4px;
     }
@@ -248,7 +246,7 @@ $navmap: (1: left, 2: center, 3: right);
     background-color: #0079D3;
     text-align: center;
     border-radius: 4px 0px;
-    fill: white;
+    fill: #fff;
 }
 
 .m-top10 {

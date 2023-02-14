@@ -3,6 +3,7 @@ package router
 import (
 	"fmt"
 	"html/template"
+	"log"
 	"main/logic"
 	"main/logic/types"
 	"net/http"
@@ -12,8 +13,10 @@ import (
 	"time"
 
 	"github.com/dustin/go-humanize"
-	"github.com/gin-contrib/gzip"
-	"github.com/gin-gonic/gin"
+	"github.com/goccy/go-json"
+	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/compress"
+	"github.com/gofiber/template/html"
 	"github.com/microcosm-cc/bluemonday"
 	"github.com/russross/blackfriday/v2"
 )
@@ -23,17 +26,11 @@ const (
 )
 
 func StartServer() {
-	gin.SetMode(gin.ReleaseMode)
+	// region Template Engine
 
-	router := gin.Default()
+	TemplateEngine := html.New("./views", ".html")
 
-	router.Use(
-		gzip.Gzip(gzip.BestCompression),
-	)
-
-	// region Load Files
-
-	router.SetFuncMap(template.FuncMap{
+	TemplateEngine.AddFuncMap(template.FuncMap{
 		"contains": strings.Contains,
 		"notcontains": func(input, of string) bool {
 			return !strings.Contains(input, of)
@@ -60,68 +57,96 @@ func StartServer() {
 		},
 	})
 
-	router.LoadHTMLGlob("views/*")
+	// endregion
 
-	router.GET("/js/:id", func(ctx *gin.Context) {
-		id := ctx.Param("id")
-		ctx.Header("Content-Type", "application/javascript")
-		ctx.File(fmt.Sprintf("js/%v", id))
+	router := fiber.New(fiber.Config{
+		Prefork:     true,
+		Views:       TemplateEngine,
+		JSONEncoder: json.Marshal,
+		JSONDecoder: json.Unmarshal,
 	})
 
-	router.GET("/css/:id", func(ctx *gin.Context) {
-		id := ctx.Param("id")
-		ctx.Header("Content-Type", "text/css")
-		ctx.File(fmt.Sprintf("css/%v", id))
+	router.Use(
+		compress.New(compress.Config{
+			Level: compress.LevelBestSpeed,
+		}),
+	)
+
+	// region Load Files
+
+	router.Get("/js/:id", func(ctx *fiber.Ctx) error {
+		id := ctx.Params("id")
+		ctx.Set("Content-Type", "application/javascript")
+		return ctx.SendFile(fmt.Sprintf("js/%v", id))
+	})
+
+	router.Get("/css/:id", func(ctx *fiber.Ctx) error {
+		id := ctx.Params("id")
+		ctx.Set("Content-Type", "text/css")
+		return ctx.SendFile(fmt.Sprintf("css/%v", id))
 	})
 
 	// endregion
 
-	router.GET("/", func(ctx *gin.Context) {
-		ctx.HTML(http.StatusOK, "index.html", gin.H{})
+	router.Get("/", func(ctx *fiber.Ctx) error {
+		return ctx.Render("index", nil)
 	})
 
-	router.GET("/config", func(ctx *gin.Context) {
-		ctx.String(http.StatusOK, "Will be implemented soon™")
+	router.Get("/config", func(ctx *fiber.Ctx) error {
+		return ctx.SendString("Will be implemented soon™")
 	})
 
 	// dev -> will probably keep this.
-	router.POST("/byecookies", func(ctx *gin.Context) {
-		ctx.Header("Set-Cookie", "nsfw_allowed=0")
-		ctx.Redirect(http.StatusMovedPermanently, ctx.Request.Referer())
+	router.Post("/byecookies", func(ctx *fiber.Ctx) error {
+		ctx.Cookie(&fiber.Cookie{
+			Name:     "nsfw_allowed",
+			Value:    "0",
+			Expires:  time.Now().Add((24 * time.Hour) * 365),
+			Secure:   true,
+			HTTPOnly: true,
+			SameSite: "lax",
+		})
+		return ctx.RedirectBack("/config", http.StatusMovedPermanently)
 	})
 
 	// for now, it's only purpose is to set cookies to nsfw subreddits (expand later™)
-	router.POST("/config", func(ctx *gin.Context) {
-		ctx.Header("Set-Cookie", "nsfw_allowed=1")
-		ctx.Redirect(http.StatusMovedPermanently, ctx.Request.Referer())
+	router.Post("/config", func(ctx *fiber.Ctx) error {
+		ctx.Cookie(&fiber.Cookie{
+			Name:     "nsfw_allowed",
+			Value:    "1",
+			Expires:  time.Now().Add((24 * time.Hour) * 365),
+			Secure:   true,
+			HTTPOnly: true,
+			SameSite: "lax",
+		})
+		return ctx.RedirectBack("/config", http.StatusMovedPermanently)
 	})
 
-	router.GET("/r/:sub", func(ctx *gin.Context) {
+	router.Get("/r/:sub", func(ctx *fiber.Ctx) error {
 		after := url.QueryEscape(ctx.Query("after"))
 		sort := url.QueryEscape(ctx.Query("t"))
-		subname := url.QueryEscape(ctx.Param("sub"))
+		subname := url.QueryEscape(ctx.Params("sub"))
 
 		Sub := logic.GetSubredditData(subname)
 		Posts := logic.GetPosts(after, sort, subname)
 
 		if len(Posts.Data.Children) == 0 {
-			ctx.String(http.StatusNotFound, "The subreddit 'r/%v' was banned, or doesn't exist. (Did you make a typo - exceeded the rate limit?)", subname)
-			return
+			return ctx.SendString(fmt.Sprintf("The subreddit 'r/%v' was banned, or doesn't exist. (Did you make a typo - exceeded the rate limit?)", subname))
 		}
 
 		SortPostData(&Posts)
 
-		nsfwallowed, _ := ctx.Cookie("nsfw_allowed")
+		nsfwallowed := ctx.Cookies("nsfw_allowed")
 
-		ctx.HTML(http.StatusOK, "sub.html", gin.H{
+		return ctx.Render("sub", fiber.Map{
 			"SubData":     Sub.Data,
 			"Posts":       Posts.Data,
 			"NSFWAllowed": nsfwallowed == "1" || !Sub.Data.NSFW,
 		})
 	})
 
-	router.GET("/r/:sub/loadPosts", func(ctx *gin.Context) {
-		subname := url.QueryEscape(ctx.Param("sub"))
+	router.Get("/r/:sub/loadPosts", func(ctx *fiber.Ctx) error {
+		subname := url.QueryEscape(ctx.Params("sub"))
 		after := url.QueryEscape(ctx.Query("after"))
 		sort := url.QueryEscape(ctx.Query("t"))
 
@@ -129,17 +154,18 @@ func StartServer() {
 
 		SortPostData(&Posts)
 
-		ctx.HTML(http.StatusOK, "posts.html", gin.H{
+		return ctx.Render("posts", fiber.Map{
 			"Posts": Posts.Data,
 		})
 	})
 
-	router.NoRoute(func(ctx *gin.Context) {
-		ctx.HTML(http.StatusNotFound, "404.html", gin.H{})
+	// NoRoute
+	router.Use(func(ctx *fiber.Ctx) error {
+		return ctx.Render("404", nil)
 	})
 
 	// localhost:9090
-	router.Run(":9090")
+	log.Fatal(router.Listen(":9090"))
 }
 
 func SortPostData(Posts *types.Posts) {

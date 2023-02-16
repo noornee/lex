@@ -16,6 +16,9 @@ import (
 	"github.com/goccy/go-json"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/compress"
+	"github.com/gofiber/fiber/v2/middleware/logger"
+	"github.com/gofiber/fiber/v2/middleware/recover"
+	"github.com/gofiber/helmet/v2"
 	"github.com/gofiber/template/html"
 	"github.com/microcosm-cc/bluemonday"
 	"github.com/russross/blackfriday/v2"
@@ -67,6 +70,13 @@ func StartServer() {
 	})
 
 	router.Use(
+		logger.New(),
+		recover.New(),
+		helmet.New(helmet.Config{
+			XSSProtection:      "1; mode=block",
+			ContentTypeNosniff: "nosniff",
+			XFrameOptions:      "DENY",
+		}),
 		compress.New(compress.Config{
 			Level: compress.LevelBestSpeed,
 		}),

@@ -256,16 +256,6 @@ $navmap: (1: left, 2: center, 3: right);
     padding: 10px;
 }
 
-.gallerynav {
-    background-color: darken($color: #fff, $amount: 60);
-    padding: 12px;
-    border-radius: 100%;
-    transition: 0.5s;
-    &:hover {
-        background-color: lighten($color: #000, $amount: 60)
-    }
-}
-
 .fitimg {
     max-height: 512px;
     max-width: 512px;
@@ -277,5 +267,42 @@ $navmap: (1: left, 2: center, 3: right);
         box-shadow: 0 0 2px #0079D3;
         border-radius: 4px;
         width: 144px
+    }
+}
+
+.gallery {
+    position: relative;
+    height: 512px;
+    
+    input[type="radio"] {
+        display: none;
+
+        &:checked + .gallery-img {
+            opacity: 1;
+        }
+    }
+
+    .gallery-img {
+        position: absolute;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+        width: 100%;    
+    }
+
+    .gallery-nav {
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+
+        label {
+            width: 10px;
+            height: 10px;
+            border-radius: 100%;
+            background-color: #C0C0C0;
+            margin: 0px 5px;
+            cursor: pointer;
+        }
     }
 }

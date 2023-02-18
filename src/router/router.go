@@ -6,6 +6,7 @@ import (
 	"log"
 	"main/logic"
 	"main/logic/types"
+	"math/rand"
 	"net/http"
 	"net/url"
 	"strings"
@@ -25,7 +26,8 @@ import (
 )
 
 const (
-	CommonExtNoNSH = blackfriday.NoIntraEmphasis | blackfriday.Tables | blackfriday.FencedCode | blackfriday.Autolink | blackfriday.Strikethrough | blackfriday.HeadingIDs | blackfriday.BackslashLineBreak | blackfriday.DefinitionLists
+	ValidCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	CommonExtNoNSH  = blackfriday.NoIntraEmphasis | blackfriday.Tables | blackfriday.FencedCode | blackfriday.Autolink | blackfriday.Strikethrough | blackfriday.HeadingIDs | blackfriday.BackslashLineBreak | blackfriday.DefinitionLists
 )
 
 func StartServer() {
@@ -35,6 +37,16 @@ func StartServer() {
 
 	TemplateEngine.AddFuncMap(template.FuncMap{
 		"contains": strings.Contains,
+		"add": func(input int) int {
+			return input + 1
+		},
+		"ugidgen": func() string {
+			ubytes := make([]byte, 28)
+			for i := 0; i < len(ubytes); i++ {
+				ubytes[i] = ValidCharacters[rand.Intn(len(ValidCharacters))]
+			}
+			return string(ubytes)
+		},
 		"notcontains": func(input, of string) bool {
 			return !strings.Contains(input, of)
 		},

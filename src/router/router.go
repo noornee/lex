@@ -206,11 +206,11 @@ func SortPostData(Posts *types.Posts) {
 					if Mid >= len(Image.Resolutions) {
 						Mid = len(Image.Resolutions) - 1
 					}
-					Post.Preview.AutoChosenImageQuality = Image.Resolutions[Mid].URL
-					Post.Preview.AutoChosenPosterQuality = Post.Preview.AutoChosenImageQuality
+					Post.Preview.AutoChosenImageQuality = strings.Replace(Image.Resolutions[Mid].URL, "&amp;", "&", -1)
+					Post.Preview.AutoChosenPosterQuality = strings.Replace(Post.Preview.AutoChosenImageQuality, "&amp;", "&", -1)
 				} else {
-					Post.Preview.AutoChosenImageQuality = Image.Source.URL
-					Post.Preview.AutoChosenPosterQuality = Post.Preview.AutoChosenImageQuality
+					Post.Preview.AutoChosenImageQuality = strings.Replace(Image.Source.URL, "&amp;", "&", -1)
+					Post.Preview.AutoChosenPosterQuality = strings.Replace(Post.Preview.AutoChosenImageQuality, "&amp;", "&", -1)
 				}
 
 				if strings.Contains(Image.Source.URL, ".gif") {
@@ -219,9 +219,9 @@ func SortPostData(Posts *types.Posts) {
 						if Mid >= len(Image.Variants.MP4.Resolutions) {
 							Mid = len(Image.Variants.MP4.Resolutions) - 1
 						}
-						Post.Preview.AutoChosenImageQuality = Image.Variants.MP4.Resolutions[Mid].URL
+						Post.Preview.AutoChosenImageQuality = strings.Replace(Image.Variants.MP4.Resolutions[Mid].URL, "&amp;", "&", -1)
 					} else {
-						Post.Preview.AutoChosenImageQuality = Image.Variants.MP4.Source.URL
+						Post.Preview.AutoChosenImageQuality = strings.Replace(Image.Variants.MP4.Source.URL, "&amp;", "&", -1)
 					}
 				}
 			}
@@ -229,7 +229,6 @@ func SortPostData(Posts *types.Posts) {
 			if Post.SecureMedia != nil && Post.SecureMedia.RedditVideo != nil {
 				Post.SecureMedia.RedditVideo.LQ = fmt.Sprintf("%v/DASH_360.mp4", Post.LinkURL)
 				Post.SecureMedia.RedditVideo.MQ = fmt.Sprintf("%v/DASH_480.mp4", Post.LinkURL)
-				Post.SecureMedia.RedditVideo.Audio = fmt.Sprintf("%v/DASH_audio.mp4", Post.LinkURL)
 			}
 
 			if Post.MediaMetaData != nil {
@@ -243,7 +242,7 @@ func SortPostData(Posts *types.Posts) {
 						if Mid >= len(MediaData.P) {
 							Mid = len(MediaData.P) - 1
 						}
-						MediaLinks = append(MediaLinks, MediaData.P[Mid].U)
+						MediaLinks = append(MediaLinks, strings.Replace(MediaData.P[Mid].U, "&amp;", "&", -1))
 					}
 				}
 

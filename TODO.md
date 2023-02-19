@@ -12,8 +12,8 @@
 ## CSS
 - [ ] Optimize it for smaller screens (currently best used at >=1920x1080)
 - [ ] Add different styles (eg, old, solarized, or barebones)
-- [ ] Fix subreddit description overflowing
-- [ ] Fix source buttons causing overflow
+- [X] Fix subreddit description overflowing
+- [X] Fix source buttons causing overflow
 
 ## SUBREDDITS / TEMPLATE
 - [ ] Implement Viewing Comments
@@ -25,7 +25,6 @@
 - [X] Remove iframes (add a thumbnail?) (top priority)
     - [ ] Try to use reddit_video_preview (preview), if available.
 - [ ] Source image for galleries
-- [ ] Hide video controls when not hovering
 - [X] Limit img width to 512px(?)
 - [ ] Comments: Achievements
 - [ ] Comments: Starred Comments

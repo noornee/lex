@@ -30,6 +30,10 @@ const (
 	CommonExtNoNSH  = blackfriday.NoIntraEmphasis | blackfriday.Tables | blackfriday.FencedCode | blackfriday.Autolink | blackfriday.Strikethrough | blackfriday.HeadingIDs | blackfriday.BackslashLineBreak | blackfriday.DefinitionLists
 )
 
+var (
+	SubCache = make(map[string]types.Subreddit)
+)
+
 func StartServer() {
 	// region Template Engine
 
@@ -149,11 +153,21 @@ func StartServer() {
 		sort := url.QueryEscape(ctx.Query("t"))
 		subname := url.QueryEscape(ctx.Params("sub"))
 
-		Sub := logic.GetSubredditData(subname)
 		Posts := logic.GetPosts(after, sort, subname)
 
 		if len(Posts.Data.Children) == 0 {
 			return ctx.SendString(fmt.Sprintf("The subreddit 'r/%v' was banned, or doesn't exist. (Did you make a typo - exceeded the rate limit?)", subname))
+		}
+
+		// Cache subreddit data, so we don't have to keep making requests every single time.
+		// This will store it in memory, which may not be the best, and a disk based cache would be better.
+		var Sub types.Subreddit
+
+		if scache, exists := SubCache[subname]; exists {
+			Sub = scache
+		} else {
+			Sub = logic.GetSubredditData(subname)
+			SubCache[subname] = Sub
 		}
 
 		SortPostData(&Posts)

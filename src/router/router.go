@@ -248,15 +248,30 @@ func SortPostData(Posts *types.Posts) {
 			if Post.MediaMetaData != nil {
 				var MediaLinks []string
 
-				for i := 0; i < len(Post.GalleryData.Items); i++ {
-					ItemID := Post.GalleryData.Items[i].MediaID
-					MediaData := Post.MediaMetaData[ItemID]
-					if MediaData.P != nil {
-						Mid := (len(MediaData.P) >> 1) + 1
-						if Mid >= len(MediaData.P) {
-							Mid = len(MediaData.P) - 1
+				if Post.GalleryData.Items != nil {
+					for i := 0; i < len(Post.GalleryData.Items); i++ {
+						ItemID := Post.GalleryData.Items[i].MediaID
+						MediaData := Post.MediaMetaData[ItemID]
+						if MediaData.P != nil {
+							Mid := (len(MediaData.P) >> 1) + 1
+							if Mid >= len(MediaData.P) {
+								Mid = len(MediaData.P) - 1
+							}
+							MediaLinks = append(MediaLinks, strings.Replace(MediaData.P[Mid].U, "&amp;", "&", -1))
 						}
-						MediaLinks = append(MediaLinks, strings.Replace(MediaData.P[Mid].U, "&amp;", "&", -1))
+					}
+				} else {
+					// range is random, therefore the images *may* be mixed up.
+					// may, because there is a chance that images are in order, due to the randomness.
+					// there is no way to sort this.
+					for _, MediaData := range Post.MediaMetaData {
+						if MediaData.P != nil {
+							Mid := (len(MediaData.P) >> 1) + 1
+							if Mid >= len(MediaData.P) {
+								Mid = len(MediaData.P) - 1
+							}
+							MediaLinks = append(MediaLinks, strings.Replace(MediaData.P[Mid].U, "&amp;", "&", -1))
+						}
 					}
 				}
 

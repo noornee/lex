@@ -10,7 +10,6 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
-	"sync"
 	"time"
 
 	"github.com/dustin/go-humanize"
@@ -205,13 +204,16 @@ func StartServer() {
 }
 
 func SortPostData(Posts *types.Posts) {
-	var wg sync.WaitGroup
-	for i := 0; i < len(Posts.Data.Children); i++ {
-		wg.Add(1)
+	var dataChannel = make(chan types.Post, len(Posts.Data.Children))
 
-		go func(i int, wg *sync.WaitGroup) {
-			defer wg.Done()
-			Post := Posts.Data.Children[i].Data
+	for i := 0; i < len(Posts.Data.Children); i++ {
+		dataChannel <- Posts.Data.Children[i].Data
+	}
+
+	close(dataChannel)
+
+	for i := 0; i < len(Posts.Data.Children); i++ {
+		if Post, ok := <-dataChannel; ok {
 			if Post.Preview.Images != nil {
 				Image := Post.Preview.Images[0]
 
@@ -283,7 +285,6 @@ func SortPostData(Posts *types.Posts) {
 				Post.SelfText = strings.Replace(Post.SelfText, "&amp;#x200B;", "", -1)
 			}
 			Posts.Data.Children[i].Data = Post
-		}(i, &wg)
+		}
 	}
-	wg.Wait()
 }

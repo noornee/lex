@@ -204,87 +204,79 @@ func StartServer() {
 }
 
 func SortPostData(Posts *types.Posts) {
-	var dataChannel = make(chan types.Post, len(Posts.Data.Children))
+	for i, t := range Posts.Data.Children {
+		Post := &t.Data
 
-	for i := 0; i < len(Posts.Data.Children); i++ {
-		dataChannel <- Posts.Data.Children[i].Data
-	}
+		if Post.Preview.Images != nil {
+			Image := Post.Preview.Images[0]
 
-	close(dataChannel)
+			if Image.Resolutions != nil {
+				Mid := (len(Image.Resolutions) >> 1) + 1
+				if Mid >= len(Image.Resolutions) {
+					Mid = len(Image.Resolutions) - 1
+				}
+				Post.Preview.AutoChosenImageQuality = strings.Replace(Image.Resolutions[Mid].URL, "&amp;", "&", -1)
+				Post.Preview.AutoChosenPosterQuality = strings.Replace(Post.Preview.AutoChosenImageQuality, "&amp;", "&", -1)
+			} else {
+				Post.Preview.AutoChosenImageQuality = strings.Replace(Image.Source.URL, "&amp;", "&", -1)
+				Post.Preview.AutoChosenPosterQuality = strings.Replace(Post.Preview.AutoChosenImageQuality, "&amp;", "&", -1)
+			}
 
-	for i := 0; i < len(Posts.Data.Children); i++ {
-		if Post, ok := <-dataChannel; ok {
-			if Post.Preview.Images != nil {
-				Image := Post.Preview.Images[0]
-
-				if Image.Resolutions != nil {
-					Mid := (len(Image.Resolutions) >> 1) + 1
-					if Mid >= len(Image.Resolutions) {
-						Mid = len(Image.Resolutions) - 1
+			if strings.Contains(Image.Source.URL, ".gif") {
+				if Image.Variants.MP4.Resolutions != nil {
+					Mid := (len(Image.Variants.MP4.Resolutions) >> 1) + 1
+					if Mid >= len(Image.Variants.MP4.Resolutions) {
+						Mid = len(Image.Variants.MP4.Resolutions) - 1
 					}
-					Post.Preview.AutoChosenImageQuality = strings.Replace(Image.Resolutions[Mid].URL, "&amp;", "&", -1)
-					Post.Preview.AutoChosenPosterQuality = strings.Replace(Post.Preview.AutoChosenImageQuality, "&amp;", "&", -1)
+					Post.Preview.AutoChosenImageQuality = strings.Replace(Image.Variants.MP4.Resolutions[Mid].URL, "&amp;", "&", -1)
 				} else {
-					Post.Preview.AutoChosenImageQuality = strings.Replace(Image.Source.URL, "&amp;", "&", -1)
-					Post.Preview.AutoChosenPosterQuality = strings.Replace(Post.Preview.AutoChosenImageQuality, "&amp;", "&", -1)
-				}
-
-				if strings.Contains(Image.Source.URL, ".gif") {
-					if Image.Variants.MP4.Resolutions != nil {
-						Mid := (len(Image.Variants.MP4.Resolutions) >> 1) + 1
-						if Mid >= len(Image.Variants.MP4.Resolutions) {
-							Mid = len(Image.Variants.MP4.Resolutions) - 1
-						}
-						Post.Preview.AutoChosenImageQuality = strings.Replace(Image.Variants.MP4.Resolutions[Mid].URL, "&amp;", "&", -1)
-					} else {
-						Post.Preview.AutoChosenImageQuality = strings.Replace(Image.Variants.MP4.Source.URL, "&amp;", "&", -1)
-					}
+					Post.Preview.AutoChosenImageQuality = strings.Replace(Image.Variants.MP4.Source.URL, "&amp;", "&", -1)
 				}
 			}
-
-			if Post.SecureMedia != nil && Post.SecureMedia.RedditVideo != nil {
-				Post.SecureMedia.RedditVideo.LQ = fmt.Sprintf("%v/DASH_360.mp4", Post.LinkURL)
-				Post.SecureMedia.RedditVideo.MQ = fmt.Sprintf("%v/DASH_480.mp4", Post.LinkURL)
-			}
-
-			if Post.MediaMetaData != nil {
-				var MediaLinks []string
-
-				if Post.GalleryData.Items != nil {
-					for i := 0; i < len(Post.GalleryData.Items); i++ {
-						ItemID := Post.GalleryData.Items[i].MediaID
-						MediaData := Post.MediaMetaData[ItemID]
-						if MediaData.P != nil {
-							Mid := (len(MediaData.P) >> 1) + 1
-							if Mid >= len(MediaData.P) {
-								Mid = len(MediaData.P) - 1
-							}
-							MediaLinks = append(MediaLinks, strings.Replace(MediaData.P[Mid].U, "&amp;", "&", -1))
-						}
-					}
-				} else {
-					// range is random, therefore the images *may* be mixed up.
-					// may, because there is a chance that images are in order, due to the randomness.
-					// there is no way to sort this.
-					for _, MediaData := range Post.MediaMetaData {
-						if MediaData.P != nil {
-							Mid := (len(MediaData.P) >> 1) + 1
-							if Mid >= len(MediaData.P) {
-								Mid = len(MediaData.P) - 1
-							}
-							MediaLinks = append(MediaLinks, strings.Replace(MediaData.P[Mid].U, "&amp;", "&", -1))
-						}
-					}
-				}
-
-				Post.VMediaMetaData = MediaLinks
-			}
-
-			if len(Post.SelfText) != 0 {
-				// invisible character, blackfriday doesn't recognize it, and just displays &#x200B; which is pretty distracting in some cases.
-				Post.SelfText = strings.Replace(Post.SelfText, "&amp;#x200B;", "", -1)
-			}
-			Posts.Data.Children[i].Data = Post
 		}
+
+		if Post.SecureMedia != nil && Post.SecureMedia.RedditVideo != nil {
+			Post.SecureMedia.RedditVideo.LQ = fmt.Sprintf("%v/DASH_360.mp4", Post.LinkURL)
+			Post.SecureMedia.RedditVideo.MQ = fmt.Sprintf("%v/DASH_480.mp4", Post.LinkURL)
+		}
+
+		if Post.MediaMetaData != nil {
+			MediaLinks := make([]string, 0, len(Post.MediaMetaData))
+
+			if Post.GalleryData.Items != nil {
+				for j := 0; j < len(Post.GalleryData.Items); j++ {
+					ItemID := Post.GalleryData.Items[j].MediaID
+					MediaData := Post.MediaMetaData[ItemID]
+					if MediaData.P != nil {
+						Mid := (len(MediaData.P) >> 1) + 1
+						if Mid >= len(MediaData.P) {
+							Mid = len(MediaData.P) - 1
+						}
+						MediaLinks = append(MediaLinks, strings.Replace(MediaData.P[Mid].U, "&amp;", "&", -1))
+					}
+				}
+			} else {
+				// range is random, therefore the images *may* be mixed up.
+				// may, because there is a chance that images are in order, due to the randomness.
+				// there is no way to sort this.
+				for _, MediaData := range Post.MediaMetaData {
+					if MediaData.P != nil {
+						Mid := (len(MediaData.P) >> 1) + 1
+						if Mid >= len(MediaData.P) {
+							Mid = len(MediaData.P) - 1
+						}
+						MediaLinks = append(MediaLinks, strings.Replace(MediaData.P[Mid].U, "&amp;", "&", -1))
+					}
+				}
+			}
+
+			Post.VMediaMetaData = MediaLinks
+		}
+
+		if len(Post.SelfText) != 0 {
+			// invisible character, blackfriday doesn't recognize it, and just displays &#x200B; which is pretty distracting in some cases.
+			Post.SelfText = strings.Replace(Post.SelfText, "&amp;#x200B;", "", -1)
+		}
+		Posts.Data.Children[i].Data = *Post
 	}
 }

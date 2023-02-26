@@ -21,19 +21,19 @@
 - [ ] Add `Resolution Quality` config (1->5->source)
 - [ ] Implement settings page
 - [X] Use SVG instead of Google Icons
-    - [ ] Tinker with SVGs a bit more (adj. size, change looks, etc.)
 - [X] Remove iframes (add a thumbnail?) (top priority)
-    - [ ] Try to use reddit_video_preview (preview), if available.
 - [ ] Source image for galleries
 - [X] Limit img width to 512px(?)
+- [ ] (Video) images sometimes only have reddit_video_preview, and not mp4.
+    - Funnily enough, even reddit made this mistake, mistaking a video for an image.
+- [ ] Trying to open an image in a new window on galleries only opens the *last* image of the gallery
 - [ ] Comments: Achievements
 - [ ] Comments: Starred Comments
 
 ## GO
 - [X] Fix the horrible for loop, or just make it readable
 - [X] Don't use range in MediaMetaData (or try using sort?)
-- [ ] Use at least the 3rd resolution? (anything less is pretty blurry)
-- [:question:] Imgur: Drop v from gifv
+- [ ] Use at least the 3rd resolution? (anything less is pretty blurry, or too small.)
 - [ ] Galleries: if it's a RedditVideo, then grab the id, and use `https://v.redd.it/id/DASH_q.mp4`
 - [X] Serve posts.html instead of loadedposts.html
 - [ ] Error Handling: Skip post if it errors out

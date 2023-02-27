@@ -286,12 +286,14 @@ $navmap: (1: left, 2: center, 3: right);
 
         &:checked + .gallery-img {
             opacity: 1;
+            transform: scale(1);
         }
     }
 
     .gallery-img {
         position: absolute;
         opacity: 0;
+        transform: scale(0);
         transition: opacity 0.5s ease;
         width: 100%;    
     }

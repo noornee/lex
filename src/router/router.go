@@ -235,11 +235,6 @@ func SortPostData(Posts *types.Posts) {
 			}
 		}
 
-		if Post.SecureMedia != nil && Post.SecureMedia.RedditVideo != nil {
-			Post.SecureMedia.RedditVideo.LQ = fmt.Sprintf("%v/DASH_360.mp4", Post.LinkURL)
-			Post.SecureMedia.RedditVideo.MQ = fmt.Sprintf("%v/DASH_480.mp4", Post.LinkURL)
-		}
-
 		if Post.MediaMetaData != nil {
 			MediaLinks := make([]string, 0, len(Post.MediaMetaData))
 

@@ -93,7 +93,7 @@
                     {{if or (contains .Data.Preview.AutoChosenImageQuality ".gif") (contains .Data.LinkURL ".gif")}}
                         <div class="m-top10">
                             <video class="fitimg" preload="none" poster="{{.Data.Preview.AutoChosenPosterQuality}}" controls loop>
-                                <source src="{{.Data.Preview.AutoChosenImageQuality}}" type="video/mp4">
+                                <source src="{{if .Data.Preview.RedditVideoPreview.FallbackURL}} {{.Data.Preview.RedditVideoPreview.FallbackURL}} {{else}} {{.Data.Preview.AutoChosenImageQuality}} {{end}}" type="video/mp4">
                             </video>
                         </div>
                     {{else}}
@@ -132,9 +132,7 @@
 
                 {{if contains .Data.PostHint "hosted:video"}}
                     <div class="fitimg pad-10">
-                        <video controls style="max-width: 100%;">
-                            <source src="{{.Data.SecureMedia.RedditVideo.MQ}}">
-                            <source src="{{.Data.SecureMedia.RedditVideo.LQ}}">
+                        <video controls style="max-width: 100%;" preload="none">
                             <source src="{{.Data.SecureMedia.RedditVideo.FallbackURL}}">
                         </video>
                     </div>

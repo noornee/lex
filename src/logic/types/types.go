@@ -54,12 +54,9 @@ type Posts struct {
 				Subreddit     string `json:"subreddit"`
 
 				// videos
-				SecureMedia *struct {
-					RedditVideo *struct {
+				SecureMedia struct {
+					RedditVideo struct {
 						FallbackURL string `json:"fallback_url"`
-						LQ          string
-						MQ          string
-						Audio       string
 					} `json:"reddit_video"`
 				} `json:"secure_media"`
 
@@ -88,6 +85,9 @@ type Posts struct {
 							} `json:"gif"`
 						} `json:"variants"`
 					} `json:"images"`
+					RedditVideoPreview struct {
+						FallbackURL string `json:"fallback_url"`
+					} `json:"reddit_video_preview"`
 					AutoChosenImageQuality  string
 					AutoChosenPosterQuality string
 				} `json:"preview"`

@@ -24,9 +24,9 @@
 - [X] Remove iframes (add a thumbnail?) (top priority)
 - [ ] Source image for galleries
 - [X] Limit img width to 512px(?)
-- [ ] (Video) images sometimes only have reddit_video_preview, and not mp4.
+- [X] (Video) images sometimes only have reddit_video_preview, and not mp4.
     - Funnily enough, even reddit made this mistake, mistaking a video for an image.
-- [ ] Trying to open an image in a new window on galleries only opens the *last* image of the gallery
+- [X] Trying to open an image in a new window on galleries only opens the *last* image of the gallery
 - [ ] Comments: Achievements
 - [ ] Comments: Starred Comments
 

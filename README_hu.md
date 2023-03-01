@@ -83,7 +83,7 @@ Az indítás után navigáljon a `localhost:9090/r/{subreddit}` címre, és kés
 # 🔬 Böngésző kompatibilitás
 |Chrome  | Edge | Safari | Firefox  | Opera  | IE   |
 |:-----: | :--: | :----: | :------: | :---:  | :--: |
-| > 25   | > 18 | > 6    |  > 48    | > 12.1 | ❌  |
+| > 41   | > 18 | > 10   |  > 48    | > 28   | ❌  |
 
 <sub>A táblázat a böngészők ajánlott verzióit jeleníti meg, bár a régebbi verziók *lehet*, hogy valamelyest kompatibilisek.</sub>
 

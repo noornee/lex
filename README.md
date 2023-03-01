@@ -87,7 +87,7 @@ After launching, navigate to `localhost:9090/r/{subreddit}`, and you're done.
 # 🔬 Browser Compatibility
 |Chrome  | Edge | Safari | Firefox  | Opera  | IE   |
 |:-----: | :--: | :----: | :------: | :---:  | :--: |
-| > 25   | > 18 | > 6    |  > 48    | > 12.1 | ❌  |
+| > 41   | > 18 | > 10   |  > 48    | > 28   | ❌  |
 
 <sub>The table displays the recommended versions for browsers, though older versions *may* be compatible to an extent.</sub>
 

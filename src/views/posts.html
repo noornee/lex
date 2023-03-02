@@ -57,7 +57,10 @@
                 {{if .Data.PostFlair}}
                     <span class="post-flair flex-start" style="background-color: {{if .Data.PostFlairHex}}{{.Data.PostFlairHex}}{{else}}#777{{end}};">{{.Data.PostFlair}}</span>
                 {{end}}
-                <span class="post-title">{{.Data.Title}}</span>
+                <span class="post-title">{{.Data.Title}}
+                    {{if .Data.NSFW}}<span class="nsfwtag">nsfw</span>{{end}}
+                    {{if .Data.Spoiler}}<span class="spoilertag">spoiler</span>{{end}}
+                </span>
 
                 {{if or (contains .Data.PostHint "link") (contains .Data.PostHint "rich:video")}}
                     <div>
@@ -131,8 +134,8 @@
                 {{end}}
 
                 {{if contains .Data.PostHint "hosted:video"}}
-                    <div class="fitimg pad-10">
-                        <video controls style="max-width: 100%;" preload="none">
+                    <div class="pad-10">
+                        <video class="fitimg" preload="none" poster="{{.Data.Preview.AutoChosenPosterQuality}}" controls>
                             <source src="{{.Data.SecureMedia.RedditVideo.FallbackURL}}">
                         </video>
                     </div>

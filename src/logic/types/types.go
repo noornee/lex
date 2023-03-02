@@ -37,14 +37,15 @@ type Posts struct {
 				Awardings    []struct {
 					AwardSubType string `json:"award_sub_type"`
 					Count        int64  `json:"count"`
-					Name         string `json:"name"` // todo hover
-					//Description string `json:"description"` todo hover
+					Name         string `json:"name"`
 					ResizedIcons []struct {
 						URL string `json:"url"`
 					} `json:"resized_icons"`
 				} `json:"all_awardings"`
 				Author        string `json:"author"`
 				AuthorFlair   string `json:"author_flair_text"`
+				NSFW          bool   `json:"over_18"`
+				Spoiler       bool   `json:"spoiler"`
 				PostHint      string `json:"post_hint"`
 				Distinguished string `json:"distinguished"`
 				PostID        string `json:"id"`

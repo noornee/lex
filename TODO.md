@@ -6,7 +6,6 @@
 
 ## TYPES
 - [ ] Implement CrossPost
-- [ ] Awardings: Name & Description Hover (optional config)
 - [ ] Implement GeoFilter
 
 ## CSS

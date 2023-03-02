@@ -18,7 +18,7 @@
                 <span class="ltext ltype2">{{.SubData.DisplayNamePrefixed}} &bullet; {{.SubData.Created|fmtEpochDate}} ({{.SubData.Created|fmtHumanDate}}) &bullet; {{.SubData.ActiveUserCount|fmtHumanComma}} Active Users &bullet; {{.SubData.MemberCount|fmtHumanComma}} Members {{if .SubData.PrimaryColor}} &bullet; <span class="primarycolorcase" style="background-color: {{.SubData.PrimaryColor}};">&nbsp;</span> {{.SubData.PrimaryColor}} Primary color {{end}}</span>
                 <span class="ltext ltype2">{{.SubData.Description}}</span>
             </div>
-        </div>   
+        </div>
         {{if not .NSFWAllowed}}
             <div class="flexbox flex-center column pad-10">
                 <svg width="200" height="200" viewBox="0 0 64 64" version="1.1" class="sicon">
@@ -31,8 +31,7 @@
                     <button formaction="https://google.com" formmethod="get">No, Take me back to safety.</button>
                 </form>
             </div>
-        {{end}}
-        {{if .NSFWAllowed}}
+        {{else}}
             <div id="posts">
                 {{template "posts" .}}
             </div>

@@ -236,6 +236,7 @@ $navmap: (1: left, 2: center, 3: right);
     align-items: center;
 }; .flex-auto {
     flex: 1 1 auto;
+    width: 0;
 }
 
 .position-relative {

@@ -207,10 +207,10 @@ func SortPostData(Posts *types.Posts) {
 	for i, t := range Posts.Data.Children {
 		Post := &t.Data
 
-		if Post.Preview.Images != nil {
+		if len(Post.Preview.Images) > 0 {
 			Image := Post.Preview.Images[0]
 
-			if Image.Resolutions != nil {
+			if len(Image.Resolutions) > 0 {
 				Mid := (len(Image.Resolutions) >> 1) + 1
 				if Mid >= len(Image.Resolutions) {
 					Mid = len(Image.Resolutions) - 1
@@ -223,7 +223,7 @@ func SortPostData(Posts *types.Posts) {
 			}
 
 			if strings.Contains(Image.Source.URL, ".gif") {
-				if Image.Variants.MP4.Resolutions != nil {
+				if len(Image.Variants.MP4.Resolutions) > 0 {
 					Mid := (len(Image.Variants.MP4.Resolutions) >> 1) + 1
 					if Mid >= len(Image.Variants.MP4.Resolutions) {
 						Mid = len(Image.Variants.MP4.Resolutions) - 1
@@ -235,14 +235,14 @@ func SortPostData(Posts *types.Posts) {
 			}
 		}
 
-		if Post.MediaMetaData != nil {
+		if len(Post.MediaMetaData) > 0 {
 			MediaLinks := make([]string, 0, len(Post.MediaMetaData))
 
-			if Post.GalleryData.Items != nil {
+			if len(Post.GalleryData.Items) > 0 {
 				for j := 0; j < len(Post.GalleryData.Items); j++ {
 					ItemID := Post.GalleryData.Items[j].MediaID
 					MediaData := Post.MediaMetaData[ItemID]
-					if MediaData.P != nil {
+					if len(MediaData.P) > 0 {
 						Mid := (len(MediaData.P) >> 1) + 1
 						if Mid >= len(MediaData.P) {
 							Mid = len(MediaData.P) - 1
@@ -255,7 +255,7 @@ func SortPostData(Posts *types.Posts) {
 				// may, because there is a chance that images are in order, due to the randomness.
 				// there is no way to sort this.
 				for _, MediaData := range Post.MediaMetaData {
-					if MediaData.P != nil {
+					if len(MediaData.P) > 0 {
 						Mid := (len(MediaData.P) >> 1) + 1
 						if Mid >= len(MediaData.P) {
 							Mid = len(MediaData.P) - 1

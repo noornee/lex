@@ -233,4 +233,9 @@
         </div>
     </div>
 {{end}}
-<button id="LoadMorePosts" class="loadMorebtn" onclick="loadPosts('{{.Posts.After}}')">Load More Posts</button>
+
+{{if .Posts.After}}
+    <button id="LoadMorePosts" class="loadMorebtn" onclick="loadPosts('{{.Posts.After}}')">Load More Posts</button>
+    {{else}}
+    <span class="gtext" style="font-size: 30px; padding: 30px;">No more posts to load</span>
+{{end}}

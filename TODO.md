@@ -40,4 +40,4 @@
     - For example, a 2 second, 1820x2000 GIF is around 7,252,000 bytes (7.2MB). Comparing it to the same width x height MP4, the result is around 587,000 bytes (587KB) (91% decrease in file size, for the same quality!)
 
 ## WORKFLOWS
-- [ ] Automatically append +1 to the VERSION files?
+- [X] Automatically append +1 to the VERSION files?

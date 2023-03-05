@@ -4,12 +4,25 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"os"
 	"strconv"
 )
 
-const (
-	LEX_VERSION = 299763
-)
+func CurrentVersion() (ok bool, current int) {
+	intver, err := os.ReadFile("internalversion.txt")
+	if err != nil {
+		log.Println(err)
+		return false, 0
+	}
+
+	version, err := strconv.Atoi(string(intver))
+	if err != nil {
+		log.Println(err)
+		return false, 0
+	}
+
+	return true, version
+}
 
 func CheckForUpdates() (ok bool, latest int) {
 	resp, err := http.Get("https://raw.githubusercontent.com/cmd777/lex/main/VERSION.txt")

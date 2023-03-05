@@ -12,16 +12,18 @@ func main() {
 	if !fiber.IsChild() {
 		log.SetFlags(log.LstdFlags | log.Lshortfile)
 
-		log.Printf("Running LEX Version %d", version.LEX_VERSION)
-		log.Println("Checking for updates...")
-		ok, latest := version.CheckForUpdates()
-
-		if !ok {
-			log.Println("There was an error while attempting to check for updates, try again later.")
-		} else if version.LEX_VERSION < latest {
-			log.Printf("Your LEX version is outdated (version mismatch -> [gh:%d | local:%d])\r\n", latest, version.LEX_VERSION)
+		if okf, CVersion := version.CurrentVersion(); okf {
+			log.Printf("Running LEX Version %d", CVersion)
+			log.Println("Checking for updates...")
+			if ok, latest := version.CheckForUpdates(); !ok {
+				log.Println("There was an error while attempting to check for updates, try again later.")
+			} else if CVersion < latest {
+				log.Printf("Your LEX version is outdated (version mismatch -> [gh:%d | local:%d])\r\n", latest, CVersion)
+			} else {
+				log.Println("You are running the latest version of LEX")
+			}
 		} else {
-			log.Println("You are running the latest version of LEX")
+			log.Println("Failed to read local version file. (is it missing?)")
 		}
 	}
 

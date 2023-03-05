@@ -1,12 +1,35 @@
 name: Building for all OSs
 
 on:
-  pull_request:
   push:
 
 jobs:
+  updateversion:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    
+    - name: Bump Version
+      run: |
+        version=$(cat "VERSION.txt")
+        files=("VERSION.txt" "src/logic/version/internalversion.txt")
+
+        for i in "${files[@]}"
+        do
+          echo -n "$(($version + 1))" > "$i"
+        done
+
+        git config --local user.name "github-actions[bot]"
+        git config --local user.email "github-actions[bot]@users.noreply.github.com"
+
+        git add .
+        git commit -m "Version bump to $(($version + 1))" -m "For any changes, check the previous (${{github.event.after}}) commit."
+        git push
+
   linuxbuild:
     runs-on: ubuntu-latest
+    needs: updateversion
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -36,7 +59,7 @@ jobs:
         rm css/main.scss
         
         echo "Zipping Files"
-        7z a -mm=Deflate -mfb=258 -mpass=15 lex-linux.zip lex-i386-linux lex-amd64-linux views/* js/* css/*
+        7z a lex-linux.zip lex-i386-linux lex-amd64-linux views/* js/* css/* ./logic/version/internalversion.txt
         
         echo "Ok."
       working-directory: src/
@@ -50,6 +73,7 @@ jobs:
           
   macbuild:
     runs-on: macos-latest
+    needs: updateversion
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -79,7 +103,7 @@ jobs:
         rm css/main.scss
         
         echo "Zipping Files"
-        7z a -mm=Deflate -mfb=258 -mpass=15 lex-osx.zip lex-amd64-osx lex-arm64-osx views/* js/* css/*
+        7z a lex-osx.zip lex-amd64-osx lex-arm64-osx views/* js/* css/* ./logic/version/internalversion.txt
         
         echo "Ok."
       working-directory: src/
@@ -93,6 +117,7 @@ jobs:
           
   winbuild:
     runs-on: windows-latest
+    needs: updateversion
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -127,7 +152,7 @@ jobs:
         del css/main.scss
         
         echo "Zipping Files"
-        7z a -mm=Deflate -mfb=258 -mpass=15 lex-windows.zip lex-i386-windows.exe lex-amd64-windows.exe views/* js/* css/*
+        7z a lex-windows.zip lex-i386-windows.exe lex-amd64-windows.exe views/* js/* css/* ./logic/version/internalversion.txt
         
         echo "Ok."
       working-directory: src/

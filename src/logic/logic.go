@@ -6,7 +6,6 @@ import (
 	"log"
 	"main/logic/types"
 	"net/http"
-	"strings"
 
 	"github.com/goccy/go-json"
 )
@@ -20,7 +19,7 @@ var (
 )
 
 func GetSubredditData(subreddit string) types.Subreddit {
-	url := fmt.Sprintf("https://reddit.com/r/%v/about.json", subreddit)
+	url := fmt.Sprintf("https://reddit.com/r/%v/about.json?raw_json=1", subreddit)
 
 	req, err := http.NewRequest(http.MethodGet, url, nil)
 	if err != nil {
@@ -47,16 +46,12 @@ func GetSubredditData(subreddit string) types.Subreddit {
 }
 
 func GetPosts(after, sort, subreddit string) types.Posts {
-	url := fmt.Sprintf("https://reddit.com/r/%v.json", subreddit)
+	url := fmt.Sprintf("https://reddit.com/r/%v.json?raw_json=1", subreddit)
 	if len(sort) != 0 {
-		url = fmt.Sprintf("https://reddit.com/r/%v/top.json?t=%v", subreddit, sort)
+		url = fmt.Sprintf("https://reddit.com/r/%v/top.json?raw_json=1&t=%v", subreddit, sort)
 	}
 	if len(after) != 0 {
-		if strings.Contains(url, "?") {
-			url += fmt.Sprintf("&after=%v", after)
-		} else {
-			url += fmt.Sprintf("?after=%v", after)
-		}
+		url += fmt.Sprintf("&after=%v", after)
 	}
 
 	req, err := http.NewRequest(http.MethodGet, url, nil)

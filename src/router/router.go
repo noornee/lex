@@ -58,9 +58,6 @@ func StartServer() {
 			SHTML := bluemonday.UGCPolicy().SanitizeBytes(Markdown)
 			return template.HTML(SHTML)
 		},
-		"replaceAmp": func(input string) string {
-			return strings.Replace(input, "&amp;", "&", -1)
-		},
 		"fmtEpochDate": func(input float64) string {
 			return time.Unix(int64(input), 0).Format("Created Jan 02, 2006")
 		},
@@ -215,11 +212,11 @@ func SortPostData(Posts *types.Posts) {
 				if Mid >= len(Image.Resolutions) {
 					Mid = len(Image.Resolutions) - 1
 				}
-				Post.Preview.AutoChosenImageQuality = strings.Replace(Image.Resolutions[Mid].URL, "&amp;", "&", -1)
-				Post.Preview.AutoChosenPosterQuality = strings.Replace(Post.Preview.AutoChosenImageQuality, "&amp;", "&", -1)
+				Post.Preview.AutoChosenImageQuality = Image.Resolutions[Mid].URL
+				Post.Preview.AutoChosenPosterQuality = Post.Preview.AutoChosenImageQuality
 			} else {
-				Post.Preview.AutoChosenImageQuality = strings.Replace(Image.Source.URL, "&amp;", "&", -1)
-				Post.Preview.AutoChosenPosterQuality = strings.Replace(Post.Preview.AutoChosenImageQuality, "&amp;", "&", -1)
+				Post.Preview.AutoChosenImageQuality = Image.Source.URL
+				Post.Preview.AutoChosenPosterQuality = Post.Preview.AutoChosenImageQuality
 			}
 
 			if strings.Contains(Image.Source.URL, ".gif") {
@@ -228,9 +225,9 @@ func SortPostData(Posts *types.Posts) {
 					if Mid >= len(Image.Variants.MP4.Resolutions) {
 						Mid = len(Image.Variants.MP4.Resolutions) - 1
 					}
-					Post.Preview.AutoChosenImageQuality = strings.Replace(Image.Variants.MP4.Resolutions[Mid].URL, "&amp;", "&", -1)
+					Post.Preview.AutoChosenImageQuality = Image.Variants.MP4.Resolutions[Mid].URL
 				} else {
-					Post.Preview.AutoChosenImageQuality = strings.Replace(Image.Variants.MP4.Source.URL, "&amp;", "&", -1)
+					Post.Preview.AutoChosenImageQuality = Image.Variants.MP4.Source.URL
 				}
 			}
 		}
@@ -247,7 +244,7 @@ func SortPostData(Posts *types.Posts) {
 						if Mid >= len(MediaData.P) {
 							Mid = len(MediaData.P) - 1
 						}
-						MediaLinks = append(MediaLinks, strings.Replace(MediaData.P[Mid].U, "&amp;", "&", -1))
+						MediaLinks = append(MediaLinks, MediaData.P[Mid].U)
 					}
 				}
 			} else {
@@ -260,7 +257,7 @@ func SortPostData(Posts *types.Posts) {
 						if Mid >= len(MediaData.P) {
 							Mid = len(MediaData.P) - 1
 						}
-						MediaLinks = append(MediaLinks, strings.Replace(MediaData.P[Mid].U, "&amp;", "&", -1))
+						MediaLinks = append(MediaLinks, MediaData.P[Mid].U)
 					}
 				}
 			}
@@ -268,10 +265,6 @@ func SortPostData(Posts *types.Posts) {
 			Post.VMediaMetaData = MediaLinks
 		}
 
-		if len(Post.SelfText) != 0 {
-			// invisible character, blackfriday doesn't recognize it, and just displays &#x200B; which is pretty distracting in some cases.
-			Post.SelfText = strings.Replace(Post.SelfText, "&amp;#x200B;", "", -1)
-		}
 		Posts.Data.Children[i].Data = *Post
 	}
 }

@@ -13,7 +13,7 @@
 - [Building Instructions](#building-instructions)
 - [Downloading Binaries](#downloading-binaries)
 
-[**🔬 Browser Compatibility**](#-browser-compatibility)
+[**🔬 Compatibility**](#-compatibility)
 
 [**🚩 Bugs, Issues, and other Important Information**](#-bugs-issues-and-other-important-information)
 
@@ -84,7 +84,7 @@ To install LEX via automatically built binaries, go to the [releases](https://gi
 
 After launching, navigate to `localhost:9090/r/{subreddit}`, and you're done.
 
-# 🔬 Browser Compatibility
+# 🔬 Compatibility
 |Chrome  | Edge | Safari | Firefox  | Opera  | IE   |
 |:-----: | :--: | :----: | :------: | :---:  | :--: |
 | > 41   | > 18 | > 10   |  > 48    | > 28   | ❌  |
@@ -92,6 +92,18 @@ After launching, navigate to `localhost:9090/r/{subreddit}`, and you're done.
 <sub>The table displays the recommended versions for browsers, though older versions *may* be compatible to an extent.</sub>
 
 <sub>Based on [Can I Use](https://caniuse.com) data</sub>
+
+---
+
+| Windows | Linux | macOS |
+| :-----: | :---: | :---: |
+| Windows 7 and higher | Kernel version 2.6.32 or later | macOS High Sierra 10.13 or newer
+
+<sub>The table displays the **required** minimum versions for operating systems.</sub>
+
+<sub>**LEX does not require administrator, or firewall privileges.**</sub>
+
+<sub>Based on the [Go Documentation](https://github.com/golang/go/wiki/MinimumRequirements)</sub>
 
 # 🚩 Bugs, Issues, and other Important Information
 

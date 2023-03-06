@@ -13,7 +13,7 @@
 - [Építési útmutató](#építési-útmutató)
 - [Binárisok letöltése](#bináris-fájlok-letöltése)
 
-[**🔬 Böngésző kompatibilitás**](#-böngésző-kompatibilitás)
+[**🔬 Kompatibilitás**](#-kompatibilitás)
 
 [**🚩 Hibák, problémák és egyéb fontos információk**](#-hibák-problémák-és-egyéb-fontos-információk)
 
@@ -80,7 +80,7 @@ Ha a LEX-et automatikusan felépített bináris fájlokon keresztül szeretné t
 
 Az indítás után navigáljon a `localhost:9090/r/{subreddit}` címre, és kész.
 
-# 🔬 Böngésző kompatibilitás
+# 🔬 Kompatibilitás
 |Chrome  | Edge | Safari | Firefox  | Opera  | IE   |
 |:-----: | :--: | :----: | :------: | :---:  | :--: |
 | > 41   | > 18 | > 10   |  > 48    | > 28   | ❌  |
@@ -88,6 +88,18 @@ Az indítás után navigáljon a `localhost:9090/r/{subreddit}` címre, és kés
 <sub>A táblázat a böngészők ajánlott verzióit jeleníti meg, bár a régebbi verziók *lehet*, hogy valamelyest kompatibilisek.</sub>
 
 <sub>A [Can I Use](https://caniuse.com) adatok alapján</sub>
+
+---
+
+| Windows | Linux | macOS |
+| :-----: | :---: | :---: |
+| Windows 7 és újabb | Kernel verzió 2.6.32 vagy újabb | macOS High Sierra 10.13 vagy újabb
+
+<sub>A táblázat az operációs rendszerek **szükséges** minimális verzióit tartalmazza.</sub>
+
+<sub>**A LEX nem igényel rendszergazdai vagy tűzfaljogosultságokat.**</sub>
+
+<sub>A [Go Dokumentáció](https://github.com/golang/go/wiki/MinimumRequirements) alapján.</sub>
 
 # 🚩 Hibák, problémák és egyéb fontos információk
 

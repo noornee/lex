@@ -91,7 +91,7 @@ Az indítás után navigáljon a `localhost:9090/r/{subreddit}` címre, és kés
 
 ---
 
-| Windows | Linux | macOS |
+| ![](https://raw.githubusercontent.com/cmd777/lex/main/docs/images/windows.svg) Windows | ![](https://raw.githubusercontent.com/cmd777/lex/main/docs/images/linux.svg) Linux | ![](https://raw.githubusercontent.com/cmd777/lex/main/docs/images/macos.svg) macOS |
 | :-----: | :---: | :---: |
 | Windows 7 és újabb | Kernel verzió 2.6.32 vagy újabb | macOS High Sierra 10.13 vagy újabb
 

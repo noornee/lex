@@ -95,7 +95,7 @@ After launching, navigate to `localhost:9090/r/{subreddit}`, and you're done.
 
 ---
 
-| Windows | Linux | macOS |
+| ![](https://raw.githubusercontent.com/cmd777/lex/main/docs/images/windows.svg) Windows | ![](https://raw.githubusercontent.com/cmd777/lex/main/docs/images/linux.svg) Linux | ![](https://raw.githubusercontent.com/cmd777/lex/main/docs/images/macos.svg) macOS |
 | :-----: | :---: | :---: |
 | Windows 7 and higher | Kernel version 2.6.32 or later | macOS High Sierra 10.13 or newer
 

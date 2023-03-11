@@ -1,5 +1,30 @@
-@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@600&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
+@font-face {
+    font-family: 'Josefin Sans';
+    src: url('/fonts/josefin-semibold.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Open Sans';
+    src: url('/fonts/opensans-regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Open Sans';
+    src: url('/fonts/opensans-semibold.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Open Sans';
+    src: url('/fonts/opensans-bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+}
 
 $max-width: 100vw;
 $max-height: 100vh;

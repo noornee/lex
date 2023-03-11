@@ -108,6 +108,12 @@ func StartServer() {
 		return ctx.SendFile(fmt.Sprintf("css/%v", id))
 	})
 
+	router.Get("/fonts/:id", func(ctx *fiber.Ctx) error {
+		id := ctx.Params("id")
+		ctx.Set("Content-Type", "font/woff2")
+		return ctx.SendFile(fmt.Sprintf("fonts/%v", id))
+	})
+
 	// endregion
 
 	router.Get("/", func(ctx *fiber.Ctx) error {

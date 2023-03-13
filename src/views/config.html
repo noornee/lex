@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/main.min.css">
+    <title>lex | config</title>
+</head>
+<body>
+    {{template "navbar" .}}
+
+    <div class="flexbox flex-center column sicon pad-10" style="margin-top: 100px; color: #fff;">
+        <p style="font-size:42px; font-family: 'Josefin Sans', sans-serif; color: #108dcc">Settings</p>
+
+        <form action="/config" method="post" class="configform">
+            <label>
+                <input type="checkbox" name="EnableJS" {{if .JSEnabled}}checked{{end}}>
+                Enable HLS.js
+            </label>
+
+            <label>
+                <input type="checkbox" name="EnableInfScroll" {{if .INFScroll}}checked{{end}}>
+                Enable Infinite Scroll (JS)
+            </label>
+            
+            <label>
+                <input type="checkbox" name="AllowNSFW" {{if .NSFWAllowed}}checked{{end}}>
+                Allow NSFW Subreddits
+            </label>
+
+            <label>
+                Preferred Style
+                <select name="PrefStyle" disabled>
+                    <option>Dark</option>
+                    <option>Dracula</option>
+                    <option>Solarized</option>
+                    <option>Abyss</option>
+                    <option>Monokai</option>
+                    <option>Red</option>
+                    <option>Light</option>
+                </select>
+            </label>
+
+            <label>
+                Preferred Resolution
+                <select name="PrefRes" disabled>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                    <option>Source</option>
+                </select>
+            </label>
+
+            <label>
+                <input type="submit" value="Save Changes">
+            </label>
+        </form>
+    </div>
+</body>
+</html>

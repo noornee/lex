@@ -38,6 +38,12 @@
         {{end}}
     </div>
 
-    <script src="/js/main.min.js"></script>
+    {{if .JSEnabled}}
+        <script src="/js/main.min.js"></script> 
+    {{end}}
+    
+    {{if .INFScroll}}
+        <script src="/js/infscroll.js"></script> 
+    {{end}}
 </body>
 </html>

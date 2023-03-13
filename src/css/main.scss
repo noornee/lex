@@ -358,3 +358,19 @@ $navmap: (1: left, 2: center, 3: right);
 .spoilertag {
     @include tag(#757575)
 }
+
+.configform {
+    font-family: $josefin-sans;
+    label {
+        float: left;
+        clear: both;
+        margin-top: 20px;
+        width: 100%
+    }
+
+    input[type="submit"] {
+        @extend .loadMorebtn;
+        margin: auto;
+        width: 100%;
+    }
+}

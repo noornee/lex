@@ -27,6 +27,14 @@ import (
 const (
 	ValidCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	CommonExtNoNSH  = blackfriday.NoIntraEmphasis | blackfriday.Tables | blackfriday.FencedCode | blackfriday.Autolink | blackfriday.Strikethrough | blackfriday.HeadingIDs | blackfriday.BackslashLineBreak | blackfriday.DefinitionLists
+
+	JSCookie   = "JSEnabled"
+	INFCookie  = "INFScroll"
+	NSFWCookie = "NSFWAllowed"
+
+	JSCookieValue   = "js_enabled"
+	INFCookieValue  = "infscroll_enabled"
+	NSFWCookieValue = "nsfw_allowed"
 )
 
 var (
@@ -121,42 +129,42 @@ func StartServer() {
 	})
 
 	router.Get("/config", func(ctx *fiber.Ctx) error {
-		jsenabled := ctx.Cookies("js_enabled")
-		infscrollenabled := ctx.Cookies("infscroll_enabled")
-		nsfwallowed := ctx.Cookies("nsfw_allowed")
+		jsenabled := ctx.Cookies(JSCookieValue)
+		infscrollenabled := ctx.Cookies(INFCookieValue)
+		nsfwallowed := ctx.Cookies(NSFWCookieValue)
 
 		return ctx.Render("config", fiber.Map{
-			"JSEnabled":   jsenabled == "1",
-			"INFScroll":   infscrollenabled == "1",
-			"NSFWAllowed": nsfwallowed == "1",
+			JSCookie:   jsenabled == "1",
+			INFCookie:  infscrollenabled == "1",
+			NSFWCookie: nsfwallowed == "1",
 		})
 	})
 
 	// dev -> will probably keep this.
 	router.Post("/byecookies", func(ctx *fiber.Ctx) error {
-		setcfgCookie(ctx, "js_enabled", "0")
-		setcfgCookie(ctx, "infscroll_enabled", "0")
-		setcfgCookie(ctx, "nsfw_allowed", "0")
+		setcfgCookie(ctx, JSCookieValue, "0")
+		setcfgCookie(ctx, INFCookieValue, "0")
+		setcfgCookie(ctx, NSFWCookieValue, "0")
 		return ctx.RedirectBack("/config", http.StatusMovedPermanently)
 	})
 
 	router.Post("/config", func(ctx *fiber.Ctx) error {
 		if ctx.FormValue("EnableJS") == "on" {
-			setcfgCookie(ctx, "js_enabled", "1")
+			setcfgCookie(ctx, JSCookieValue, "1")
 		} else if ctx.FormValue("EnableJS") == "off" {
-			setcfgCookie(ctx, "js_enabled", "0")
+			setcfgCookie(ctx, JSCookieValue, "0")
 		}
 
 		if ctx.FormValue("EnableInfScroll") == "on" {
-			setcfgCookie(ctx, "infscroll_enabled", "1")
+			setcfgCookie(ctx, INFCookieValue, "1")
 		} else if ctx.FormValue("EnableInfScroll") == "off" {
-			setcfgCookie(ctx, "infscroll_enabled", "0")
+			setcfgCookie(ctx, INFCookieValue, "0")
 		}
 
 		if ctx.FormValue("AllowNSFW") == "on" {
-			setcfgCookie(ctx, "nsfw_allowed", "1")
+			setcfgCookie(ctx, NSFWCookieValue, "1")
 		} else if ctx.FormValue("AllowNSFW") == "off" {
-			setcfgCookie(ctx, "nsfw_allowed", "0")
+			setcfgCookie(ctx, NSFWCookieValue, "0")
 		}
 		return ctx.RedirectBack("/config", http.StatusMovedPermanently)
 	})
@@ -185,16 +193,16 @@ func StartServer() {
 
 		SortPostData(&Posts)
 
-		jsenabled := ctx.Cookies("js_enabled")
-		infscrollenabled := ctx.Cookies("infscroll_enabled")
-		nsfwallowed := ctx.Cookies("nsfw_allowed")
+		jsenabled := ctx.Cookies(JSCookieValue)
+		infscrollenabled := ctx.Cookies(INFCookieValue)
+		nsfwallowed := ctx.Cookies(NSFWCookieValue)
 
 		return ctx.Render("sub", fiber.Map{
-			"SubData":     Sub.Data,
-			"Posts":       Posts.Data,
-			"JSEnabled":   jsenabled == "1",
-			"INFScroll":   infscrollenabled == "1",
-			"NSFWAllowed": nsfwallowed == "1" || !Sub.Data.NSFW,
+			"SubData":  Sub.Data,
+			"Posts":    Posts.Data,
+			JSCookie:   jsenabled == "1",
+			INFCookie:  infscrollenabled == "1",
+			NSFWCookie: nsfwallowed == "1" || !Sub.Data.NSFW,
 		})
 	})
 
@@ -207,11 +215,11 @@ func StartServer() {
 
 		SortPostData(&Posts)
 
-		infscrollenabled := ctx.Cookies("infscroll_enabled")
+		infscrollenabled := ctx.Cookies(INFCookieValue)
 
 		return ctx.Render("posts", fiber.Map{
-			"INFScroll": infscrollenabled == "1",
-			"Posts":     Posts.Data,
+			INFCookie: infscrollenabled == "1",
+			"Posts":   Posts.Data,
 		})
 	})
 

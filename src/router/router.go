@@ -143,19 +143,19 @@ func StartServer() {
 	router.Post("/config", func(ctx *fiber.Ctx) error {
 		if ctx.FormValue("EnableJS") == "on" {
 			setcfgCookie(ctx, "js_enabled", "1")
-		} else {
+		} else if ctx.FormValue("EnableJS") == "off" {
 			setcfgCookie(ctx, "js_enabled", "0")
 		}
 
 		if ctx.FormValue("EnableInfScroll") == "on" {
 			setcfgCookie(ctx, "infscroll_enabled", "1")
-		} else {
+		} else if ctx.FormValue("EnableInfScroll") == "off" {
 			setcfgCookie(ctx, "infscroll_enabled", "0")
 		}
 
 		if ctx.FormValue("AllowNSFW") == "on" {
 			setcfgCookie(ctx, "nsfw_allowed", "1")
-		} else {
+		} else if ctx.FormValue("AllowNSFW") == "off" {
 			setcfgCookie(ctx, "nsfw_allowed", "0")
 		}
 		return ctx.RedirectBack("/config", http.StatusMovedPermanently)

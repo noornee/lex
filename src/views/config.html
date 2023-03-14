@@ -16,16 +16,19 @@
         <form action="/config" method="post" class="configform">
             <label>
                 <input type="checkbox" name="EnableJS" {{if .JSEnabled}}checked{{end}}>
+                <input type="hidden" name="EnableJS" value="off">
                 Enable HLS.js
             </label>
 
             <label>
                 <input type="checkbox" name="EnableInfScroll" {{if .INFScroll}}checked{{end}}>
+                <input type="hidden" name="EnableInfScroll" value="off">
                 Enable Infinite Scroll (JS)
             </label>
             
             <label>
                 <input type="checkbox" name="AllowNSFW" {{if .NSFWAllowed}}checked{{end}}>
+                <input type="hidden" name="AllowNSFW" value="off">
                 Allow NSFW Subreddits
             </label>
 

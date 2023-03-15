@@ -37,7 +37,7 @@ jobs:
     - name: Setup Go Environment
       uses: actions/setup-go@v3
       with:
-        go-version: 1.20
+        go-version: '1.20'
         check-latest: true
         
     - name: Main Linux Build
@@ -81,7 +81,7 @@ jobs:
     - name: Setup Go Environment
       uses: actions/setup-go@v3
       with:
-        go-version: 1.20
+        go-version: '1.20'
         check-latest: true
     
     - name: Main MacOS Build
@@ -125,7 +125,7 @@ jobs:
     - name: Setup Go Environment
       uses: actions/setup-go@v3
       with:
-        go-version: 1.20
+        go-version: '1.20'
         check-latest: true
 
     - name: Main Windows Build

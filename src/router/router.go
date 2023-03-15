@@ -177,7 +177,7 @@ func StartServer() {
 		Posts := logic.GetPosts(after, sort, subname)
 
 		if len(Posts.Data.Children) == 0 {
-			return ctx.SendString(fmt.Sprintf("The subreddit 'r/%v' was banned, or doesn't exist. (Did you make a typo - exceeded the rate limit?)", subname))
+			return ctx.Render("404", nil)
 		}
 
 		// Cache subreddit data, so we don't have to keep making requests every single time.

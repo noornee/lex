@@ -1,6 +1,6 @@
 ## GENERAL
-- [ ] No Javascript (or optional config)
-- [ ] Better Error Pages
+- [X] No Javascript (or optional config)
+- [X] Better Error Pages
 - [ ] Search bar
 - [ ] Search via flair (optional config to save to file?) (for example `subreddit-flair.txt` (or custom) and it contains flair names)
 
@@ -18,7 +18,7 @@
 - [ ] Implement Viewing Comments
 - [ ] Implement Share button (Permalink to reddit post)
 - [ ] Add `Resolution Quality` config (1->5->source)
-- [ ] Implement settings page
+- [X] Implement settings page
 - [X] Use SVG instead of Google Icons
 - [X] Remove iframes (add a thumbnail?) (top priority)
 - [ ] Source image for galleries

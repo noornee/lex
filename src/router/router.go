@@ -17,7 +17,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/compress"
 	"github.com/gofiber/fiber/v2/middleware/logger"
-	"github.com/gofiber/fiber/v2/middleware/recover"
+	fiberrecover "github.com/gofiber/fiber/v2/middleware/recover"
 	"github.com/gofiber/helmet/v2"
 	"github.com/gofiber/template/html"
 	"github.com/microcosm-cc/bluemonday"
@@ -91,7 +91,7 @@ func StartServer() {
 
 	router.Use(
 		logger.New(),
-		recover.New(),
+		fiberrecover.New(),
 		helmet.New(helmet.Config{
 			XSSProtection:      "1; mode=block",
 			ContentTypeNosniff: "nosniff",
@@ -234,70 +234,78 @@ func StartServer() {
 
 func SortPostData(Posts *types.Posts) {
 	for i, t := range Posts.Data.Children {
-		Post := &t.Data
-
-		if len(Post.Preview.Images) > 0 {
-			Image := Post.Preview.Images[0]
-
-			if len(Image.Resolutions) > 0 {
-				Mid := (len(Image.Resolutions) >> 1) + 1
-				if Mid >= len(Image.Resolutions) {
-					Mid = len(Image.Resolutions) - 1
+		func() {
+			defer func() {
+				if rec := recover(); rec != nil {
+					log.Println("Recovered from fatal panic...", rec)
 				}
-				Post.Preview.AutoChosenImageQuality = Image.Resolutions[Mid].URL
-				Post.Preview.AutoChosenPosterQuality = Post.Preview.AutoChosenImageQuality
-			} else {
-				Post.Preview.AutoChosenImageQuality = Image.Source.URL
-				Post.Preview.AutoChosenPosterQuality = Post.Preview.AutoChosenImageQuality
-			}
+			}()
 
-			if strings.Contains(Image.Source.URL, ".gif") {
-				if len(Image.Variants.MP4.Resolutions) > 0 {
-					Mid := (len(Image.Variants.MP4.Resolutions) >> 1) + 1
-					if Mid >= len(Image.Variants.MP4.Resolutions) {
-						Mid = len(Image.Variants.MP4.Resolutions) - 1
+			Post := &t.Data
+
+			if len(Post.Preview.Images) > 0 {
+				Image := Post.Preview.Images[0]
+
+				if len(Image.Resolutions) > 0 {
+					Mid := (len(Image.Resolutions) >> 1) + 1
+					if Mid >= len(Image.Resolutions) {
+						Mid = len(Image.Resolutions) - 1
 					}
-					Post.Preview.AutoChosenImageQuality = Image.Variants.MP4.Resolutions[Mid].URL
+					Post.Preview.AutoChosenImageQuality = Image.Resolutions[Mid].URL
+					Post.Preview.AutoChosenPosterQuality = Post.Preview.AutoChosenImageQuality
 				} else {
-					Post.Preview.AutoChosenImageQuality = Image.Variants.MP4.Source.URL
+					Post.Preview.AutoChosenImageQuality = Image.Source.URL
+					Post.Preview.AutoChosenPosterQuality = Post.Preview.AutoChosenImageQuality
 				}
-			}
-		}
 
-		if len(Post.MediaMetaData) > 0 {
-			MediaLinks := make([]string, 0, len(Post.MediaMetaData))
-
-			if len(Post.GalleryData.Items) > 0 {
-				for j := 0; j < len(Post.GalleryData.Items); j++ {
-					ItemID := Post.GalleryData.Items[j].MediaID
-					MediaData := Post.MediaMetaData[ItemID]
-					if len(MediaData.P) > 0 {
-						Mid := (len(MediaData.P) >> 1) + 1
-						if Mid >= len(MediaData.P) {
-							Mid = len(MediaData.P) - 1
+				if strings.Contains(Image.Source.URL, ".gif") {
+					if len(Image.Variants.MP4.Resolutions) > 0 {
+						Mid := (len(Image.Variants.MP4.Resolutions) >> 1) + 1
+						if Mid >= len(Image.Variants.MP4.Resolutions) {
+							Mid = len(Image.Variants.MP4.Resolutions) - 1
 						}
-						MediaLinks = append(MediaLinks, MediaData.P[Mid].U)
-					}
-				}
-			} else {
-				// range is random, therefore the images *may* be mixed up.
-				// may, because there is a chance that images are in order, due to the randomness.
-				// there is no way to sort this.
-				for _, MediaData := range Post.MediaMetaData {
-					if len(MediaData.P) > 0 {
-						Mid := (len(MediaData.P) >> 1) + 1
-						if Mid >= len(MediaData.P) {
-							Mid = len(MediaData.P) - 1
-						}
-						MediaLinks = append(MediaLinks, MediaData.P[Mid].U)
+						Post.Preview.AutoChosenImageQuality = Image.Variants.MP4.Resolutions[Mid].URL
+					} else {
+						Post.Preview.AutoChosenImageQuality = Image.Variants.MP4.Source.URL
 					}
 				}
 			}
 
-			Post.VMediaMetaData = MediaLinks
-		}
+			if len(Post.MediaMetaData) > 0 {
+				MediaLinks := make([]string, 0, len(Post.MediaMetaData))
 
-		Posts.Data.Children[i].Data = *Post
+				if len(Post.GalleryData.Items) > 0 {
+					for j := 0; j < len(Post.GalleryData.Items); j++ {
+						ItemID := Post.GalleryData.Items[j].MediaID
+						MediaData := Post.MediaMetaData[ItemID]
+						if len(MediaData.P) > 0 {
+							Mid := (len(MediaData.P) >> 1) + 1
+							if Mid >= len(MediaData.P) {
+								Mid = len(MediaData.P) - 1
+							}
+							MediaLinks = append(MediaLinks, MediaData.P[Mid].U)
+						}
+					}
+				} else {
+					// range is random, therefore the images *may* be mixed up.
+					// may, because there is a chance that images are in order, due to the randomness.
+					// there is no way to sort this.
+					for _, MediaData := range Post.MediaMetaData {
+						if len(MediaData.P) > 0 {
+							Mid := (len(MediaData.P) >> 1) + 1
+							if Mid >= len(MediaData.P) {
+								Mid = len(MediaData.P) - 1
+							}
+							MediaLinks = append(MediaLinks, MediaData.P[Mid].U)
+						}
+					}
+				}
+
+				Post.VMediaMetaData = MediaLinks
+			}
+
+			Posts.Data.Children[i].Data = *Post
+		}()
 	}
 }
 

@@ -35,7 +35,7 @@
 - [ ] Use at least the 3rd resolution? (anything less is pretty blurry, or too small.)
 - [ ] Galleries: if it's a RedditVideo, then grab the id, and use `https://v.redd.it/id/DASH_q.mp4`
 - [X] Serve posts.html instead of loadedposts.html
-- [ ] Error Handling: Skip post if it errors out
+- [X] Error Handling: Skip post if it errors out
 - [X] Use MP4 instead of GIF (top priority)
     - For example, a 2 second, 1820x2000 GIF is around 7,252,000 bytes (7.2MB). Comparing it to the same width x height MP4, the result is around 587,000 bytes (587KB) (91% decrease in file size, for the same quality!)
 

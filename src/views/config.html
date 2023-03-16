@@ -15,22 +15,45 @@
 
         <form action="/config" method="post" class="configform">
             <label>
-                <input type="checkbox" name="EnableJS" {{if .JSEnabled}}checked{{end}}>
+                <input type="checkbox" name="EnableJS" {{if .JSEnabled}} checked {{end}}>
                 <input type="hidden" name="EnableJS" value="off">
                 Enable HLS.js
             </label>
 
             <label>
-                <input type="checkbox" name="EnableInfScroll" {{if .INFScroll}}checked{{end}}>
+                <input type="checkbox" name="EnableInfScroll" {{if .INFScroll}} checked {{end}}>
                 <input type="hidden" name="EnableInfScroll" value="off">
                 Enable Infinite Scroll (JS)
             </label>
             
             <label>
-                <input type="checkbox" name="AllowNSFW" {{if .NSFWAllowed}}checked{{end}}>
+                <input type="checkbox" name="AllowNSFW" {{if .NSFWAllowed}} checked {{end}}>
                 <input type="hidden" name="AllowNSFW" value="off">
                 Allow NSFW Subreddits
             </label>
+
+            <label>
+                Preferred Resolution
+                <select name="PrefRes">
+                    <!-- dear lord -->
+                    <option {{if eq .PreferredResolution 0}} selected {{end}}>0</option>
+                    <option {{if eq .PreferredResolution 1}} selected {{end}}>1</option>
+                    <option {{if eq .PreferredResolution 2}} selected {{end}}>2</option>
+                    <option {{if eq .PreferredResolution 3}} selected {{end}}>3</option>
+                    <option {{if eq .PreferredResolution 4}} selected {{end}}>4</option>
+                    <option {{if eq .PreferredResolution 5}} selected {{end}}>5</option>
+                    <option {{if eq .PreferredResolution 11037}} selected {{end}}>Source</option>
+                </select>
+            </label>
+            <pre>
+            Which should I choose?
+            For fastest loading speeds, and lowest data usage, choose 0: you will need a microscope as well.
+            For average loading speeds, and average data usage, choose 3: overall, well balanced.
+            For slow loading speeds, and high data usage, choose 5: slow loading, but high image quality.
+            For slowest loading speeds, and highest data usage, choose Source: best image quality, but slow loading speeds.
+            Notice: In some rare cases, source may cause some issues, and so the recommended resolution to use is 5.
+            If a resolution is not available, it will choose the next highest resolution (eg, if 5 is not available, then 4 will be used, and so on.)
+            </pre>
 
             <label>
                 Preferred Style
@@ -42,18 +65,6 @@
                     <option>Monokai</option>
                     <option>Red</option>
                     <option>Light</option>
-                </select>
-            </label>
-
-            <label>
-                Preferred Resolution
-                <select name="PrefRes" disabled>
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                    <option>Source</option>
                 </select>
             </label>
 

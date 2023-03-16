@@ -98,6 +98,9 @@ type Posts struct {
 					P []struct {
 						U string `json:"u"`
 					} `json:"p"`
+					S struct {
+						U string `json:"u"`
+					} `json:"s"`
 				} `json:"media_metadata"`
 
 				GalleryData struct {

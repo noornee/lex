@@ -9,6 +9,7 @@ import (
 	"math/rand"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 	"time"
 
@@ -31,10 +32,12 @@ const (
 	JSCookie   = "JSEnabled"
 	INFCookie  = "INFScroll"
 	NSFWCookie = "NSFWAllowed"
+	ResCookie  = "PreferredResolution"
 
 	JSCookieValue   = "js_enabled"
 	INFCookieValue  = "infscroll_enabled"
 	NSFWCookieValue = "nsfw_allowed"
+	ResCookieValue  = "preferred_resolution"
 )
 
 var (
@@ -133,10 +136,16 @@ func StartServer() {
 		infscrollenabled := ctx.Cookies(INFCookieValue)
 		nsfwallowed := ctx.Cookies(NSFWCookieValue)
 
+		preferredres, err := strconv.Atoi(ctx.Cookies(ResCookieValue))
+		if err != nil {
+			preferredres = 3
+		}
+
 		return ctx.Render("config", fiber.Map{
 			JSCookie:   jsenabled == "1",
 			INFCookie:  infscrollenabled == "1",
 			NSFWCookie: nsfwallowed == "1",
+			ResCookie:  preferredres,
 		})
 	})
 
@@ -166,6 +175,30 @@ func StartServer() {
 		} else if ctx.FormValue("AllowNSFW") == "off" {
 			setcfgCookie(ctx, NSFWCookieValue, "0")
 		}
+
+		switch ctx.FormValue("PrefRes") {
+		case "0":
+			setcfgCookie(ctx, ResCookieValue, "0")
+		case "1":
+			setcfgCookie(ctx, ResCookieValue, "1")
+		case "2":
+			setcfgCookie(ctx, ResCookieValue, "2")
+		case "3":
+			setcfgCookie(ctx, ResCookieValue, "3")
+		case "4":
+			setcfgCookie(ctx, ResCookieValue, "4")
+		case "5":
+			setcfgCookie(ctx, ResCookieValue, "5")
+		case "Source":
+			/*
+				ctx.Cookies returns a string, which we will convert to
+				int via strconv.Atoi, but if we set the cookie value to
+				"Source", then it will error out, so set it to a high
+				value that doesn't exist, but is still valid.
+			*/
+			setcfgCookie(ctx, ResCookieValue, "11037")
+		}
+
 		return ctx.RedirectBack("/config", http.StatusMovedPermanently)
 	})
 
@@ -191,7 +224,12 @@ func StartServer() {
 			SubCache[subname] = Sub
 		}
 
-		SortPostData(&Posts)
+		ResolutionToUse, err := strconv.Atoi(ctx.Cookies(ResCookieValue))
+		if err != nil {
+			ResolutionToUse = 3
+		}
+
+		SortPostData(&Posts, ResolutionToUse)
 
 		jsenabled := ctx.Cookies(JSCookieValue)
 		infscrollenabled := ctx.Cookies(INFCookieValue)
@@ -213,7 +251,12 @@ func StartServer() {
 
 		Posts := logic.GetPosts(after, sort, subname)
 
-		SortPostData(&Posts)
+		ResolutionToUse, err := strconv.Atoi(ctx.Cookies(ResCookieValue))
+		if err != nil {
+			ResolutionToUse = 3
+		}
+
+		SortPostData(&Posts, ResolutionToUse)
 
 		infscrollenabled := ctx.Cookies(INFCookieValue)
 
@@ -232,7 +275,7 @@ func StartServer() {
 	log.Fatal(router.Listen(":9090"))
 }
 
-func SortPostData(Posts *types.Posts) {
+func SortPostData(Posts *types.Posts, ResolutionToUse int) {
 	for i, t := range Posts.Data.Children {
 		func() {
 			defer func() {
@@ -246,12 +289,11 @@ func SortPostData(Posts *types.Posts) {
 			if len(Post.Preview.Images) > 0 {
 				Image := Post.Preview.Images[0]
 
-				if len(Image.Resolutions) > 0 {
-					Mid := (len(Image.Resolutions) >> 1) + 1
-					if Mid >= len(Image.Resolutions) {
-						Mid = len(Image.Resolutions) - 1
+				if len(Image.Resolutions) > 0 && ResolutionToUse != 11037 {
+					if ResolutionToUse >= len(Image.Resolutions) {
+						ResolutionToUse = len(Image.Resolutions) - 1
 					}
-					Post.Preview.AutoChosenImageQuality = Image.Resolutions[Mid].URL
+					Post.Preview.AutoChosenImageQuality = Image.Resolutions[ResolutionToUse].URL
 					Post.Preview.AutoChosenPosterQuality = Post.Preview.AutoChosenImageQuality
 				} else {
 					Post.Preview.AutoChosenImageQuality = Image.Source.URL
@@ -259,12 +301,11 @@ func SortPostData(Posts *types.Posts) {
 				}
 
 				if strings.Contains(Image.Source.URL, ".gif") {
-					if len(Image.Variants.MP4.Resolutions) > 0 {
-						Mid := (len(Image.Variants.MP4.Resolutions) >> 1) + 1
-						if Mid >= len(Image.Variants.MP4.Resolutions) {
-							Mid = len(Image.Variants.MP4.Resolutions) - 1
+					if len(Image.Variants.MP4.Resolutions) > 0 && ResolutionToUse != 11037 {
+						if ResolutionToUse >= len(Image.Variants.MP4.Resolutions) {
+							ResolutionToUse = len(Image.Variants.MP4.Resolutions) - 1
 						}
-						Post.Preview.AutoChosenImageQuality = Image.Variants.MP4.Resolutions[Mid].URL
+						Post.Preview.AutoChosenImageQuality = Image.Variants.MP4.Resolutions[ResolutionToUse].URL
 					} else {
 						Post.Preview.AutoChosenImageQuality = Image.Variants.MP4.Source.URL
 					}
@@ -278,12 +319,13 @@ func SortPostData(Posts *types.Posts) {
 					for j := 0; j < len(Post.GalleryData.Items); j++ {
 						ItemID := Post.GalleryData.Items[j].MediaID
 						MediaData := Post.MediaMetaData[ItemID]
-						if len(MediaData.P) > 0 {
-							Mid := (len(MediaData.P) >> 1) + 1
-							if Mid >= len(MediaData.P) {
-								Mid = len(MediaData.P) - 1
+						if len(MediaData.P) > 0 && ResolutionToUse != 11037 {
+							if ResolutionToUse >= len(MediaData.P) {
+								ResolutionToUse = len(MediaData.P) - 1
 							}
-							MediaLinks = append(MediaLinks, MediaData.P[Mid].U)
+							MediaLinks = append(MediaLinks, MediaData.P[ResolutionToUse].U)
+						} else {
+							MediaLinks = append(MediaLinks, MediaData.S.U)
 						}
 					}
 				} else {
@@ -291,12 +333,13 @@ func SortPostData(Posts *types.Posts) {
 					// may, because there is a chance that images are in order, due to the randomness.
 					// there is no way to sort this.
 					for _, MediaData := range Post.MediaMetaData {
-						if len(MediaData.P) > 0 {
-							Mid := (len(MediaData.P) >> 1) + 1
-							if Mid >= len(MediaData.P) {
-								Mid = len(MediaData.P) - 1
+						if len(MediaData.P) > 0 && ResolutionToUse != 11037 {
+							if ResolutionToUse >= len(MediaData.P) {
+								ResolutionToUse = len(MediaData.P) - 1
 							}
-							MediaLinks = append(MediaLinks, MediaData.P[Mid].U)
+							MediaLinks = append(MediaLinks, MediaData.P[ResolutionToUse].U)
+						} else {
+							MediaLinks = append(MediaLinks, MediaData.S.U)
 						}
 					}
 				}

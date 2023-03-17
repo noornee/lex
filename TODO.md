@@ -17,7 +17,7 @@
 ## SUBREDDITS / TEMPLATE
 - [ ] Implement Viewing Comments
 - [ ] Implement Share button (Permalink to reddit post)
-- [ ] Add `Resolution Quality` config (1->5->source)
+- [X] Add `Resolution Quality` config (1->5->source)
 - [X] Implement settings page
 - [X] Use SVG instead of Google Icons
 - [X] Remove iframes (add a thumbnail?) (top priority)
@@ -32,7 +32,7 @@
 ## GO
 - [X] Fix the horrible for loop, or just make it readable
 - [X] Don't use range in MediaMetaData (or try using sort?)
-- [ ] Use at least the 3rd resolution? (anything less is pretty blurry, or too small.)
+- [X] Use at least the 3rd resolution? (anything less is pretty blurry, or too small.)
 - [ ] Galleries: if it's a RedditVideo, then grab the id, and use `https://v.redd.it/id/DASH_q.mp4`
 - [X] Serve posts.html instead of loadedposts.html
 - [X] Error Handling: Skip post if it errors out

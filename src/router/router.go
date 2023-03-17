@@ -17,8 +17,10 @@ import (
 	"github.com/goccy/go-json"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/compress"
+	"github.com/gofiber/fiber/v2/middleware/csrf"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	fiberrecover "github.com/gofiber/fiber/v2/middleware/recover"
+	"github.com/gofiber/fiber/v2/utils"
 	"github.com/gofiber/helmet/v2"
 	"github.com/gofiber/template/html"
 	"github.com/microcosm-cc/bluemonday"
@@ -94,6 +96,17 @@ func StartServer() {
 
 	router.Use(
 		logger.New(),
+		csrf.New(csrf.Config{
+			KeyLookup:      "form:csrf",
+			ContextKey:     "csrf",
+			CookieName:     "csrf_",
+			CookieSecure:   true,
+			CookieHTTPOnly: true,
+			CookieSameSite: "lax",
+			Expiration:     1 * time.Hour,
+			KeyGenerator:   utils.UUID,
+			ErrorHandler:   func(c *fiber.Ctx, err error) error { return fiber.ErrBadRequest },
+		}),
 		fiberrecover.New(),
 		helmet.New(helmet.Config{
 			XSSProtection:      "1; mode=block",
@@ -146,18 +159,15 @@ func StartServer() {
 			INFCookie:  infscrollenabled == "1",
 			NSFWCookie: nsfwallowed == "1",
 			ResCookie:  preferredres,
+			"csrf":     ctx.Locals("csrf"),
 		})
 	})
 
-	// dev -> will probably keep this.
-	router.Post("/byecookies", func(ctx *fiber.Ctx) error {
-		setcfgCookie(ctx, JSCookieValue, "0")
-		setcfgCookie(ctx, INFCookieValue, "0")
-		setcfgCookie(ctx, NSFWCookieValue, "0")
-		return ctx.RedirectBack("/config", http.StatusMovedPermanently)
-	})
-
 	router.Post("/config", func(ctx *fiber.Ctx) error {
+		if ctx.FormValue("csrf") != ctx.Cookies("csrf_") {
+			return ctx.SendStatus(http.StatusBadRequest)
+		}
+
 		if ctx.FormValue("EnableJS") == "on" {
 			setcfgCookie(ctx, JSCookieValue, "1")
 		} else if ctx.FormValue("EnableJS") == "off" {
@@ -241,6 +251,7 @@ func StartServer() {
 			JSCookie:   jsenabled == "1",
 			INFCookie:  infscrollenabled == "1",
 			NSFWCookie: nsfwallowed == "1" || !Sub.Data.NSFW,
+			"csrf":     ctx.Locals("csrf"),
 		})
 	})
 

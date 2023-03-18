@@ -236,7 +236,12 @@
 
 {{if .Posts.After}}
     {{if .INFScroll}}
-        <button id="LoadMorePosts" class="loadMorebtn" onclick="loadPosts('{{.Posts.After}}')">Load More Posts</button>
+        <form id="LoadPostForm">
+            <input type="hidden" name="csrf" value="{{.csrf}}">
+            <input type="hidden" name="sub" value="{{.SubName}}">
+            <input type="hidden" name="after" value="{{.Posts.After}}">
+            <button type="button" class="loadMorebtn" onclick="loadPosts()" id="LoadPostButton">Load More Posts</button>
+        </form>
     {{else}}
         <a href="?after={{.Posts.After}}" class="loadMorebtn" style="text-align: center; font-size: 24px;">Go to next Page</a>
     {{end}}

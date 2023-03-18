@@ -246,6 +246,7 @@ func StartServer() {
 		nsfwallowed := ctx.Cookies(NSFWCookieValue)
 
 		return ctx.Render("sub", fiber.Map{
+			"SubName":  subname,
 			"SubData":  Sub.Data,
 			"Posts":    Posts.Data,
 			JSCookie:   jsenabled == "1",
@@ -255,10 +256,14 @@ func StartServer() {
 		})
 	})
 
-	router.Get("/r/:sub/loadPosts", func(ctx *fiber.Ctx) error {
-		subname := url.QueryEscape(ctx.Params("sub"))
-		after := url.QueryEscape(ctx.Query("after"))
-		sort := url.QueryEscape(ctx.Query("t"))
+	router.Post("/loadPosts", func(ctx *fiber.Ctx) error {
+		if ctx.FormValue("csrf") != ctx.Cookies("csrf_") {
+			return ctx.SendStatus(http.StatusBadRequest)
+		}
+
+		subname := url.QueryEscape(ctx.FormValue("sub"))
+		after := url.QueryEscape(ctx.FormValue("after"))
+		sort := url.QueryEscape(ctx.FormValue("t"))
 
 		Posts := logic.GetPosts(after, sort, subname)
 
@@ -272,8 +277,10 @@ func StartServer() {
 		infscrollenabled := ctx.Cookies(INFCookieValue)
 
 		return ctx.Render("posts", fiber.Map{
-			INFCookie: infscrollenabled == "1",
+			"SubName": subname,
 			"Posts":   Posts.Data,
+			INFCookie: infscrollenabled == "1",
+			"csrf":    ctx.Locals("csrf"),
 		})
 	})
 

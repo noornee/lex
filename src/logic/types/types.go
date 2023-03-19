@@ -100,7 +100,8 @@ type Posts struct {
 						U string `json:"u"`
 					} `json:"p"`
 					S struct {
-						U string `json:"u"`
+						U   string `json:"u"`
+						MP4 string `json:"mp4"`
 					} `json:"s"`
 					//HLSUrl string `json:"hlsUrl"`
 				} `json:"media_metadata"`

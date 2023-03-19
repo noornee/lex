@@ -33,7 +33,7 @@
 - [X] Fix the horrible for loop, or just make it readable
 - [X] Don't use range in MediaMetaData (or try using sort?)
 - [X] Use at least the 3rd resolution? (anything less is pretty blurry, or too small.)
-- [ ] Galleries: if it's a RedditVideo, then grab the id, and use `https://v.redd.it/id/DASH_q.mp4`
+- [ ] Galleries: if it's a RedditVideo, use HLS
 - [X] Serve posts.html instead of loadedposts.html
 - [X] Error Handling: Skip post if it errors out
 - [X] Use MP4 instead of GIF (top priority)

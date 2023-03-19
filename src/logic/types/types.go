@@ -95,12 +95,14 @@ type Posts struct {
 
 				// gallery
 				MediaMetaData map[string]struct {
+					//M string `json:"m"`
 					P []struct {
 						U string `json:"u"`
 					} `json:"p"`
 					S struct {
 						U string `json:"u"`
 					} `json:"s"`
+					//HLSUrl string `json:"hlsUrl"`
 				} `json:"media_metadata"`
 
 				GalleryData struct {

@@ -2,6 +2,12 @@ name: Building for all OSs
 
 on:
   push:
+    branches:
+      - main
+    paths-ignore:
+      - 'docs/**'
+      - '**.md'
+  workflow_dispatch:
 
 jobs:
   updateversion:

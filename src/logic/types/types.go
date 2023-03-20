@@ -112,8 +112,11 @@ type Posts struct {
 					} `json:"items"`
 				} `json:"gallery_data"`
 
-				VMediaMetaData []string
-				CrossPost      []struct {
+				VMediaMetaData []struct {
+					Video bool
+					Link  string
+				}
+				CrossPost []struct {
 					//todo: finish
 					Permalink string `json:"permalink"`
 				} `json:"crosspost_parent_list"`

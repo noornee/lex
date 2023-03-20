@@ -107,28 +107,27 @@
                 {{end}}
 
                 <!--only filter galleries with 2 or more images.-->
-                {{$lenc := len .Data.MediaMetaData}}
-                {{if gt $lenc 1}}
-                {{$UID := ugidgen}}
-                <div class="m-top10">
-                    <div class="gallery">
-                        {{range $i, $v := .Data.VMediaMetaData}}
-                            <input type="radio" name="{{$UID}}-gallery" id="{{$UID}}-slide{{$i|add}}" {{if eq $i 0}}checked{{end}}>
-                            <div class="gallery-img">
-                                <img src="{{$v}}" class="fitimg">
-                            </div>
-                        {{end}}
-                        <div class="gallery-nav">
-                            {{range $i, $tmp := .Data.VMediaMetaData}}
-                                <label for="{{$UID}}-slide{{$i|add}}"></label>
+                {{if gt (len .Data.MediaMetaData) 1}}
+                    {{$UID := ugidgen}}
+                    <div class="m-top10">
+                        <div class="gallery">
+                            {{range $i, $v := .Data.VMediaMetaData}}
+                                <input type="radio" name="{{$UID}}-gallery" id="{{$UID}}-slide{{$i|add}}" {{if eq $i 0}}checked{{end}}>
+                                <div class="gallery-img">
+                                    <img src="{{$v.Link}}" class="fitimg">
+                                </div>
                             {{end}}
+                            <div class="gallery-nav">
+                                {{range $i, $tmp := .Data.VMediaMetaData}}
+                                    <label for="{{$UID}}-slide{{$i|add}}"></label>
+                                {{end}}
+                            </div>
                         </div>
                     </div>
-                </div>
                 {{else}}
                     {{range .Data.VMediaMetaData}}
                         <div class="m-top10">
-                            <img src="{{.}}" class="fitimg">
+                            <img src="{{.Link}}" class="fitimg">
                         </div>
                     {{end}}
                 {{end}}

@@ -331,8 +331,6 @@ func SortPostData(Posts *types.Posts, ResolutionToUse int) {
 			}
 
 			if len(Post.MediaMetaData) > 0 {
-				MediaLinks := make([]string, 0, len(Post.MediaMetaData))
-
 				if len(Post.GalleryData.Items) > 0 {
 					for j := 0; j < len(Post.GalleryData.Items); j++ {
 						ItemID := Post.GalleryData.Items[j].MediaID
@@ -341,9 +339,16 @@ func SortPostData(Posts *types.Posts, ResolutionToUse int) {
 							if ResolutionToUse >= len(MediaData.P) {
 								ResolutionToUse = len(MediaData.P) - 1
 							}
-							MediaLinks = append(MediaLinks, MediaData.P[ResolutionToUse].U)
+							Post.VMediaMetaData = append(Post.VMediaMetaData, struct {
+								Video bool
+								Link  string
+							}{false, MediaData.P[ResolutionToUse].U})
+
 						} else {
-							MediaLinks = append(MediaLinks, MediaData.S.U)
+							Post.VMediaMetaData = append(Post.VMediaMetaData, struct {
+								Video bool
+								Link  string
+							}{false, MediaData.S.U})
 						}
 					}
 				} else {
@@ -355,14 +360,19 @@ func SortPostData(Posts *types.Posts, ResolutionToUse int) {
 							if ResolutionToUse >= len(MediaData.P) {
 								ResolutionToUse = len(MediaData.P) - 1
 							}
-							MediaLinks = append(MediaLinks, MediaData.P[ResolutionToUse].U)
+							Post.VMediaMetaData = append(Post.VMediaMetaData, struct {
+								Video bool
+								Link  string
+							}{false, MediaData.P[ResolutionToUse].U})
 						} else {
-							MediaLinks = append(MediaLinks, MediaData.S.U)
+							Post.VMediaMetaData = append(Post.VMediaMetaData, struct {
+								Video bool
+								Link  string
+							}{false, MediaData.S.U})
 						}
 					}
 				}
 
-				Post.VMediaMetaData = MediaLinks
 			}
 
 			Posts.Data.Children[i].Data = *Post

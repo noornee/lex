@@ -335,48 +335,49 @@ func SortPostData(Posts *types.Posts, ResolutionToUse int) {
 					for j := 0; j < len(Post.GalleryData.Items); j++ {
 						ItemID := Post.GalleryData.Items[j].MediaID
 						MediaData := Post.MediaMetaData[ItemID]
-						if len(MediaData.P) > 0 && ResolutionToUse != 11037 {
-							if ResolutionToUse >= len(MediaData.P) {
-								ResolutionToUse = len(MediaData.P) - 1
-							}
-							Post.VMediaMetaData = append(Post.VMediaMetaData, struct {
-								Video bool
-								Link  string
-							}{false, MediaData.P[ResolutionToUse].U})
-
-						} else {
-							Post.VMediaMetaData = append(Post.VMediaMetaData, struct {
-								Video bool
-								Link  string
-							}{false, MediaData.S.U})
+						if ResolutionToUse >= len(MediaData.P) {
+							ResolutionToUse = len(MediaData.P) - 1
 						}
+
+						Post.VMediaMetaData = append(Post.VMediaMetaData, vmediaappendor(MediaData, ResolutionToUse))
 					}
 				} else {
 					// range is random, therefore the images *may* be mixed up.
 					// may, because there is a chance that images are in order, due to the randomness.
 					// there is no way to sort this.
 					for _, MediaData := range Post.MediaMetaData {
-						if len(MediaData.P) > 0 && ResolutionToUse != 11037 {
-							if ResolutionToUse >= len(MediaData.P) {
-								ResolutionToUse = len(MediaData.P) - 1
-							}
-							Post.VMediaMetaData = append(Post.VMediaMetaData, struct {
-								Video bool
-								Link  string
-							}{false, MediaData.P[ResolutionToUse].U})
-						} else {
-							Post.VMediaMetaData = append(Post.VMediaMetaData, struct {
-								Video bool
-								Link  string
-							}{false, MediaData.S.U})
+						if ResolutionToUse >= len(MediaData.P) {
+							ResolutionToUse = len(MediaData.P) - 1
 						}
+						Post.VMediaMetaData = append(Post.VMediaMetaData, vmediaappendor(MediaData, ResolutionToUse))
 					}
 				}
-
 			}
 
 			Posts.Data.Children[i].Data = *Post
 		}()
+	}
+}
+
+func vmediaappendor(MData types.InternalMetaData, ResolutionToUse int) types.InternalVData {
+	IsVideo := len(MData.S.MP4) > 0
+	var Poster, Source string
+
+	if len(MData.P) > 0 {
+		Poster = MData.P[ResolutionToUse].U
+	}
+
+	if IsVideo {
+		Source = MData.S.MP4
+	} else if ResolutionToUse == 11037 {
+		Source = MData.S.U
+	} else {
+		Source = Poster
+	}
+	return types.InternalVData{
+		Video:                   IsVideo,
+		Link:                    Source,
+		AutoChosenPosterQuality: Poster,
 	}
 }
 

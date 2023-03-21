@@ -94,17 +94,7 @@ type Posts struct {
 				} `json:"preview"`
 
 				// gallery
-				MediaMetaData map[string]struct {
-					//M string `json:"m"`
-					P []struct {
-						U string `json:"u"`
-					} `json:"p"`
-					S struct {
-						U   string `json:"u"`
-						MP4 string `json:"mp4"`
-					} `json:"s"`
-					//HLSUrl string `json:"hlsUrl"`
-				} `json:"media_metadata"`
+				MediaMetaData map[string]InternalMetaData `json:"media_metadata"`
 
 				GalleryData struct {
 					Items []struct {
@@ -112,15 +102,30 @@ type Posts struct {
 					} `json:"items"`
 				} `json:"gallery_data"`
 
-				VMediaMetaData []struct {
-					Video bool
-					Link  string
-				}
-				CrossPost []struct {
+				VMediaMetaData []InternalVData
+				CrossPost      []struct {
 					//todo: finish
 					Permalink string `json:"permalink"`
 				} `json:"crosspost_parent_list"`
 			} `json:"data"`
 		} `json:"children"`
 	} `json:"data"`
+}
+
+type InternalVData struct {
+	Video                   bool
+	Link                    string
+	AutoChosenPosterQuality string
+}
+
+type InternalMetaData struct {
+	//M string `json:"m"`
+	P []struct {
+		U string `json:"u"`
+	} `json:"p"`
+	S struct {
+		U   string `json:"u"`
+		MP4 string `json:"mp4"`
+	} `json:"s"`
+	//HLSUrl string `json:"hlsUrl"`
 }

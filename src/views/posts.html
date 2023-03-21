@@ -114,7 +114,13 @@
                             {{range $i, $v := .Data.VMediaMetaData}}
                                 <input type="radio" name="{{$UID}}-gallery" id="{{$UID}}-slide{{$i|add}}" {{if eq $i 0}}checked{{end}}>
                                 <div class="gallery-img">
-                                    <img src="{{$v.Link}}" class="fitimg">
+                                    {{if $v.Video}}
+                                        <video class="fitimg" preload="none" poster="{{$v.AutoChosenPosterQuality}}" controls loop>
+                                            <source src="{{$v.Link}}" type="video/mp4">
+                                        </video>
+                                    {{else}}
+                                        <img src="{{$v.Link}}" class="fitimg">
+                                    {{end}}
                                 </div>
                             {{end}}
                             <div class="gallery-nav">
@@ -127,7 +133,13 @@
                 {{else}}
                     {{range .Data.VMediaMetaData}}
                         <div class="m-top10">
-                            <img src="{{.Link}}" class="fitimg">
+                            {{if .Video}}
+                                <video class="fitimg" preload="none" poster="{{.AutoChosenPosterQuality}}" controls loop>
+                                    <source src="{{.Link}}" type="video/mp4">
+                                </video>
+                            {{else}}
+                                <img src="{{.Link}}" class="fitimg">
+                            {{end}}
                         </div>
                     {{end}}
                 {{end}}

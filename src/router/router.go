@@ -294,6 +294,7 @@ func StartServer() {
 }
 
 func SortPostData(Posts *types.Posts, ResolutionToUse int) {
+	OrigRes := ResolutionToUse
 	for i, t := range Posts.Data.Children {
 		func() {
 			defer func() {
@@ -318,6 +319,8 @@ func SortPostData(Posts *types.Posts, ResolutionToUse int) {
 					Post.Preview.AutoChosenPosterQuality = Post.Preview.AutoChosenImageQuality
 				}
 
+				ResolutionToUse = OrigRes
+
 				if strings.Contains(Image.Source.URL, ".gif") {
 					if len(Image.Variants.MP4.Resolutions) > 0 && ResolutionToUse != 11037 {
 						if ResolutionToUse >= len(Image.Variants.MP4.Resolutions) {
@@ -328,6 +331,8 @@ func SortPostData(Posts *types.Posts, ResolutionToUse int) {
 						Post.Preview.AutoChosenImageQuality = Image.Variants.MP4.Source.URL
 					}
 				}
+
+				ResolutionToUse = OrigRes
 			}
 
 			if len(Post.MediaMetaData) > 0 {
@@ -340,6 +345,7 @@ func SortPostData(Posts *types.Posts, ResolutionToUse int) {
 						}
 
 						Post.VMediaMetaData = append(Post.VMediaMetaData, vmediaappendor(MediaData, ResolutionToUse))
+						ResolutionToUse = OrigRes
 					}
 				} else {
 					// range is random, therefore the images *may* be mixed up.
@@ -350,6 +356,7 @@ func SortPostData(Posts *types.Posts, ResolutionToUse int) {
 							ResolutionToUse = len(MediaData.P) - 1
 						}
 						Post.VMediaMetaData = append(Post.VMediaMetaData, vmediaappendor(MediaData, ResolutionToUse))
+						ResolutionToUse = OrigRes
 					}
 				}
 			}

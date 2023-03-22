@@ -7,7 +7,6 @@ import (
 	"main/logic"
 	"main/logic/types"
 	"math/rand"
-	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
@@ -17,10 +16,8 @@ import (
 	"github.com/goccy/go-json"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/compress"
-	"github.com/gofiber/fiber/v2/middleware/csrf"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	fiberrecover "github.com/gofiber/fiber/v2/middleware/recover"
-	"github.com/gofiber/fiber/v2/utils"
 	"github.com/gofiber/helmet/v2"
 	"github.com/gofiber/template/html"
 	"github.com/microcosm-cc/bluemonday"
@@ -96,17 +93,6 @@ func StartServer() {
 
 	router.Use(
 		logger.New(),
-		csrf.New(csrf.Config{
-			KeyLookup:      "form:csrf",
-			ContextKey:     "csrf",
-			CookieName:     "csrf_",
-			CookieSecure:   true,
-			CookieHTTPOnly: true,
-			CookieSameSite: "lax",
-			Expiration:     1 * time.Hour,
-			KeyGenerator:   utils.UUID,
-			ErrorHandler:   func(c *fiber.Ctx, err error) error { return fiber.ErrBadRequest },
-		}),
 		fiberrecover.New(),
 		helmet.New(helmet.Config{
 			XSSProtection:      "1; mode=block",
@@ -159,15 +145,10 @@ func StartServer() {
 			INFCookie:  infscrollenabled == "1",
 			NSFWCookie: nsfwallowed == "1",
 			ResCookie:  preferredres,
-			"csrf":     ctx.Locals("csrf"),
 		})
 	})
 
 	router.Post("/config", func(ctx *fiber.Ctx) error {
-		if ctx.FormValue("csrf") != ctx.Cookies("csrf_") {
-			return ctx.SendStatus(http.StatusBadRequest)
-		}
-
 		if ctx.FormValue("EnableJS") == "on" {
 			setcfgCookie(ctx, JSCookieValue, "1")
 		} else if ctx.FormValue("EnableJS") == "off" {
@@ -209,7 +190,7 @@ func StartServer() {
 			setcfgCookie(ctx, ResCookieValue, "11037")
 		}
 
-		return ctx.RedirectBack("/config", http.StatusMovedPermanently)
+		return ctx.RedirectBack("/config", fiber.StatusMovedPermanently)
 	})
 
 	router.Get("/r/:sub", func(ctx *fiber.Ctx) error {
@@ -252,15 +233,10 @@ func StartServer() {
 			JSCookie:   jsenabled == "1",
 			INFCookie:  infscrollenabled == "1",
 			NSFWCookie: nsfwallowed == "1" || !Sub.Data.NSFW,
-			"csrf":     ctx.Locals("csrf"),
 		})
 	})
 
 	router.Post("/loadPosts", func(ctx *fiber.Ctx) error {
-		if ctx.FormValue("csrf") != ctx.Cookies("csrf_") {
-			return ctx.SendStatus(http.StatusBadRequest)
-		}
-
 		subname := url.QueryEscape(ctx.FormValue("sub"))
 		after := url.QueryEscape(ctx.FormValue("after"))
 		sort := url.QueryEscape(ctx.FormValue("t"))
@@ -280,7 +256,6 @@ func StartServer() {
 			"SubName": subname,
 			"Posts":   Posts.Data,
 			INFCookie: infscrollenabled == "1",
-			"csrf":    ctx.Locals("csrf"),
 		})
 	})
 
@@ -294,6 +269,7 @@ func StartServer() {
 }
 
 func SortPostData(Posts *types.Posts, ResolutionToUse int) {
+	OrigRes := ResolutionToUse
 	for i, t := range Posts.Data.Children {
 		func() {
 			defer func() {
@@ -318,6 +294,8 @@ func SortPostData(Posts *types.Posts, ResolutionToUse int) {
 					Post.Preview.AutoChosenPosterQuality = Post.Preview.AutoChosenImageQuality
 				}
 
+				ResolutionToUse = OrigRes
+
 				if strings.Contains(Image.Source.URL, ".gif") {
 					if len(Image.Variants.MP4.Resolutions) > 0 && ResolutionToUse != 11037 {
 						if ResolutionToUse >= len(Image.Variants.MP4.Resolutions) {
@@ -328,45 +306,60 @@ func SortPostData(Posts *types.Posts, ResolutionToUse int) {
 						Post.Preview.AutoChosenImageQuality = Image.Variants.MP4.Source.URL
 					}
 				}
+
+				ResolutionToUse = OrigRes
 			}
 
 			if len(Post.MediaMetaData) > 0 {
-				MediaLinks := make([]string, 0, len(Post.MediaMetaData))
-
 				if len(Post.GalleryData.Items) > 0 {
 					for j := 0; j < len(Post.GalleryData.Items); j++ {
 						ItemID := Post.GalleryData.Items[j].MediaID
 						MediaData := Post.MediaMetaData[ItemID]
-						if len(MediaData.P) > 0 && ResolutionToUse != 11037 {
-							if ResolutionToUse >= len(MediaData.P) {
-								ResolutionToUse = len(MediaData.P) - 1
-							}
-							MediaLinks = append(MediaLinks, MediaData.P[ResolutionToUse].U)
-						} else {
-							MediaLinks = append(MediaLinks, MediaData.S.U)
+						if ResolutionToUse >= len(MediaData.P) {
+							ResolutionToUse = len(MediaData.P) - 1
 						}
+
+						Post.VMediaMetaData = append(Post.VMediaMetaData, vmediaappendor(MediaData, ResolutionToUse))
+						ResolutionToUse = OrigRes
 					}
 				} else {
 					// range is random, therefore the images *may* be mixed up.
 					// may, because there is a chance that images are in order, due to the randomness.
 					// there is no way to sort this.
 					for _, MediaData := range Post.MediaMetaData {
-						if len(MediaData.P) > 0 && ResolutionToUse != 11037 {
-							if ResolutionToUse >= len(MediaData.P) {
-								ResolutionToUse = len(MediaData.P) - 1
-							}
-							MediaLinks = append(MediaLinks, MediaData.P[ResolutionToUse].U)
-						} else {
-							MediaLinks = append(MediaLinks, MediaData.S.U)
+						if ResolutionToUse >= len(MediaData.P) {
+							ResolutionToUse = len(MediaData.P) - 1
 						}
+						Post.VMediaMetaData = append(Post.VMediaMetaData, vmediaappendor(MediaData, ResolutionToUse))
+						ResolutionToUse = OrigRes
 					}
 				}
-
-				Post.VMediaMetaData = MediaLinks
 			}
 
 			Posts.Data.Children[i].Data = *Post
 		}()
+	}
+}
+
+func vmediaappendor(MData types.InternalMetaData, ResolutionToUse int) types.InternalVData {
+	IsVideo := len(MData.S.MP4) > 0
+	var Poster, Source string
+
+	if len(MData.P) > 0 {
+		Poster = MData.P[ResolutionToUse].U
+	}
+
+	if IsVideo {
+		Source = MData.S.MP4
+	} else if ResolutionToUse == 11037 {
+		Source = MData.S.U
+	} else {
+		Source = Poster
+	}
+	return types.InternalVData{
+		Video:                   IsVideo,
+		Link:                    Source,
+		AutoChosenPosterQuality: Poster,
 	}
 }
 

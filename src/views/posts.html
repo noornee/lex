@@ -107,28 +107,39 @@
                 {{end}}
 
                 <!--only filter galleries with 2 or more images.-->
-                {{$lenc := len .Data.MediaMetaData}}
-                {{if gt $lenc 1}}
-                {{$UID := ugidgen}}
-                <div class="m-top10">
-                    <div class="gallery">
-                        {{range $i, $v := .Data.VMediaMetaData}}
-                            <input type="radio" name="{{$UID}}-gallery" id="{{$UID}}-slide{{$i|add}}" {{if eq $i 0}}checked{{end}}>
-                            <div class="gallery-img">
-                                <img src="{{$v}}" class="fitimg">
-                            </div>
-                        {{end}}
-                        <div class="gallery-nav">
-                            {{range $i, $tmp := .Data.VMediaMetaData}}
-                                <label for="{{$UID}}-slide{{$i|add}}"></label>
+                {{if gt (len .Data.MediaMetaData) 1}}
+                    {{$UID := ugidgen}}
+                    <div class="m-top10">
+                        <div class="gallery">
+                            {{range $i, $v := .Data.VMediaMetaData}}
+                                <input type="radio" name="{{$UID}}-gallery" id="{{$UID}}-slide{{$i|add}}" {{if eq $i 0}}checked{{end}}>
+                                <div class="gallery-img">
+                                    {{if $v.Video}}
+                                        <video class="fitimg" preload="none" poster="{{$v.AutoChosenPosterQuality}}" controls loop>
+                                            <source src="{{$v.Link}}" type="video/mp4">
+                                        </video>
+                                    {{else}}
+                                        <img src="{{$v.Link}}" class="fitimg">
+                                    {{end}}
+                                </div>
                             {{end}}
+                            <div class="gallery-nav">
+                                {{range $i, $tmp := .Data.VMediaMetaData}}
+                                    <label for="{{$UID}}-slide{{$i|add}}"></label>
+                                {{end}}
+                            </div>
                         </div>
                     </div>
-                </div>
                 {{else}}
                     {{range .Data.VMediaMetaData}}
                         <div class="m-top10">
-                            <img src="{{.}}" class="fitimg">
+                            {{if .Video}}
+                                <video class="fitimg" preload="none" poster="{{.AutoChosenPosterQuality}}" controls loop>
+                                    <source src="{{.Link}}" type="video/mp4">
+                                </video>
+                            {{else}}
+                                <img src="{{.Link}}" class="fitimg">
+                            {{end}}
                         </div>
                     {{end}}
                 {{end}}
@@ -237,7 +248,6 @@
 {{if .Posts.After}}
     {{if .INFScroll}}
         <form id="LoadPostForm">
-            <input type="hidden" name="csrf" value="{{.csrf}}">
             <input type="hidden" name="sub" value="{{.SubName}}">
             <input type="hidden" name="after" value="{{.Posts.After}}">
             <button type="button" class="loadMorebtn" onclick="loadPosts()" id="LoadPostButton">Load More Posts</button>

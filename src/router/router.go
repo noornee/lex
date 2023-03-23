@@ -251,10 +251,12 @@ func StartServer() {
 		SortPostData(&Posts, ResolutionToUse)
 
 		infscrollenabled := ctx.Cookies(INFCookieValue)
+		jsenabled := ctx.Cookies(JSCookieValue)
 
 		return ctx.Render("posts", fiber.Map{
 			"SubName": subname,
 			"Posts":   Posts.Data,
+			JSCookie:  jsenabled == "1",
 			INFCookie: infscrollenabled == "1",
 		})
 	})

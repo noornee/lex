@@ -19,12 +19,31 @@
                 <input type="hidden" name="EnableJS" value="off">
                 Enable HLS.js
             </label>
+            <pre>
+                PROS:
+                Allows Video Streaming (better for long video loading)
+                HLS Videos will have sound (if there is.)
+                More bandwidth efficient
+
+                CONS:
+                Requires Javascript (duh.)
+                Not compatible with older browsers
+            </pre>
 
             <label>
                 <input type="checkbox" name="EnableInfScroll" {{if .INFScroll}} checked {{end}}>
                 <input type="hidden" name="EnableInfScroll" value="off">
                 Enable Infinite Scroll (JS)
             </label>
+            <pre>
+                PROS:
+                Easier access to older posts
+                More convenient
+
+                CONS:
+                Performance may suffer, a lot. (Posts are not de-loaded)
+                Performance may suffer even more if HLS is enabled.
+            </pre>
             
             <label>
                 <input type="checkbox" name="AllowNSFW" {{if .NSFWAllowed}} checked {{end}}>
@@ -46,13 +65,13 @@
                 </select>
             </label>
             <pre>
-            Which should I choose?
-            For fastest loading speeds, and lowest data usage, choose 0: you will need a microscope as well.
-            For average loading speeds, and average data usage, choose 3: overall, well balanced.
-            For slow loading speeds, and high data usage, choose 5: slow loading, but high image quality.
-            For slowest loading speeds, and highest data usage, choose Source: best image quality, but slow loading speeds.
-            Notice: In some rare cases, source may cause some issues, and so the recommended resolution to use is 5.
-            If a resolution is not available, it will choose the next highest resolution (eg, if 5 is not available, then 4 will be used, and so on.)
+                Which should I choose?
+                For fastest loading speeds, and lowest data usage, choose 0: you will need a microscope as well.
+                For average loading speeds, and average data usage, choose 3: overall, well balanced.
+                For slow loading speeds, and high data usage, choose 5: slow loading, but high image quality.
+                For slowest loading speeds, and highest data usage, choose Source: best image quality, but slow loading speeds.
+                Notice: In some rare cases, source may cause some issues, and so the recommended resolution to use is 5.
+                If a resolution is not available, it will choose the next highest resolution (eg, if 5 is not available, then 4 will be used, and so on.)
             </pre>
 
             <label>

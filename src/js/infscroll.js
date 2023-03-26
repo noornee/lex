@@ -7,7 +7,7 @@ function loadPosts() {
   if (loadPostForm != null && loadPostbtn != null) {
     loadPostbtn.disabled = true;
   
-    fetch("/loadPosts", {
+    return fetch("/loadPosts", {
       method: "POST",
       body: new FormData(loadPostForm)
     }).then(function(resp) {

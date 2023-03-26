@@ -96,7 +96,15 @@
                     {{if or (contains .Data.Preview.AutoChosenImageQuality ".gif") (contains .Data.LinkURL ".gif")}}
                         <div class="m-top10">
                             <video class="fitimg" preload="none" poster="{{.Data.Preview.AutoChosenPosterQuality}}" controls loop>
-                                <source src="{{if .Data.Preview.RedditVideoPreview.FallbackURL}} {{.Data.Preview.RedditVideoPreview.FallbackURL}} {{else}} {{.Data.Preview.AutoChosenImageQuality}} {{end}}" type="video/mp4">
+                                <source src="
+                                {{if and ($.JSEnabled) (.Data.Preview.RedditVideoPreview.HLSURL)}}
+                                    {{.Data.Preview.RedditVideoPreview.HLSURL}}
+                                {{else if .Data.Preview.RedditVideoPreview.FallbackURL}}
+                                    {{.Data.Preview.RedditVideoPreview.FallbackURL}}
+                                {{else}}
+                                    {{.Data.Preview.AutoChosenImageQuality}}
+                                {{end}}"
+                                type="video/mp4">
                             </video>
                         </div>
                     {{else}}
@@ -147,7 +155,12 @@
                 {{if contains .Data.PostHint "hosted:video"}}
                     <div class="pad-10">
                         <video class="fitimg" preload="none" poster="{{.Data.Preview.AutoChosenPosterQuality}}" controls>
-                            <source src="{{.Data.SecureMedia.RedditVideo.FallbackURL}}">
+                            <source src="
+                            {{if and ($.JSEnabled) (.Data.SecureMedia.RedditVideo.HLSURL)}}
+                                {{.Data.SecureMedia.RedditVideo.HLSURL}}
+                            {{else}}
+                                {{.Data.SecureMedia.RedditVideo.FallbackURL}}
+                            {{end}}" type="video/mp4">
                         </video>
                     </div>
                 {{end}}
@@ -250,7 +263,7 @@
         <form id="LoadPostForm">
             <input type="hidden" name="sub" value="{{.SubName}}">
             <input type="hidden" name="after" value="{{.Posts.After}}">
-            <button type="button" class="loadMorebtn" onclick="loadPosts()" id="LoadPostButton">Load More Posts</button>
+            <button type="button" class="loadMorebtn" onclick="loadPosts(){{if .JSEnabled}}.then(loadHLS);{{end}}" id="LoadPostButton">Load More Posts</button>
         </form>
     {{else}}
         <a href="?after={{.Posts.After}}" class="loadMorebtn" style="text-align: center; font-size: 24px;">Go to next Page</a>

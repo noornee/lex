@@ -57,6 +57,7 @@ type Posts struct {
 				// videos
 				SecureMedia struct {
 					RedditVideo struct {
+						HLSURL      string `json:"hls_url"`
 						FallbackURL string `json:"fallback_url"`
 					} `json:"reddit_video"`
 				} `json:"secure_media"`
@@ -87,6 +88,7 @@ type Posts struct {
 						} `json:"variants"`
 					} `json:"images"`
 					RedditVideoPreview struct {
+						HLSURL      string `json:"hls_url"`
 						FallbackURL string `json:"fallback_url"`
 					} `json:"reddit_video_preview"`
 					AutoChosenImageQuality  string

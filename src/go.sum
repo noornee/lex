@@ -140,6 +140,8 @@ github.com/goccy/go-json v0.10.2/go.mod h1:6MelG93GURQebXPDq3khkgXZkazVtN9CRI+MG
 github.com/godbus/dbus/v5 v5.0.4/go.mod h1:xhWf0FNVPg57R7Z0UbKHbJfkEywrmjJnf7w5xrFpKfA=
 github.com/gofiber/fiber/v2 v2.42.0 h1:Fnp7ybWvS+sjNQsFvkhf4G8OhXswvB6Vee8hM/LyS+8=
 github.com/gofiber/fiber/v2 v2.42.0/go.mod h1:3+SGNjqMh5VQH5Vz2Wdi43zTIV16ktlFd3x3R6O1Zlc=
+github.com/gofiber/fiber/v2 v2.43.0 h1:yit3E4kHf178B60p5CQBa/3v+WVuziWMa/G2ZNyLJB0=
+github.com/gofiber/fiber/v2 v2.43.0/go.mod h1:mpS1ZNE5jU+u+BA4FbM+KKnUzJ4wzTK+FT2tG3tU+6I=
 github.com/gofiber/helmet/v2 v2.2.24 h1:5Qo5kjKmC8yJFp8sB22k7fUkW3kjyp5eB38jYVlyDPQ=
 github.com/gofiber/helmet/v2 v2.2.24/go.mod h1:ADBSCgEBgnswL846Gwr06CLlT+ZpTsXpKi4P4o/pPVk=
 github.com/gofiber/template v1.7.5 h1:6Yk/lot2RudQp9u+bmIJqFg7kOaFPQ7+LgDE9drYSp8=

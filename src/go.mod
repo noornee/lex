@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/dustin/go-humanize v1.0.1
 	github.com/goccy/go-json v0.10.2
-	github.com/gofiber/fiber/v2 v2.42.0
+	github.com/gofiber/fiber/v2 v2.43.0
 	github.com/gofiber/helmet/v2 v2.2.24
 	github.com/gofiber/template v1.7.5
 	github.com/microcosm-cc/bluemonday v1.0.23

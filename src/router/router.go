@@ -28,15 +28,17 @@ const (
 	ValidCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	CommonExtNoNSH  = blackfriday.NoIntraEmphasis | blackfriday.Tables | blackfriday.FencedCode | blackfriday.Autolink | blackfriday.Strikethrough | blackfriday.HeadingIDs | blackfriday.BackslashLineBreak | blackfriday.DefinitionLists
 
-	JSCookie   = "JSEnabled"
-	INFCookie  = "INFScroll"
-	NSFWCookie = "NSFWAllowed"
-	ResCookie  = "PreferredResolution"
+	JSCookie      = "JSEnabled"
+	INFCookie     = "INFScroll"
+	NSFWCookie    = "NSFWAllowed"
+	ResCookie     = "PreferredResolution"
+	GalleryCookie = "GalleryNav"
 
-	JSCookieValue   = "js_enabled"
-	INFCookieValue  = "infscroll_enabled"
-	NSFWCookieValue = "nsfw_allowed"
-	ResCookieValue  = "preferred_resolution"
+	JSCookieValue      = "js_enabled"
+	INFCookieValue     = "infscroll_enabled"
+	NSFWCookieValue    = "nsfw_allowed"
+	ResCookieValue     = "preferred_resolution"
+	GalleryCookieValue = "gallery_navigation"
 )
 
 var (
@@ -134,6 +136,7 @@ func StartServer() {
 		jsenabled := ctx.Cookies(JSCookieValue)
 		infscrollenabled := ctx.Cookies(INFCookieValue)
 		nsfwallowed := ctx.Cookies(NSFWCookieValue)
+		gallerynav := ctx.Cookies(GalleryCookieValue)
 
 		preferredres, err := strconv.Atoi(ctx.Cookies(ResCookieValue))
 		if err != nil {
@@ -141,10 +144,11 @@ func StartServer() {
 		}
 
 		return ctx.Render("config", fiber.Map{
-			JSCookie:   jsenabled == "1",
-			INFCookie:  infscrollenabled == "1",
-			NSFWCookie: nsfwallowed == "1",
-			ResCookie:  preferredres,
+			JSCookie:      jsenabled == "1",
+			INFCookie:     infscrollenabled == "1",
+			NSFWCookie:    nsfwallowed == "1",
+			ResCookie:     preferredres,
+			GalleryCookie: gallerynav == "1",
 		})
 	})
 
@@ -190,6 +194,12 @@ func StartServer() {
 			setcfgCookie(ctx, ResCookieValue, "11037")
 		}
 
+		if ctx.FormValue("EnableGalleryNav") == "on" {
+			setcfgCookie(ctx, GalleryCookieValue, "1")
+		} else if ctx.FormValue("EnableGalleryNav") == "off" {
+			setcfgCookie(ctx, GalleryCookieValue, "0")
+		}
+
 		return ctx.RedirectBack("/config", fiber.StatusMovedPermanently)
 	})
 
@@ -225,14 +235,16 @@ func StartServer() {
 		jsenabled := ctx.Cookies(JSCookieValue)
 		infscrollenabled := ctx.Cookies(INFCookieValue)
 		nsfwallowed := ctx.Cookies(NSFWCookieValue)
+		gallerynav := ctx.Cookies(GalleryCookieValue)
 
 		return ctx.Render("sub", fiber.Map{
-			"SubName":  subname,
-			"SubData":  Sub.Data,
-			"Posts":    Posts.Data,
-			JSCookie:   jsenabled == "1",
-			INFCookie:  infscrollenabled == "1",
-			NSFWCookie: nsfwallowed == "1" || !Sub.Data.NSFW,
+			"SubName":     subname,
+			"SubData":     Sub.Data,
+			"Posts":       Posts.Data,
+			JSCookie:      jsenabled == "1",
+			INFCookie:     infscrollenabled == "1",
+			NSFWCookie:    nsfwallowed == "1" || !Sub.Data.NSFW,
+			GalleryCookie: gallerynav == "1",
 		})
 	})
 

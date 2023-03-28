@@ -264,12 +264,14 @@ func StartServer() {
 
 		infscrollenabled := ctx.Cookies(INFCookieValue)
 		jsenabled := ctx.Cookies(JSCookieValue)
+		gallerynav := ctx.Cookies(GalleryCookieValue)
 
 		return ctx.Render("posts", fiber.Map{
-			"SubName": subname,
-			"Posts":   Posts.Data,
-			JSCookie:  jsenabled == "1",
-			INFCookie: infscrollenabled == "1",
+			"SubName":     subname,
+			"Posts":       Posts.Data,
+			JSCookie:      jsenabled == "1",
+			INFCookie:     infscrollenabled == "1",
+			GalleryCookie: gallerynav == "1",
 		})
 	})
 

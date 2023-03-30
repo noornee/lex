@@ -26,8 +26,9 @@
                 More bandwidth efficient
 
                 CONS:
-                Requires Javascript (duh.)
+                Requires Javascript
                 Not compatible with older browsers
+                Performance may suffer
             </pre>
 
             <label>
@@ -41,8 +42,22 @@
                 More convenient
 
                 CONS:
+                Requires Javascript
                 Performance may suffer, a lot. (Posts are not de-loaded)
-                Performance may suffer even more if HLS is enabled.
+            </pre>
+
+            <label>
+                <input type="checkbox" name="EnableGalleryNav" {{if .GalleryNav}} checked {{end}}>
+                <input type="hidden" name="EnableGalleryNav" value="off">
+                Enable Gallery Navigation (JS)
+            </label>
+            <pre>
+                PROS:
+                Enables Gallery Navigation via Arrow Keys
+
+                CONS:
+                Requires Javascript
+                Performance may suffer
             </pre>
             
             <label>

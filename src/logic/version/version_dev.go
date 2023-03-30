@@ -1,5 +1,5 @@
-//go:build release
-// +build release
+//go:build !release
+// +build !release
 
 package version
 
@@ -12,7 +12,7 @@ import (
 )
 
 func CurrentVersion() (ok bool, current int) {
-	intver, err := os.ReadFile("internalversion.txt")
+	intver, err := os.ReadFile("./logic/version/internalversion.txt")
 	if err != nil {
 		log.Println(err)
 		return false, 0

@@ -103,8 +103,7 @@
                                     {{.Data.Preview.RedditVideoPreview.FallbackURL}}
                                 {{else}}
                                     {{.Data.Preview.AutoChosenImageQuality}}
-                                {{end}}"
-                                type="video/mp4">
+                                {{end}}">
                             </video>
                         </div>
                     {{else}}
@@ -118,13 +117,13 @@
                 {{if gt (len .Data.MediaMetaData) 1}}
                     {{$UID := ugidgen}}
                     <div class="m-top10">
-                        <div class="gallery">
+                        <div class="gallery" tabindex="-1">
                             {{range $i, $v := .Data.VMediaMetaData}}
                                 <input type="radio" name="{{$UID}}-gallery" id="{{$UID}}-slide{{$i|add}}" {{if eq $i 0}}checked{{end}}>
                                 <div class="gallery-img">
                                     {{if $v.Video}}
                                         <video class="fitimg" preload="none" poster="{{$v.AutoChosenPosterQuality}}" controls loop>
-                                            <source src="{{$v.Link}}" type="video/mp4">
+                                            <source src="{{$v.Link}}">
                                         </video>
                                     {{else}}
                                         <img src="{{$v.Link}}" class="fitimg">
@@ -143,7 +142,7 @@
                         <div class="m-top10">
                             {{if .Video}}
                                 <video class="fitimg" preload="none" poster="{{.AutoChosenPosterQuality}}" controls loop>
-                                    <source src="{{.Link}}" type="video/mp4">
+                                    <source src="{{.Link}}">
                                 </video>
                             {{else}}
                                 <img src="{{.Link}}" class="fitimg">
@@ -160,7 +159,7 @@
                                 {{.Data.SecureMedia.RedditVideo.HLSURL}}
                             {{else}}
                                 {{.Data.SecureMedia.RedditVideo.FallbackURL}}
-                            {{end}}" type="video/mp4">
+                            {{end}}">
                         </video>
                     </div>
                 {{end}}
@@ -263,7 +262,7 @@
         <form id="LoadPostForm">
             <input type="hidden" name="sub" value="{{.SubName}}">
             <input type="hidden" name="after" value="{{.Posts.After}}">
-            <button type="button" class="loadMorebtn" onclick="loadPosts(){{if .JSEnabled}}.then(loadHLS);{{end}}" id="LoadPostButton">Load More Posts</button>
+            <button type="button" class="loadMorebtn" onclick="loadPosts(){{if .JSEnabled}}.then(loadHLS){{end}}{{if .GalleryNav}}.then(initNav){{end}}" id="LoadPostButton">Load More Posts</button>
         </form>
     {{else}}
         <a href="?after={{.Posts.After}}" class="loadMorebtn" style="text-align: center; font-size: 24px;">Go to next Page</a>

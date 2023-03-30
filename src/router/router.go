@@ -204,11 +204,11 @@ func StartServer() {
 	})
 
 	router.Get("/r/:sub", func(ctx *fiber.Ctx) error {
-		after := url.QueryEscape(ctx.Query("after"))
-		sort := url.QueryEscape(ctx.Query("t"))
-		subname := url.QueryEscape(ctx.Params("sub"))
+		after := ctx.Query("after")
+		flair := url.QueryEscape(ctx.Query("f"))
+		subname := ctx.Params("sub")
 
-		Posts := logic.GetPosts(after, sort, subname)
+		Posts := logic.GetPosts(subname, after, flair)
 
 		if len(Posts.Data.Children) == 0 {
 			return ctx.Render("404", nil)
@@ -237,23 +237,29 @@ func StartServer() {
 		nsfwallowed := ctx.Cookies(NSFWCookieValue)
 		gallerynav := ctx.Cookies(GalleryCookieValue)
 
+		flairuesc, err := url.QueryUnescape(flair)
+		if err != nil {
+			log.Println(err)
+		}
+
 		return ctx.Render("sub", fiber.Map{
-			"SubName":     subname,
-			"SubData":     Sub.Data,
-			"Posts":       Posts.Data,
-			JSCookie:      jsenabled == "1",
-			INFCookie:     infscrollenabled == "1",
-			NSFWCookie:    nsfwallowed == "1" || !Sub.Data.NSFW,
-			GalleryCookie: gallerynav == "1",
+			"SubName":       subname,
+			"SubData":       Sub.Data,
+			"Posts":         Posts.Data,
+			JSCookie:        jsenabled == "1",
+			INFCookie:       infscrollenabled == "1",
+			NSFWCookie:      nsfwallowed == "1" || !Sub.Data.NSFW,
+			GalleryCookie:   gallerynav == "1",
+			"FlairFiltered": flairuesc,
 		})
 	})
 
 	router.Post("/loadPosts", func(ctx *fiber.Ctx) error {
-		subname := url.QueryEscape(ctx.FormValue("sub"))
-		after := url.QueryEscape(ctx.FormValue("after"))
-		sort := url.QueryEscape(ctx.FormValue("t"))
+		subname := ctx.FormValue("sub")
+		after := ctx.FormValue("after")
+		flair := url.QueryEscape(ctx.FormValue("flair"))
 
-		Posts := logic.GetPosts(after, sort, subname)
+		Posts := logic.GetPosts(subname, after, flair)
 
 		ResolutionToUse, err := strconv.Atoi(ctx.Cookies(ResCookieValue))
 		if err != nil {
@@ -266,12 +272,18 @@ func StartServer() {
 		jsenabled := ctx.Cookies(JSCookieValue)
 		gallerynav := ctx.Cookies(GalleryCookieValue)
 
+		flairuesc, err := url.QueryUnescape(flair)
+		if err != nil {
+			log.Println(err)
+		}
+
 		return ctx.Render("posts", fiber.Map{
-			"SubName":     subname,
-			"Posts":       Posts.Data,
-			JSCookie:      jsenabled == "1",
-			INFCookie:     infscrollenabled == "1",
-			GalleryCookie: gallerynav == "1",
+			"SubName":       subname,
+			"Posts":         Posts.Data,
+			JSCookie:        jsenabled == "1",
+			INFCookie:       infscrollenabled == "1",
+			GalleryCookie:   gallerynav == "1",
+			"FlairFiltered": flairuesc,
 		})
 	})
 

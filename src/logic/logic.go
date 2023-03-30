@@ -45,11 +45,16 @@ func GetSubredditData(subreddit string) types.Subreddit {
 	return Sub
 }
 
-func GetPosts(after, sort, subreddit string) types.Posts {
-	url := fmt.Sprintf("https://reddit.com/r/%v.json?raw_json=1", subreddit)
-	if len(sort) != 0 {
-		url = fmt.Sprintf("https://reddit.com/r/%v/top.json?raw_json=1&t=%v", subreddit, sort)
+func GetPosts(subreddit string, after string, flair string) types.Posts {
+	url := fmt.Sprintf("https://reddit.com/r/%v", subreddit)
+	if len(flair) != 0 {
+		// stupid.
+		// https://www.reddit.com/r/ModSupport/comments/hpf6na/filtering_by_flair_broken_for_some_users_on/
+		url += fmt.Sprintf(`/search.json?raw_json=1&q=flair:"%v"&restrict_sr=1&sr_nsfw=1&include_over_18=1`, flair)
+	} else {
+		url += ".json?raw_json=1"
 	}
+
 	if len(after) != 0 {
 		url += fmt.Sprintf("&after=%v", after)
 	}

@@ -271,6 +271,7 @@ func StartServer() {
 		infscrollenabled := ctx.Cookies(INFCookieValue)
 		jsenabled := ctx.Cookies(JSCookieValue)
 		gallerynav := ctx.Cookies(GalleryCookieValue)
+		nsfwallowed := ctx.Cookies(NSFWCookieValue)
 
 		flairuesc, err := url.QueryUnescape(flair)
 		if err != nil {
@@ -282,6 +283,7 @@ func StartServer() {
 			"Posts":         Posts.Data,
 			JSCookie:        jsenabled == "1",
 			INFCookie:       infscrollenabled == "1",
+			NSFWCookie:      nsfwallowed == "1",
 			GalleryCookie:   gallerynav == "1",
 			"FlairFiltered": flairuesc,
 		})

@@ -248,7 +248,7 @@ func StartServer() {
 			"Posts":         Posts.Data,
 			JSCookie:        jsenabled == "1",
 			INFCookie:       infscrollenabled == "1",
-			NSFWCookie:      nsfwallowed == "1" || !Sub.Data.NSFW,
+			NSFWCookie:      nsfwallowed == "1",
 			GalleryCookie:   gallerynav == "1",
 			"FlairFiltered": flairuesc,
 		})

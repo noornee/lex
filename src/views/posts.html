@@ -52,10 +52,12 @@
             {{end}}
         </div>
 
-        <div class="post-content flexbox">
+        <div class="post-content flexbox" {{if and (.Data.NSFW) (not $.NSFWAllowed)}} style="filter: blur(18px);" {{end}}>
             <div class="flex-auto">
                 {{if .Data.PostFlair}}
-                    <span class="post-flair flex-start" style="background-color: {{if .Data.PostFlairHex}}{{.Data.PostFlairHex}}{{else}}#777{{end}};">{{.Data.PostFlair}}</span>
+                    <a href="?f={{.Data.PostFlair}}" style="text-decoration: none; color: inherit;">
+                        <span class="post-flair flex-start" style="background-color: {{if .Data.PostFlairHex}}{{.Data.PostFlairHex}}{{else}}#777{{end}};">{{.Data.PostFlair}}</span>
+                    </a>
                 {{end}}
                 <span class="post-title">{{.Data.Title}}
                     {{if .Data.NSFW}}<span class="nsfwtag">nsfw</span>{{end}}
@@ -262,10 +264,11 @@
         <form id="LoadPostForm">
             <input type="hidden" name="sub" value="{{.SubName}}">
             <input type="hidden" name="after" value="{{.Posts.After}}">
+            <input type="hidden" name="flair" value="{{.FlairFiltered}}">
             <button type="button" class="loadMorebtn" onclick="loadPosts(){{if .JSEnabled}}.then(loadHLS){{end}}{{if .GalleryNav}}.then(initNav){{end}}" id="LoadPostButton">Load More Posts</button>
         </form>
     {{else}}
-        <a href="?after={{.Posts.After}}" class="loadMorebtn" style="text-align: center; font-size: 24px;">Go to next Page</a>
+        <a href="?after={{.Posts.After}}{{if .FlairFiltered}}&f={{.FlairFiltered}}{{end}}" class="loadMorebtn" style="text-align: center; font-size: 24px;">Go to next Page</a>
     {{end}}
 {{else}}
     <span class="gtext" style="font-size: 30px; padding: 30px;">No more posts to load</span>

@@ -106,27 +106,9 @@ func StartServer() {
 		}),
 	)
 
-	// region Load Files
-
-	router.Get("/js/:id", func(ctx *fiber.Ctx) error {
-		id := ctx.Params("id")
-		ctx.Set("Content-Type", "application/javascript")
-		return ctx.SendFile(fmt.Sprintf("js/%v", id))
-	})
-
-	router.Get("/css/:id", func(ctx *fiber.Ctx) error {
-		id := ctx.Params("id")
-		ctx.Set("Content-Type", "text/css")
-		return ctx.SendFile(fmt.Sprintf("css/%v", id))
-	})
-
-	router.Get("/fonts/:id", func(ctx *fiber.Ctx) error {
-		id := ctx.Params("id")
-		ctx.Set("Content-Type", "font/woff2")
-		return ctx.SendFile(fmt.Sprintf("fonts/%v", id))
-	})
-
-	// endregion
+	router.Static("/js", "./js")
+	router.Static("/css", "./css")
+	router.Static("/fonts", "./fonts")
 
 	router.Get("/", func(ctx *fiber.Ctx) error {
 		return ctx.Render("index", nil)

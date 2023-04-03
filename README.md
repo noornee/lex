@@ -8,7 +8,7 @@
   - [Why create Lex?](#why-create-lex)
 - [How do I use Lex?](#how-do-i-use-lex)
   
-[**⚙️ Installation Instructions**](#-installation-instructions)
+[**⚙️ Installation Instructions**](#%EF%B8%8F-installation-instructions)
 - [Building Instructions](#building-instructions)
 - [Downloading Binaries](#downloading-binaries)
 

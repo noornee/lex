@@ -8,17 +8,17 @@
   - [Why create Lex?](#why-create-lex)
 - [How do I use Lex?](#how-do-i-use-lex)
   
-[**⚙️ Installation Instructions**](#⚙️-installation-instructions)
+[**⚙️ Installation Instructions**](#-installation-instructions)
 - [Building Instructions](#building-instructions)
 - [Downloading Binaries](#downloading-binaries)
 
-[**🔬 Compatibility**](#🔬-compatibility)
+[**🔬 Compatibility**](#-compatibility)
 
-[**🚩 Bugs, Issues, and other Important Information**](#🚩-bugs-issues-and-other-important-information)
+[**🚩 Bugs, Issues, and other Important Information**](#-bugs-issues-and-other-important-information)
 
-[**📜 Legal Disclaimer**](#📜-legal-disclaimer)
+[**📜 Legal Disclaimer**](#-legal-disclaimer)
 
-[**🧰 Technologies that were used to create Lex**](#🧰-technologies-that-were-used-to-create-lex)
+[**🧰 Technologies that were used to create Lex**](#-technologies-that-were-used-to-create-lex)
 
 ---
 

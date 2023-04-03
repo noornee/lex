@@ -104,6 +104,21 @@ func StartServer() {
 		compress.New(compress.Config{
 			Level: compress.LevelBestSpeed,
 		}),
+		func(ctx *fiber.Ctx) error {
+			jsenabled := ctx.Cookies(JSCookieValue)
+			infscrollenabled := ctx.Cookies(INFCookieValue)
+			nsfwallowed := ctx.Cookies(NSFWCookieValue)
+			gallerynav := ctx.Cookies(GalleryCookieValue)
+
+			ctx.Bind(fiber.Map{
+				JSCookie:      jsenabled == "1",
+				INFCookie:     infscrollenabled == "1",
+				NSFWCookie:    nsfwallowed == "1",
+				GalleryCookie: gallerynav == "1",
+			})
+
+			return ctx.Next()
+		},
 	)
 
 	router.Static("/js", "./js")
@@ -115,22 +130,13 @@ func StartServer() {
 	})
 
 	router.Get("/config", func(ctx *fiber.Ctx) error {
-		jsenabled := ctx.Cookies(JSCookieValue)
-		infscrollenabled := ctx.Cookies(INFCookieValue)
-		nsfwallowed := ctx.Cookies(NSFWCookieValue)
-		gallerynav := ctx.Cookies(GalleryCookieValue)
-
 		preferredres, err := strconv.Atoi(ctx.Cookies(ResCookieValue))
 		if err != nil {
 			preferredres = 3
 		}
 
 		return ctx.Render("config", fiber.Map{
-			JSCookie:      jsenabled == "1",
-			INFCookie:     infscrollenabled == "1",
-			NSFWCookie:    nsfwallowed == "1",
-			ResCookie:     preferredres,
-			GalleryCookie: gallerynav == "1",
+			ResCookie: preferredres,
 		})
 	})
 
@@ -212,26 +218,17 @@ func StartServer() {
 			ResolutionToUse = 3
 		}
 
-		SortPostData(&Posts, ResolutionToUse)
-
-		jsenabled := ctx.Cookies(JSCookieValue)
-		infscrollenabled := ctx.Cookies(INFCookieValue)
-		nsfwallowed := ctx.Cookies(NSFWCookieValue)
-		gallerynav := ctx.Cookies(GalleryCookieValue)
-
 		flairuesc, err := url.QueryUnescape(flair)
 		if err != nil {
 			log.Println(err)
 		}
 
+		SortPostData(&Posts, ResolutionToUse)
+
 		return ctx.Render("sub", fiber.Map{
 			"SubName":       subname,
 			"SubData":       Sub.Data,
 			"Posts":         Posts.Data,
-			JSCookie:        jsenabled == "1",
-			INFCookie:       infscrollenabled == "1",
-			NSFWCookie:      nsfwallowed == "1",
-			GalleryCookie:   gallerynav == "1",
 			"FlairFiltered": flairuesc,
 		})
 	})
@@ -248,25 +245,16 @@ func StartServer() {
 			ResolutionToUse = 3
 		}
 
-		SortPostData(&Posts, ResolutionToUse)
-
-		infscrollenabled := ctx.Cookies(INFCookieValue)
-		jsenabled := ctx.Cookies(JSCookieValue)
-		gallerynav := ctx.Cookies(GalleryCookieValue)
-		nsfwallowed := ctx.Cookies(NSFWCookieValue)
-
 		flairuesc, err := url.QueryUnescape(flair)
 		if err != nil {
 			log.Println(err)
 		}
 
+		SortPostData(&Posts, ResolutionToUse)
+
 		return ctx.Render("posts", fiber.Map{
 			"SubName":       subname,
 			"Posts":         Posts.Data,
-			JSCookie:        jsenabled == "1",
-			INFCookie:       infscrollenabled == "1",
-			NSFWCookie:      nsfwallowed == "1",
-			GalleryCookie:   gallerynav == "1",
 			"FlairFiltered": flairuesc,
 		})
 	})

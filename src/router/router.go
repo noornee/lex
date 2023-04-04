@@ -67,7 +67,11 @@ func StartServer() {
 		},
 		"sanitize": func(input string) template.HTML {
 			Markdown := blackfriday.Run([]byte(input), blackfriday.WithExtensions(CommonExtNoNSH))
-			SHTML := bluemonday.UGCPolicy().SanitizeBytes(Markdown)
+			SHTML := bluemonday.UGCPolicy().
+				RequireNoFollowOnLinks(true).
+				RequireNoReferrerOnLinks(true).
+				AddTargetBlankToFullyQualifiedLinks(true).
+				SanitizeBytes(Markdown)
 			return template.HTML(SHTML)
 		},
 		"fmtEpochDate": func(input float64) string {
@@ -110,7 +114,7 @@ func StartServer() {
 			nsfwallowed := ctx.Cookies(NSFWCookieValue)
 			gallerynav := ctx.Cookies(GalleryCookieValue)
 
-			ctx.Bind(fiber.Map{
+			ctx.Bind(fiber.Map{ //nolint:errcheck // ctx.Bind always returns nil
 				JSCookie:      jsenabled == "1",
 				INFCookie:     infscrollenabled == "1",
 				NSFWCookie:    nsfwallowed == "1",

@@ -66,27 +66,13 @@
 
                 {{if or (contains .Data.PostHint "link") (contains .Data.PostHint "rich:video")}}
                     <div>
-                        <a href="{{.Data.LinkURL}}" style="font-size:12px" rel="noreferrer noopener nofollow">{{.Data.LinkURL}}
-                            <svg height="16" width="16" version="1.1" viewBox="0 0 512 512" class="gicon">
-                                <path fill-rule="evenodd" d="M96 0v416h416V0H96zM472 376H136V40h336V376M40 472 40 296 40 136 40 96 0 96 0 512 416 512 416 472 376 472M232 312 350 194 350 279 390 279 390 126 237 126 237 166 322 166 204 284z"/>
-                            </svg>
-                        </a>
+                        <a href="{{.Data.LinkURL}}" style="font-size:12px" rel="noreferrer noopener nofollow">{{.Data.LinkURL}}</a>
                     </div>
                 {{end}}
 
                 {{if .Data.SelfText}}
                     <div class="m-top10">
                         <span style="font-size: 14px;">{{.Data.SelfText|sanitize}}</span>
-                    </div>
-                {{end}}
-
-                {{if and (not .Data.PostHint) (.Data.LinkURL)}}
-                    <div>
-                        <a href="{{.Data.LinkURL}}" style="font-size:12px" rel="noreferrer noopener nofollow">{{.Data.LinkURL}}
-                            <svg height="16" width="16" version="1.1" viewBox="0 0 512 512" class="gicon">
-                                <path fill-rule="evenodd" d="M96 0v416h416V0H96zM472 376H136V40h336V376M40 472 40 296 40 136 40 96 0 96 0 512 416 512 416 472 376 472M232 312 350 194 350 279 390 279 390 126 237 126 237 166 322 166 204 284z"/>
-                            </svg>
-                        </a>
                     </div>
                 {{end}}
 
@@ -191,13 +177,13 @@
 
                 <span class="gtext">{{.Data.CommentCount|fmtHumanComma}} Comments</span>
             </div>
-            <div class="l-hovergray">
+            <a href="https://reddit.com{{.Data.Permalink}}" class="l-hovergray" rel="noreferrer noopener nofollow">
                 <svg width="16" height="16" viewBox="0 0 24 24" version="1.1" class="gicon">
                     <path fill-rule="evenodd" d="M18 1C15.7909 1 14 2.79086 14 5C14 5.19436 14.0139 5.38549 14.0407 5.57244L8.4479 8.83625C7.77136 8.31202 6.92212 8 6 8C3.79086 8 2 9.79086 2 12C2 14.2091 3.79086 16 6 16C6.92229 16 7.77167 15.6879 8.44827 15.1635L14.0414 18.4227C14.0141 18.6112 14 18.8039 14 19C14 21.2091 15.7909 23 18 23C20.2091 23 22 21.2091 22 19C22 16.7909 20.2091 15 18 15C17.0797 15 16.232 15.3108 15.5561 15.8332L9.95943 12.5719C9.98617 12.3851 10 12.1942 10 12C10 11.8057 9.98614 11.6146 9.95936 11.4277L15.5522 8.16382C16.2287 8.688 17.0779 9 18 9C20.2091 9 22 7.20914 22 5C22 2.79086 20.2091 1 18 1z"></path>
                 </svg>
 
-                <span class="gtext">Share</span>
-            </div>
+                <span class="gtext">Link to Post</span>
+            </a>
                         
             <div style="float: left; padding: 5px; margin-right: 15px;">
                 <svg width="16" height="16" viewBox="0 0 24 24" version="1.1" class="gicon">

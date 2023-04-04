@@ -79,6 +79,21 @@ html, body {
     }
 }
 
+a {
+    text-decoration: none;
+    transition: 0.5s;
+    border-bottom: 1px solid transparent;
+
+    &:hover:not(.l-hovergray) {
+        border-color: #108dcc;
+    }
+
+    &:link {
+        color: #108dcc;
+        font-weight: bold;
+    }
+}
+
 .l-index {
     font-family: $josefin-sans;
     font-size: 36px;

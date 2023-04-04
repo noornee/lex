@@ -65,7 +65,7 @@
                 </span>
 
                 {{if or (contains .Data.PostHint "link") (contains .Data.PostHint "rich:video")}}
-                    <div>
+                    <div class="m-top10">
                         <a href="{{.Data.LinkURL}}" style="font-size:12px" rel="noreferrer noopener nofollow">{{.Data.LinkURL}}</a>
                     </div>
                 {{end}}

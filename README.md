@@ -76,7 +76,52 @@ To install LEX via automatically built binaries, go to the [releases](https://gi
 After launching, navigate to `localhost:9090/r/{subreddit}`, and you're done.
 
 # 🔬 Compatibility
-dev -> fill this in later (w/ and w/o js (details?))
+
+<figcaption>No JavaScript</figcaption>
+
+| Chrome | Edge | Safari | Firefox | Opera | IE               |
+|:------:|:----:|:------:|:-------:|:-----:|:----------------:|
+| 26>    | 19>  | 6.1>   | 49>     | 12.1> | 11<sup>(?)</sup> |
+
+<details>
+<summary>INFScroll Setting Enabled</summary>
+
+| Chrome | Edge | Safari | Firefox | Opera | IE |
+|:------:|:----:|:------:|:-------:|:-----:|:--:|
+| 42>    | -    | 10.1>  | -       | 29>   | X  |
+
+</details>
+
+<details>
+<summary>GalleryNav Setting Enabled</summary>
+
+| Chrome | Edge | Safari | Firefox | Opera | IE |
+|:------:|:----:|:------:|:-------:|:-----:|:--:|
+| 45>    | -    | 9>     | -       | 32>   | X  |
+
+</details>
+
+<details>
+<summary>HLS Setting Enabled</summary>
+
+| Chrome | Edge | Safari | Firefox | Opera | IE |
+|:------:|:----:|:------:|:-------:|:-----:|:--:|
+| 41>    | ?    | 9>     | -       | ?     | X  |
+
+</details>
+
+<details>
+<summary>Legend</summary>
+
+`>` -> Any equal, or newer version is supported
+
+`?` -> Unsure of compatability
+
+`X` -> Not compatible
+
+`-` -> No newer version required
+
+</details>
 
 <sub>The table displays the recommended versions for browsers, though older versions *may* be compatible to an extent.</sub>
 

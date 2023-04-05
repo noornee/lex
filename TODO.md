@@ -2,7 +2,7 @@
 - [X] No Javascript (or optional config)
 - [X] Better Error Pages
 - [ ] Search bar
-- [ ] Search via flair (optional config to save to file?) (for example `subreddit-flair.txt` (or custom) and it contains flair names)
+- [X] Search via flair (optional config to save to file?) (for example `subreddit-flair.txt` (or custom) and it contains flair names)
 
 ## TYPES
 - [ ] Implement CrossPost
@@ -16,7 +16,7 @@
 
 ## SUBREDDITS / TEMPLATE
 - [ ] Implement Viewing Comments
-- [ ] Implement Share button (Permalink to reddit post)
+- [X] Implement Share button (Permalink to reddit post)
 - [X] Add `Resolution Quality` config (1->5->source)
 - [X] Implement settings page
 - [X] Use SVG instead of Google Icons

@@ -4,7 +4,6 @@ type Subreddit struct {
 	Data struct {
 		Title               string  `json:"title"`
 		PrimaryColor        string  `json:"primary_color"`
-		DisplayName         string  `json:"display_name"`
 		DisplayNamePrefixed string  `json:"display_name_prefixed"`
 		ActiveUserCount     int64   `json:"accounts_active"`
 		MemberCount         int64   `json:"subscribers"`
@@ -19,7 +18,6 @@ type Subreddit struct {
 type Posts struct {
 	Data struct {
 		After string `json:"after"`
-		Dist  int64  `json:"dist"`
 		//GeoFilter any    `json:"geo_filter"` todo
 		Children []struct {
 			Data struct {
@@ -33,7 +31,6 @@ type Posts struct {
 				Pinned       bool    `json:"stickied"`
 				Locked       bool    `json:"locked"`
 				Archived     bool    `json:"archived"`
-				TotalAwards  int64   `json:"total_awards_received"`
 				Awardings    []struct {
 					AwardSubType string `json:"award_sub_type"`
 					Count        int64  `json:"count"`
@@ -52,7 +49,6 @@ type Posts struct {
 				CommentCount  int64  `json:"num_comments"`
 				Permalink     string `json:"permalink"`
 				LinkURL       string `json:"url"`
-				Subreddit     string `json:"subreddit"`
 
 				// videos
 				SecureMedia struct {

@@ -1,15 +1,14 @@
 # LEX
-[![build](https://github.com/cmd777/lex/actions/workflows/build_all_os.yml/badge.svg)](https://github.com/cmd777/lex/actions/workflows/build_all_os.yml)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/cmd777/lex/build_all_os.yml?logo=github&style=flat-square)
 
 # Table of Contents
-**🇺🇸 English**
 
-[**ℹ️ Information about the project**](#-information-about-the-project)
+[**ℹ️ Information about the project**](#ℹ️-information-about-the-project)
 - [What is Lex?](#what-is-lex)
   - [Why create Lex?](#why-create-lex)
 - [How do I use Lex?](#how-do-i-use-lex)
   
-[**⚙️ Installation Instructions**](#-installation-instructions)
+[**⚙️ Installation Instructions**](#%EF%B8%8F-installation-instructions)
 - [Building Instructions](#building-instructions)
 - [Downloading Binaries](#downloading-binaries)
 
@@ -20,14 +19,6 @@
 [**📜 Legal Disclaimer**](#-legal-disclaimer)
 
 [**🧰 Technologies that were used to create Lex**](#-technologies-that-were-used-to-create-lex)
-
-[**📝 Other Information**](#-other-information)
-- [Do I need a reddit account to use Lex?](#do-i-need-a-reddit-account-to-use-lex)
-- [Can I upvote / comment on posts?](#can-i-upvote--comment-on-posts)
-
----
-
-**[🇭🇺 Magyar README](https://github.com/cmd777/lex/blob/main/README_hu.md)**
 
 ---
 
@@ -56,7 +47,7 @@ Unfortunately, unlike other open source reddit frontends, **Lex does not provide
 The only requirement to build the project is [Go](https://go.dev/dl)
 
 If Go is installed, run the following commands in your terminal
-```cmd
+```shell
 git clone https://github.com/cmd777/lex.git
 cd lex
 cd src
@@ -85,9 +76,52 @@ To install LEX via automatically built binaries, go to the [releases](https://gi
 After launching, navigate to `localhost:9090/r/{subreddit}`, and you're done.
 
 # 🔬 Compatibility
-|Chrome  | Edge | Safari | Firefox  | Opera  | IE   |
-|:-----: | :--: | :----: | :------: | :---:  | :--: |
-| > 41   | > 18 | > 10   |  > 48    | > 28   | ❌  |
+
+<figcaption>No JavaScript</figcaption>
+
+| Chrome | Edge | Safari | Firefox | Opera | IE               |
+|:------:|:----:|:------:|:-------:|:-----:|:----------------:|
+| 26>    | 19>  | 6.1>   | 49>     | 12.1> | 11<sup>(?)</sup> |
+
+<details>
+<summary>INFScroll Setting Enabled</summary>
+
+| Chrome | Edge | Safari | Firefox | Opera | IE |
+|:------:|:----:|:------:|:-------:|:-----:|:--:|
+| 42>    | -    | 10.1>  | -       | 29>   | X  |
+
+</details>
+
+<details>
+<summary>GalleryNav Setting Enabled</summary>
+
+| Chrome | Edge | Safari | Firefox | Opera | IE |
+|:------:|:----:|:------:|:-------:|:-----:|:--:|
+| 45>    | -    | 9>     | -       | 32>   | X  |
+
+</details>
+
+<details>
+<summary>HLS Setting Enabled</summary>
+
+| Chrome | Edge | Safari | Firefox | Opera | IE |
+|:------:|:----:|:------:|:-------:|:-----:|:--:|
+| 41>    | ?    | 9>     | -       | ?     | X  |
+
+</details>
+
+<details>
+<summary>Legend</summary>
+
+`>` -> Any equal, or newer version is supported
+
+`?` -> Unsure of compatability
+
+`X` -> Not compatible
+
+`-` -> No newer version required
+
+</details>
 
 <sub>The table displays the recommended versions for browsers, though older versions *may* be compatible to an extent.</sub>
 
@@ -143,13 +177,3 @@ In case of any issues with a post, such as copyright infringement, trademark inf
 - [Open Sans](https://fonts.google.com/specimen/Open+Sans) ➡️ Subreddit font
 - [SVGRepo](https://www.svgrepo.com) ➡️ SVGs
 - [Yqnn's SVG Path Editor](https://github.com/Yqnn/svg-path-editor) ➡️ Was used to edit almost all SVGs
-
-# 📝 Other Information
-
-## Do I need a reddit account to use Lex?
-
-No, a reddit account is not required to use Lex.
-
-## Can I upvote / comment on posts?
-
-Sorry, there are currently no plans to add support to upvoting and commenting.

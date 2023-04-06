@@ -141,17 +141,13 @@ After launching, navigate to `localhost:9090/r/{subreddit}`, and you're done.
 
 # 🚩 Bugs, Issues, and other Important Information
 
-Lex is still in very early stages of development, a lot of features are missing, and it might be prone to bugs, such as text overflowing, gallery buttons acting weird, and more.
+Lex is still in early stages of development, a lot of features are missing, and it might be prone to bugs.
 
-I try to fix most of the critical bugs before pushing any changes, but if you find a bug, feel free to [create an issue](https://github.com/cmd777/lex/issues) for it.
+I try to fix most of the critical bugs before pushing any changes, but if you find a bug, or have any questions, feel free to [create an issue](https://github.com/cmd777/lex/issues) for it.
 
-For the features that are planned to be added, or the things that need to be fixed, you can refer to the [TODO List](https://github.com/cmd777/lex/blob/main/TODO.md)
+For the features that are planned to be added, or the things that need to be fixed, you can once again, take a look at the [issues tab](https://github.com/cmd777/lex/issues) 
 
-<sub>**This list is not complete. Things are added when I find any problems, need to fix something, or from an idea I have.**</sub>
-
-<sub>**The list is not in order of priority.**</sub>
-
-I also work on Lex in my free time as a hobby, so development may be slow, thank you for your patience!
+I work on Lex in my free time as a hobby, so development may be slow, thank you for your patience!
 
 # 📜 Legal Disclaimer
 

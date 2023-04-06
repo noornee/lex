@@ -302,7 +302,7 @@ a {
     &.preview {
         box-shadow: 0 0 2px #0079D3;
         border-radius: 4px;
-        width: 144px
+        max-width: 144px
     }
 }
 

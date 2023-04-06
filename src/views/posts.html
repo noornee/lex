@@ -55,7 +55,7 @@
         <div class="post-content flexbox" {{if and (.Data.NSFW) (not $.NSFWAllowed)}} style="filter: blur(18px);" {{end}}>
             <div class="flex-auto">
                 {{if .Data.PostFlair}}
-                    <a href="?f={{.Data.PostFlair}}" style="text-decoration: none; color: inherit;">
+                    <a href="?f={{.Data.PostFlair}}" style="color: inherit; border: none;">
                         <span class="post-flair flex-start" style="background-color: {{if .Data.PostFlairHex}}{{.Data.PostFlairHex}}{{else}}#777{{end}};">{{.Data.PostFlair}}</span>
                     </a>
                 {{end}}

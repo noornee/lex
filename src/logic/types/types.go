@@ -49,7 +49,6 @@ type Posts struct {
 				CommentCount  int64  `json:"num_comments"`
 				Permalink     string `json:"permalink"`
 				LinkURL       string `json:"url"`
-				Thumbnail     string `json:"thumbnail"`
 
 				// videos
 				SecureMedia struct {

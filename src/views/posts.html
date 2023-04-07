@@ -64,12 +64,6 @@
                     {{if .Data.Spoiler}}<span class="spoilertag">spoiler</span>{{end}}
                 </span>
 
-                {{if or (contains .Data.PostHint "link") (contains .Data.PostHint "rich:video")}}
-                    <div class="m-top10">
-                        <a href="{{.Data.LinkURL}}" style="font-size:12px" rel="noreferrer noopener nofollow">{{.Data.LinkURL}}</a>
-                    </div>
-                {{end}}
-
                 {{if .Data.SelfText}}
                     <div class="m-top10">
                         <span style="font-size: 14px;">{{.Data.SelfText|sanitize}}</span>
@@ -149,6 +143,11 @@
                                 {{.Data.SecureMedia.RedditVideo.FallbackURL}}
                             {{end}}">
                         </video>
+                    </div>
+                {{end}}
+                {{if .Data.LinkURL}}
+                    <div class="m-top10">
+                        <a href="{{.Data.LinkURL}}" style="font-size:12px" rel="noreferrer noopener nofollow">{{.Data.LinkURL}}</a>
                     </div>
                 {{end}}
             </div>

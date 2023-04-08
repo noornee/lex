@@ -340,6 +340,8 @@ func SortPostData(Posts *types.Posts, ResolutionToUse int) {
 				}
 			}
 
+			Post.SelfText = strings.ReplaceAll(Post.SelfText, "&#x200B;", "")
+
 			Posts.Data.Children[i].Data = *Post
 		}()
 	}

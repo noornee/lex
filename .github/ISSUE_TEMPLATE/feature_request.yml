@@ -1,0 +1,21 @@
+name: "Feature Request"
+title: "[Feature]: "
+description: "Create a request for a feature you would like to see added"
+labels: ["🌟 New Feature"]
+
+body:
+  - type: textarea
+    attributes:
+      label: "Feature Description"
+      description: "What is the feature you would like to see added?"
+      placeholder: "A concise description of the feature that you think should be added"
+  
+  - type: checkboxes
+    attributes:
+      label: "Checklist"
+      description: "Check these boxes, to confirm that: "
+      options:
+        - label: "I have checked existing issues, and none describe the feature I'm describing"
+          required: true
+        - label: "I have checked the unsafe branch, and it did not contain a similar feature to mine"
+          required: true

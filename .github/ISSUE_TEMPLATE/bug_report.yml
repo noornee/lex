@@ -1,0 +1,46 @@
+name: "Bug Report"
+title: "[BUG]: "
+description: "Create a bug report so that I can fix it"
+
+body:
+  - type: textarea
+    attributes:
+      label: "Bug Description"
+      description: "Describe the issue that you encountered"
+      placeholder: "A concise explanation of what the issue is"
+    validations:
+      required: true
+  
+  - type: textarea
+    attributes:
+      label: "Expected v Actual Behaviour"
+      description: "What did you expect, and what actually happened?"
+      placeholder: "A detailed explanation of what you expected to happen, v what actually happened."
+    validations:
+      required: true
+  
+  - type: textarea
+    attributes:
+      label: "Steps to reproduce"
+      description: "A short explanation of how you encountered this bug"
+      placeholder: "What did you do at the time the bug occoured?"
+      value: |
+        Steps to Reproduce:
+        1. Go to ...
+        2. Click on ...
+        3. Then ...
+        4. See ...
+    validations:
+      required: true
+
+  - type: checkboxes
+    attributes:
+      label: "Checklist"
+      description: "Check these boxes, to confirm that: "
+      options:
+        - label: "I have checked existing issues, and none describe the current issue I'm facing"
+          required: true
+        - label: "I have checked the unsafe branch, and it did not contain a fix for my issue"
+          required: true
+        - label: "I am using the latest version of LEX"
+          required: true

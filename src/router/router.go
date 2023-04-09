@@ -10,6 +10,7 @@ import (
 	"net/url"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/dustin/go-humanize"
@@ -42,7 +43,7 @@ const (
 )
 
 var (
-	SubCache = make(map[string]types.Subreddit)
+	SubCache sync.Map
 
 	CFGMap = map[string]string{
 		"EnableJS":         JSCookieValue,
@@ -184,7 +185,7 @@ func StartServer() {
 	router.Get("/r/:sub", func(ctx *fiber.Ctx) error {
 		after := ctx.Query("after")
 		flair := url.QueryEscape(ctx.Query("f"))
-		subname := ctx.Params("sub")
+		subname := strings.ToLower(ctx.Params("sub"))
 
 		Posts := logic.GetPosts(subname, after, flair)
 
@@ -196,11 +197,11 @@ func StartServer() {
 		// This will store it in memory, which may not be the best, and a disk based cache would be better.
 		var Sub types.Subreddit
 
-		if scache, exists := SubCache[subname]; exists {
-			Sub = scache
+		if scache, exists := SubCache.Load(subname); exists {
+			Sub = scache.(types.Subreddit)
 		} else {
 			Sub = logic.GetSubredditData(subname)
-			SubCache[subname] = Sub
+			SubCache.Store(subname, Sub)
 		}
 
 		ResolutionToUse, err := strconv.Atoi(ctx.Cookies(ResCookieValue))

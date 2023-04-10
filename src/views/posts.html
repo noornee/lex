@@ -145,6 +145,15 @@
                         </video>
                     </div>
                 {{end}}
+
+                {{if $.TrustUSrc}}
+                    {{if and (not .Data.PostHint) (not .Data.SecureMedia.RedditVideo.FallbackURL) (.Data.LinkURL|qualifiesAsImg)}}
+                        <div class="m-top10">
+                            <img src="{{.Data.LinkURL}}">
+                        </div>
+                    {{end}}
+                {{end}}
+
                 {{if .Data.LinkURL}}
                     <div class="m-top10">
                         <a href="{{.Data.LinkURL}}" style="font-size:12px" rel="noreferrer noopener nofollow">{{.Data.LinkURL}}</a>

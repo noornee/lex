@@ -8,6 +8,7 @@ import (
 	"main/logic/types"
 	"math/rand"
 	"net/url"
+	"path/filepath"
 	"strconv"
 	"strings"
 	"sync"
@@ -34,12 +35,14 @@ const (
 	NSFWCookie    = "NSFWAllowed"
 	ResCookie     = "PreferredResolution"
 	GalleryCookie = "GalleryNav"
+	USRCCookie    = "TrustUSrc"
 
 	JSCookieValue      = "js_enabled"
 	INFCookieValue     = "infscroll_enabled"
 	NSFWCookieValue    = "nsfw_allowed"
 	ResCookieValue     = "preferred_resolution"
 	GalleryCookieValue = "gallery_navigation"
+	USRCCookieValue    = "trust_unknownsources"
 )
 
 var (
@@ -51,6 +54,14 @@ var (
 		"AllowNSFW":        NSFWCookieValue,
 		"PrefRes":          ResCookieValue,
 		"EnableGalleryNav": GalleryCookieValue,
+		"TrustUnknownSrc":  USRCCookieValue,
+	}
+
+	ValidImageExts = map[string]bool{
+		".gif":  true,
+		".png":  true,
+		".jpg":  true,
+		".jpeg": true,
 	}
 )
 
@@ -79,6 +90,9 @@ func StartServer() {
 				AddTargetBlankToFullyQualifiedLinks(true).
 				SanitizeBytes(Markdown)
 			return template.HTML(SHTML)
+		},
+		"qualifiesAsImg": func(input string) bool {
+			return ValidImageExts[filepath.Ext(input)]
 		},
 		"fmtEpochDate": func(input float64) string {
 			return time.Unix(int64(input), 0).Format("Created Jan 02, 2006")
@@ -119,12 +133,14 @@ func StartServer() {
 			infscrollenabled := ctx.Cookies(INFCookieValue)
 			nsfwallowed := ctx.Cookies(NSFWCookieValue)
 			gallerynav := ctx.Cookies(GalleryCookieValue)
+			trustusrc := ctx.Cookies(USRCCookieValue)
 
 			ctx.Bind(fiber.Map{ //nolint:errcheck // ctx.Bind always returns nil
 				JSCookie:      jsenabled == "1",
 				INFCookie:     infscrollenabled == "1",
 				NSFWCookie:    nsfwallowed == "1",
 				GalleryCookie: gallerynav == "1",
+				USRCCookie:    trustusrc == "1",
 			})
 
 			return ctx.Next()

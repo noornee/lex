@@ -67,6 +67,21 @@
             </label>
 
             <label>
+                <input type="checkbox" name="TrustUnknownSrc" {{if .TrustUSrc}} checked {{end}}>
+                <input type="hidden" name="TrustUnknownSrc" value="off">
+                Trust Unknown Image Sources
+            </label>
+            <pre>
+                On really broken subreddits, where we have absolutely no clue what we are looking at,
+                we will allow the URLs that we got to be put in img tags, if they qualify.
+
+                WARNING: This will allow ALL images to be put in img tags. And there is no quality selection.
+                Meaning that upwards of 50mb images or gifs can be put in img tags.
+                Basically, this can have a devastating effect on your bandwidth.
+                Recommended if you have a good connection, that is not metered.
+            </pre>
+
+            <label>
                 Preferred Resolution
                 <select name="PrefRes">
                     <!-- dear lord -->

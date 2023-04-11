@@ -9,6 +9,8 @@ body:
       label: "Feature Description"
       description: "What is the feature you would like to see added?"
       placeholder: "A concise description of the feature that you think should be added"
+    validations:
+      required: true
   
   - type: checkboxes
     attributes:

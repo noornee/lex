@@ -94,6 +94,10 @@ a {
     }
 }
 
+pre {
+    white-space: pre-wrap;
+}
+
 .l-index {
     font-family: $josefin-sans;
     font-size: 36px;
@@ -287,12 +291,11 @@ a {
 
 .m-top10 {
     margin-top: 10px;
-}
-.pad-10 {
+} .pad-10 {
     padding: 10px;
 }
 
-.fitimg {
+img:not(.malign), video {
     max-height: 512px;
     max-width: 512px;
     display: flex;

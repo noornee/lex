@@ -8,8 +8,10 @@ import (
 	"main/logic/types"
 	"math/rand"
 	"net/url"
+	"path/filepath"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/dustin/go-humanize"
@@ -33,16 +35,34 @@ const (
 	NSFWCookie    = "NSFWAllowed"
 	ResCookie     = "PreferredResolution"
 	GalleryCookie = "GalleryNav"
+	USRCCookie    = "TrustUSrc"
 
 	JSCookieValue      = "js_enabled"
 	INFCookieValue     = "infscroll_enabled"
 	NSFWCookieValue    = "nsfw_allowed"
 	ResCookieValue     = "preferred_resolution"
 	GalleryCookieValue = "gallery_navigation"
+	USRCCookieValue    = "trust_unknownsources"
 )
 
 var (
-	SubCache = make(map[string]types.Subreddit)
+	SubCache sync.Map
+
+	CFGMap = map[string]string{
+		"EnableJS":         JSCookieValue,
+		"EnableInfScroll":  INFCookieValue,
+		"AllowNSFW":        NSFWCookieValue,
+		"PrefRes":          ResCookieValue,
+		"EnableGalleryNav": GalleryCookieValue,
+		"TrustUnknownSrc":  USRCCookieValue,
+	}
+
+	ValidImageExts = map[string]bool{
+		".gif":  true,
+		".png":  true,
+		".jpg":  true,
+		".jpeg": true,
+	}
 )
 
 func StartServer() {
@@ -62,9 +82,6 @@ func StartServer() {
 			}
 			return string(ubytes)
 		},
-		"notcontains": func(input, of string) bool {
-			return !strings.Contains(input, of)
-		},
 		"sanitize": func(input string) template.HTML {
 			Markdown := blackfriday.Run([]byte(input), blackfriday.WithExtensions(CommonExtNoNSH))
 			SHTML := bluemonday.UGCPolicy().
@@ -73,6 +90,9 @@ func StartServer() {
 				AddTargetBlankToFullyQualifiedLinks(true).
 				SanitizeBytes(Markdown)
 			return template.HTML(SHTML)
+		},
+		"qualifiesAsImg": func(input string) bool {
+			return ValidImageExts[filepath.Ext(input)]
 		},
 		"fmtEpochDate": func(input float64) string {
 			return time.Unix(int64(input), 0).Format("Created Jan 02, 2006")
@@ -113,12 +133,14 @@ func StartServer() {
 			infscrollenabled := ctx.Cookies(INFCookieValue)
 			nsfwallowed := ctx.Cookies(NSFWCookieValue)
 			gallerynav := ctx.Cookies(GalleryCookieValue)
+			trustusrc := ctx.Cookies(USRCCookieValue)
 
 			ctx.Bind(fiber.Map{ //nolint:errcheck // ctx.Bind always returns nil
 				JSCookie:      jsenabled == "1",
 				INFCookie:     infscrollenabled == "1",
 				NSFWCookie:    nsfwallowed == "1",
 				GalleryCookie: gallerynav == "1",
+				USRCCookie:    trustusrc == "1",
 			})
 
 			return ctx.Next()
@@ -145,51 +167,32 @@ func StartServer() {
 	})
 
 	router.Post("/config", func(ctx *fiber.Ctx) error {
-		if ctx.FormValue("EnableJS") == "on" {
-			setcfgCookie(ctx, JSCookieValue, "1")
-		} else if ctx.FormValue("EnableJS") == "off" {
-			setcfgCookie(ctx, JSCookieValue, "0")
-		}
+		for cookiekey, cookievalue := range CFGMap {
+			switch formvalue := ctx.FormValue(cookiekey); formvalue {
+			case "on":
+				if cookiekey != "PrefRes" {
+					setcfgCookie(ctx, cookievalue, "1")
+				}
+			case "off":
+				if cookiekey != "PrefRes" {
+					setcfgCookie(ctx, cookievalue, "0")
+				}
+			case "0", "1", "2", "3", "4", "5":
+				if cookiekey == "PrefRes" {
+					setcfgCookie(ctx, cookievalue, formvalue)
+				}
+			case "Source":
+				if cookiekey == "PrefRes" {
+					/*
+						ctx.Cookies returns a string, which we will convert to
+						int via strconv.Atoi, but if we set the cookie value to
+						"Source", then it will error out, so set it to a high
+						value that doesn't exist, but is still valid.
+					*/
 
-		if ctx.FormValue("EnableInfScroll") == "on" {
-			setcfgCookie(ctx, INFCookieValue, "1")
-		} else if ctx.FormValue("EnableInfScroll") == "off" {
-			setcfgCookie(ctx, INFCookieValue, "0")
-		}
-
-		if ctx.FormValue("AllowNSFW") == "on" {
-			setcfgCookie(ctx, NSFWCookieValue, "1")
-		} else if ctx.FormValue("AllowNSFW") == "off" {
-			setcfgCookie(ctx, NSFWCookieValue, "0")
-		}
-
-		switch ctx.FormValue("PrefRes") {
-		case "0":
-			setcfgCookie(ctx, ResCookieValue, "0")
-		case "1":
-			setcfgCookie(ctx, ResCookieValue, "1")
-		case "2":
-			setcfgCookie(ctx, ResCookieValue, "2")
-		case "3":
-			setcfgCookie(ctx, ResCookieValue, "3")
-		case "4":
-			setcfgCookie(ctx, ResCookieValue, "4")
-		case "5":
-			setcfgCookie(ctx, ResCookieValue, "5")
-		case "Source":
-			/*
-				ctx.Cookies returns a string, which we will convert to
-				int via strconv.Atoi, but if we set the cookie value to
-				"Source", then it will error out, so set it to a high
-				value that doesn't exist, but is still valid.
-			*/
-			setcfgCookie(ctx, ResCookieValue, "11037")
-		}
-
-		if ctx.FormValue("EnableGalleryNav") == "on" {
-			setcfgCookie(ctx, GalleryCookieValue, "1")
-		} else if ctx.FormValue("EnableGalleryNav") == "off" {
-			setcfgCookie(ctx, GalleryCookieValue, "0")
+					setcfgCookie(ctx, cookievalue, "11037")
+				}
+			}
 		}
 
 		return ctx.RedirectBack("/config", fiber.StatusMovedPermanently)
@@ -198,7 +201,7 @@ func StartServer() {
 	router.Get("/r/:sub", func(ctx *fiber.Ctx) error {
 		after := ctx.Query("after")
 		flair := url.QueryEscape(ctx.Query("f"))
-		subname := ctx.Params("sub")
+		subname := strings.ToLower(ctx.Params("sub"))
 
 		Posts := logic.GetPosts(subname, after, flair)
 
@@ -210,11 +213,11 @@ func StartServer() {
 		// This will store it in memory, which may not be the best, and a disk based cache would be better.
 		var Sub types.Subreddit
 
-		if scache, exists := SubCache[subname]; exists {
-			Sub = scache
+		if scache, exists := SubCache.Load(subname); exists {
+			Sub = scache.(types.Subreddit)
 		} else {
 			Sub = logic.GetSubredditData(subname)
-			SubCache[subname] = Sub
+			SubCache.Store(subname, Sub)
 		}
 
 		ResolutionToUse, err := strconv.Atoi(ctx.Cookies(ResCookieValue))
@@ -339,6 +342,8 @@ func SortPostData(Posts *types.Posts, ResolutionToUse int) {
 					}
 				}
 			}
+
+			Post.SelfText = strings.ReplaceAll(Post.SelfText, "&#x200B;", "")
 
 			Posts.Data.Children[i].Data = *Post
 		}()

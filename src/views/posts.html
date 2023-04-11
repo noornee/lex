@@ -12,13 +12,18 @@
                 {{if .Data.AuthorFlair}}
                     <span class="authorflair">{{.Data.AuthorFlair}}</span>
                 {{end}}
-                &bullet; {{.Data.Created|fmtHumanDate}}
-                {{if .Data.Distinguished}}
-                    &bullet;
+
+                {{if eq .Data.Distinguished "moderator"}}
                     <svg width="16" height="16" viewBox="0 0 32 32" version="1.1" class="licon scale">
                         <path fill-rule="evenodd" d="M16 1c1.562 1.5 6.25 4.5 9.375 4.5 0 1.5 0 4.5 0 6 0 6-4.688 15-9.375 19.5-4.688-4.5-9.375-13.5-9.375-19.5 0-1.5 0-4.5 0-6 3.126 0.001 7.813-2.999 9.375-4.5v0z"></path>
                     </svg>
+                {{else if eq .Data.Distinguished "admin"}}
+                    <svg width="16" height="16" viewBox="0 0 260 260" version="1.1" class="ricon">
+                        <path fill-rule="evenodd" d="M258 2l-16 48L97.06 181.76l-7.23-11.14-11.68-7.58L210 18 258 2zM101.029 238.26l11.314-11.314-31.176-48.02-48.02-31.176-11.314 11.314 31.386 31.386-34.26 37.693c-4.464-.586-9.138.82-12.568 4.249-5.858 5.858-5.858 15.355 0 21.213 5.858 5.858 15.355 5.858 21.213 0 3.428-3.428 4.834-8.1 4.25-12.562l37.695-34.262L101.029 238.26z"></path>
+                    </svg>
                 {{end}}
+
+                &bullet; {{.Data.Created|fmtHumanDate}}
 
                 {{if .Data.Archived}}
                     <svg width="16" height="16" viewBox="0 0 24 24" version="1.1" class="goldicon">

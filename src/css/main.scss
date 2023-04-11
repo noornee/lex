@@ -214,6 +214,11 @@ pre {
     fill: #909090;
 }
 
+.ricon {
+    @extend %badge;
+    fill: #ea0027;
+}
+
 .sicon {
     fill: #C0C0C0;
 }

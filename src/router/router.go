@@ -36,6 +36,7 @@ const (
 	ResCookie     = "PreferredResolution"
 	GalleryCookie = "GalleryNav"
 	USRCCookie    = "TrustUSrc"
+	MathCookie    = "UseAdvMath"
 
 	JSCookieValue      = "js_enabled"
 	INFCookieValue     = "infscroll_enabled"
@@ -43,6 +44,7 @@ const (
 	ResCookieValue     = "preferred_resolution"
 	GalleryCookieValue = "gallery_navigation"
 	USRCCookieValue    = "trust_unknownsources"
+	MathCookieValue    = "advanced_math"
 )
 
 var (
@@ -55,6 +57,7 @@ var (
 		"PrefRes":          ResCookieValue,
 		"EnableGalleryNav": GalleryCookieValue,
 		"TrustUnknownSrc":  USRCCookieValue,
+		"UseAdvancedMath":  MathCookieValue,
 	}
 
 	ValidImageExts = map[string]bool{
@@ -134,6 +137,7 @@ func StartServer() {
 			nsfwallowed := ctx.Cookies(NSFWCookieValue)
 			gallerynav := ctx.Cookies(GalleryCookieValue)
 			trustusrc := ctx.Cookies(USRCCookieValue)
+			advmath := ctx.Cookies(MathCookieValue)
 
 			ctx.Bind(fiber.Map{ //nolint:errcheck // ctx.Bind always returns nil
 				JSCookie:      jsenabled == "1",
@@ -141,6 +145,7 @@ func StartServer() {
 				NSFWCookie:    nsfwallowed == "1",
 				GalleryCookie: gallerynav == "1",
 				USRCCookie:    trustusrc == "1",
+				MathCookie:    advmath == "1",
 			})
 
 			return ctx.Next()

@@ -82,6 +82,20 @@
             </pre>
 
             <label>
+                <input type="checkbox" name="UseAdvancedMath" {{if .UseAdvMath}} checked {{end}}>
+                <input type="hidden" name="UseAdvancedMath" value="off">
+                Use Advanced Math (CSS) (Viewport Sizing)
+            </label>
+            <pre>
+                PROS:
+                Uses clamp to size posts, images
+
+                CONS:
+                Requires newer browsers (see in the github compatability section)
+                May impact performance
+            </pre>
+
+            <label>
                 Preferred Resolution
                 <select name="PrefRes">
                     <!-- dear lord -->

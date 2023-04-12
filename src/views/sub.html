@@ -51,5 +51,16 @@
     {{if .GalleryNav}}
         <script src="/js/gallerynav.js"></script>
     {{end}}
+
+    {{if .UseAdvMath}}
+        <style>
+            img:not(.malign), video {
+                max-width: clamp(256px, 70vw, 512px);
+            }
+            #posts div.post {
+                width: clamp(180px, 80vw, 720px);
+            }
+        </style>
+    {{end}}
 </body>
 </html>

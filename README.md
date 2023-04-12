@@ -111,6 +111,15 @@ After launching, navigate to `localhost:9090/r/{subreddit}`, and you're done.
 </details>
 
 <details>
+<summary>Advanced Math Enabled</summary>
+
+| Chrome | Edge | Safari | Firefox | Opera | IE |
+|:------:|:----:|:------:|:-------:|:-----:|:--:|
+| 79>    | 79>  | 13.1>  | 75>     | 66>   | X  |
+
+</details>
+
+<details>
 <summary>Legend</summary>
 
 `>` -> Any equal, or newer version is supported

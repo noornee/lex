@@ -19,6 +19,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/compress"
 	"github.com/gofiber/fiber/v2/middleware/logger"
+	"github.com/gofiber/fiber/v2/middleware/proxy"
 	fiberrecover "github.com/gofiber/fiber/v2/middleware/recover"
 	"github.com/gofiber/helmet/v2"
 	"github.com/gofiber/template/html"
@@ -63,7 +64,27 @@ var (
 		".jpg":  true,
 		".jpeg": true,
 	}
+
+	RewritePath = map[string]string{
+		"https://v.redd.it":                "/video",
+		"https://i.redd.it":                "/image",
+		"https://a.thumbs.redditmedia.com": "/athumb",
+		"https://b.thumbs.redditmedia.com": "/bthumb",
+		"https://external-preview.redd.it": "/external",
+		"https://preview.redd.it":          "/preview",
+		"https://styles.redditmedia.com":   "/rstyle",
+		"https://www.redditstatic.com":     "/rstatic",
+	}
 )
+
+func RewriteURL(input string) string {
+	for k, v := range RewritePath {
+		if strings.HasPrefix(input, k) {
+			return v + input[len(k):]
+		}
+	}
+	return ""
+}
 
 func StartServer() {
 	// region Template Engine
@@ -72,6 +93,9 @@ func StartServer() {
 
 	TemplateEngine.AddFuncMap(template.FuncMap{
 		"contains": strings.Contains,
+		"sterilizepath": func(input string) string {
+			return RewriteURL(input)
+		},
 		"add": func(input int) int {
 			return input + 1
 		},
@@ -150,6 +174,54 @@ func StartServer() {
 	router.Static("/js", "./js")
 	router.Static("/css", "./css")
 	router.Static("/fonts", "./fonts")
+
+	router.Get("/:proxypath/*", func(ctx *fiber.Ctx) error {
+		fullURL := ctx.Params("*")
+
+		if index := strings.Index(ctx.OriginalURL(), "?"); index != 1 {
+			fullURL += "?" + ctx.OriginalURL()[index+1:]
+		}
+
+		switch ctx.Params("proxypath") {
+		case "video":
+			if err := proxy.Do(ctx, "https://v.redd.it/"+fullURL); err != nil {
+				return err
+			}
+		case "image":
+			if err := proxy.Do(ctx, "https://i.redd.it/"+fullURL); err != nil {
+				return err
+			}
+		case "athumb":
+			if err := proxy.Do(ctx, "https://a.thumbs.redditmedia.com/"+fullURL); err != nil {
+				return err
+			}
+		case "bthumb":
+			if err := proxy.Do(ctx, "https://b.thumbs.redditmedia.com/"+fullURL); err != nil {
+				return err
+			}
+		case "external":
+			if err := proxy.Do(ctx, "https://external-preview.redd.it/"+fullURL); err != nil {
+				return err
+			}
+		case "preview":
+			if err := proxy.Do(ctx, "https://preview.redd.it/"+fullURL); err != nil {
+				return err
+			}
+		case "rstyle":
+			if err := proxy.Do(ctx, "https://styles.redditmedia.com/"+fullURL); err != nil {
+				return err
+			}
+		case "rstatic":
+			if err := proxy.Do(ctx, "https://www.redditstatic.com/"+fullURL); err != nil {
+				return err
+			}
+		default:
+			return ctx.Next()
+		}
+
+		ctx.Response().Header.Del(fiber.HeaderServer)
+		return nil
+	})
 
 	router.Get("/", func(ctx *fiber.Ctx) error {
 		return ctx.Render("index", nil)
@@ -268,7 +340,7 @@ func StartServer() {
 
 	// NoRoute
 	router.Use(func(ctx *fiber.Ctx) error {
-		return ctx.Render("404", nil)
+		return ctx.Status(fiber.StatusNotFound).Render("404", nil)
 	})
 
 	// localhost:9090

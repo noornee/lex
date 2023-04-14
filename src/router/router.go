@@ -145,9 +145,11 @@ func StartServer() {
 		logger.New(),
 		fiberrecover.New(),
 		helmet.New(helmet.Config{
-			XSSProtection:      "1; mode=block",
-			ContentTypeNosniff: "nosniff",
-			XFrameOptions:      "DENY",
+			XSSProtection:         "1; mode=block",
+			ContentTypeNosniff:    "nosniff",
+			XFrameOptions:         "DENY",
+			ContentSecurityPolicy: "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'self';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests",
+			ReferrerPolicy:        "no-referrer",
 		}),
 		compress.New(compress.Config{
 			Level: compress.LevelBestSpeed,

@@ -19,6 +19,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/compress"
 	"github.com/gofiber/fiber/v2/middleware/logger"
+	"github.com/gofiber/fiber/v2/middleware/proxy"
 	fiberrecover "github.com/gofiber/fiber/v2/middleware/recover"
 	"github.com/gofiber/helmet/v2"
 	"github.com/gofiber/template/html"
@@ -36,6 +37,7 @@ const (
 	ResCookie     = "PreferredResolution"
 	GalleryCookie = "GalleryNav"
 	USRCCookie    = "TrustUSrc"
+	MathCookie    = "UseAdvMath"
 
 	JSCookieValue      = "js_enabled"
 	INFCookieValue     = "infscroll_enabled"
@@ -43,6 +45,7 @@ const (
 	ResCookieValue     = "preferred_resolution"
 	GalleryCookieValue = "gallery_navigation"
 	USRCCookieValue    = "trust_unknownsources"
+	MathCookieValue    = "advanced_math"
 )
 
 var (
@@ -55,6 +58,7 @@ var (
 		"PrefRes":          ResCookieValue,
 		"EnableGalleryNav": GalleryCookieValue,
 		"TrustUnknownSrc":  USRCCookieValue,
+		"UseAdvancedMath":  MathCookieValue,
 	}
 
 	ValidImageExts = map[string]bool{
@@ -63,7 +67,28 @@ var (
 		".jpg":  true,
 		".jpeg": true,
 	}
+
+	RewritePath = map[string]string{
+		"https://v.redd.it":                "/video",
+		"https://i.redd.it":                "/image",
+		"https://a.thumbs.redditmedia.com": "/athumb",
+		"https://b.thumbs.redditmedia.com": "/bthumb",
+		"https://external-preview.redd.it": "/external",
+		"https://preview.redd.it":          "/preview",
+		"https://styles.redditmedia.com":   "/rstyle",
+		"https://www.redditstatic.com":     "/rstatic",
+		"https://i.imgur.com":              "/imgur",
+	}
 )
+
+func RewriteURL(input string) string {
+	for k, v := range RewritePath {
+		if strings.HasPrefix(input, k) {
+			return v + input[len(k):]
+		}
+	}
+	return input
+}
 
 func StartServer() {
 	// region Template Engine
@@ -72,6 +97,9 @@ func StartServer() {
 
 	TemplateEngine.AddFuncMap(template.FuncMap{
 		"contains": strings.Contains,
+		"sterilizepath": func(input string) string {
+			return RewriteURL(input)
+		},
 		"add": func(input int) int {
 			return input + 1
 		},
@@ -121,9 +149,11 @@ func StartServer() {
 		logger.New(),
 		fiberrecover.New(),
 		helmet.New(helmet.Config{
-			XSSProtection:      "1; mode=block",
-			ContentTypeNosniff: "nosniff",
-			XFrameOptions:      "DENY",
+			XSSProtection:         "1; mode=block",
+			ContentTypeNosniff:    "nosniff",
+			XFrameOptions:         "DENY",
+			ContentSecurityPolicy: "default-src 'self';form-action 'self';worker-src 'self' blob:;frame-ancestors 'none';script-src-attr 'self' 'unsafe-inline';style-src 'self' 'unsafe-inline';upgrade-insecure-requests",
+			ReferrerPolicy:        "no-referrer",
 		}),
 		compress.New(compress.Config{
 			Level: compress.LevelBestSpeed,
@@ -134,6 +164,7 @@ func StartServer() {
 			nsfwallowed := ctx.Cookies(NSFWCookieValue)
 			gallerynav := ctx.Cookies(GalleryCookieValue)
 			trustusrc := ctx.Cookies(USRCCookieValue)
+			advmath := ctx.Cookies(MathCookieValue)
 
 			ctx.Bind(fiber.Map{ //nolint:errcheck // ctx.Bind always returns nil
 				JSCookie:      jsenabled == "1",
@@ -141,6 +172,7 @@ func StartServer() {
 				NSFWCookie:    nsfwallowed == "1",
 				GalleryCookie: gallerynav == "1",
 				USRCCookie:    trustusrc == "1",
+				MathCookie:    advmath == "1",
 			})
 
 			return ctx.Next()
@@ -150,6 +182,58 @@ func StartServer() {
 	router.Static("/js", "./js")
 	router.Static("/css", "./css")
 	router.Static("/fonts", "./fonts")
+
+	router.Get("/:proxypath/*", func(ctx *fiber.Ctx) error {
+		fullURL := ctx.Params("*")
+
+		if index := strings.Index(ctx.OriginalURL(), "?"); index != 1 {
+			fullURL += "?" + ctx.OriginalURL()[index+1:]
+		}
+
+		switch ctx.Params("proxypath") {
+		case "video":
+			if err := proxy.Do(ctx, "https://v.redd.it/"+fullURL); err != nil {
+				return err
+			}
+		case "image":
+			if err := proxy.Do(ctx, "https://i.redd.it/"+fullURL); err != nil {
+				return err
+			}
+		case "athumb":
+			if err := proxy.Do(ctx, "https://a.thumbs.redditmedia.com/"+fullURL); err != nil {
+				return err
+			}
+		case "bthumb":
+			if err := proxy.Do(ctx, "https://b.thumbs.redditmedia.com/"+fullURL); err != nil {
+				return err
+			}
+		case "external":
+			if err := proxy.Do(ctx, "https://external-preview.redd.it/"+fullURL); err != nil {
+				return err
+			}
+		case "preview":
+			if err := proxy.Do(ctx, "https://preview.redd.it/"+fullURL); err != nil {
+				return err
+			}
+		case "rstyle":
+			if err := proxy.Do(ctx, "https://styles.redditmedia.com/"+fullURL); err != nil {
+				return err
+			}
+		case "rstatic":
+			if err := proxy.Do(ctx, "https://www.redditstatic.com/"+fullURL); err != nil {
+				return err
+			}
+		case "imgur":
+			if err := proxy.Do(ctx, "https://i.imgur.com/"+fullURL); err != nil {
+				return err
+			}
+		default:
+			return ctx.Next()
+		}
+
+		ctx.Response().Header.Del(fiber.HeaderServer)
+		return nil
+	})
 
 	router.Get("/", func(ctx *fiber.Ctx) error {
 		return ctx.Render("index", nil)
@@ -268,7 +352,7 @@ func StartServer() {
 
 	// NoRoute
 	router.Use(func(ctx *fiber.Ctx) error {
-		return ctx.Render("404", nil)
+		return ctx.Status(fiber.StatusNotFound).Render("404", nil)
 	})
 
 	// localhost:9090
@@ -294,10 +378,10 @@ func SortPostData(Posts *types.Posts, ResolutionToUse int) {
 					if ResolutionToUse >= len(Image.Resolutions) {
 						ResolutionToUse = len(Image.Resolutions) - 1
 					}
-					Post.Preview.AutoChosenImageQuality = Image.Resolutions[ResolutionToUse].URL
+					Post.Preview.AutoChosenImageQuality = RewriteURL(Image.Resolutions[ResolutionToUse].URL)
 					Post.Preview.AutoChosenPosterQuality = Post.Preview.AutoChosenImageQuality
 				} else {
-					Post.Preview.AutoChosenImageQuality = Image.Source.URL
+					Post.Preview.AutoChosenImageQuality = RewriteURL(Image.Source.URL)
 					Post.Preview.AutoChosenPosterQuality = Post.Preview.AutoChosenImageQuality
 				}
 
@@ -308,9 +392,9 @@ func SortPostData(Posts *types.Posts, ResolutionToUse int) {
 						if ResolutionToUse >= len(Image.Variants.MP4.Resolutions) {
 							ResolutionToUse = len(Image.Variants.MP4.Resolutions) - 1
 						}
-						Post.Preview.AutoChosenImageQuality = Image.Variants.MP4.Resolutions[ResolutionToUse].URL
+						Post.Preview.AutoChosenImageQuality = RewriteURL(Image.Variants.MP4.Resolutions[ResolutionToUse].URL)
 					} else {
-						Post.Preview.AutoChosenImageQuality = Image.Variants.MP4.Source.URL
+						Post.Preview.AutoChosenImageQuality = RewriteURL(Image.Variants.MP4.Source.URL)
 					}
 				}
 
@@ -343,6 +427,10 @@ func SortPostData(Posts *types.Posts, ResolutionToUse int) {
 				}
 			}
 
+			if len(Post.LinkURL) > 0 {
+				Post.LinkURL = RewriteURL(Post.LinkURL)
+			}
+
 			Post.SelfText = strings.ReplaceAll(Post.SelfText, "&#x200B;", "")
 
 			Posts.Data.Children[i].Data = *Post
@@ -355,13 +443,13 @@ func vmediaappendor(MData types.InternalMetaData, ResolutionToUse int) types.Int
 	var Poster, Source string
 
 	if len(MData.P) > 0 {
-		Poster = MData.P[ResolutionToUse].U
+		Poster = RewriteURL(MData.P[ResolutionToUse].U)
 	}
 
 	if IsVideo {
-		Source = MData.S.MP4
+		Source = RewriteURL(MData.S.MP4)
 	} else if ResolutionToUse == 11037 {
-		Source = MData.S.U
+		Source = RewriteURL(MData.S.U)
 	} else {
 		Source = Poster
 	}

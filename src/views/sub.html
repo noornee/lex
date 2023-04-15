@@ -10,10 +10,10 @@
 <body>
     {{template "navbar" .}}
     <div class="content">
-        <span style="display:block; padding:15px; background: url({{.SubData.Banner}}) center center/cover no-repeat; height: 192px; {{if and (.SubData.PrimaryColor) (not .SubData.Banner) }} background-color: {{.SubData.PrimaryColor}}; {{end}}"></span>
+        <span style="display:block; padding:15px; background: url({{.SubData.Banner|sterilizepath}}) center center/cover no-repeat; height: 192px; {{if and (.SubData.PrimaryColor) (not .SubData.Banner) }} background-color: {{.SubData.PrimaryColor}}; {{end}}"></span>
         <div class="subinfo">
             <div class="ext">
-                <img src="{{.SubData.CommunityIcon}}" class="img" {{if and (.SubData.PrimaryColor) (not .SubData.CommunityIcon) }} style="background-color: {{.SubData.PrimaryColor}};" {{end}}>
+                <img src="{{.SubData.CommunityIcon|sterilizepath}}" class="img" {{if and (.SubData.PrimaryColor) (not .SubData.CommunityIcon) }} style="background-color: {{.SubData.PrimaryColor}};" {{end}}>
                 <span class="ltext ltype1">{{.SubData.Title}}</span>
                 <span class="ltext ltype2">{{.SubData.DisplayNamePrefixed}} &bullet; {{.SubData.Created|fmtEpochDate}} ({{.SubData.Created|fmtHumanDate}}) &bullet; {{.SubData.ActiveUserCount|fmtHumanComma}} Active Users &bullet; {{.SubData.MemberCount|fmtHumanComma}} Members {{if .SubData.PrimaryColor}} &bullet; <span class="primarycolorcase" style="background-color: {{.SubData.PrimaryColor}};">&nbsp;</span> {{.SubData.PrimaryColor}} Primary color {{end}}</span>
                 <span class="ltext ltype2">{{.SubData.Description}}</span>
@@ -50,6 +50,17 @@
 
     {{if .GalleryNav}}
         <script src="/js/gallerynav.js"></script>
+    {{end}}
+
+    {{if .UseAdvMath}}
+        <style>
+            img:not(.malign), video {
+                max-width: clamp(256px, 70vw, 512px);
+            }
+            #posts div.post {
+                width: clamp(180px, 80vw, 720px);
+            }
+        </style>
     {{end}}
 </body>
 </html>

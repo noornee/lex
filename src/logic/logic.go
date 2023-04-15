@@ -1,34 +1,30 @@
 package logic
 
 import (
-	"crypto/tls"
 	"fmt"
 	"log"
 	"main/logic/types"
 	"net/http"
 
 	"github.com/goccy/go-json"
-)
-
-var (
-	Client = http.Client{
-		Transport: &http.Transport{
-			TLSClientConfig: &tls.Config{},
-		},
-	}
+	"github.com/gofiber/fiber/v2/utils"
 )
 
 func GetSubredditData(subreddit string) types.Subreddit {
-	url := fmt.Sprintf("https://reddit.com/r/%v/about.json?raw_json=1", subreddit)
+	url := fmt.Sprintf("https://www.reddit.com/r/%v/about.json?raw_json=1", subreddit)
 
 	req, err := http.NewRequest(http.MethodGet, url, nil)
 	if err != nil {
 		log.Println(err)
 	}
 
-	req.Header.Set("User-Agent", "go:lex:cmd777")
+	req.Header.Set("User-Agent", "go:lex:cmd777-with-"+utils.UUIDv4())
+	req.Header.Set("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8")
+	req.Header.Set("Accept-Language", "en-US,en;q=0.5")
+	req.Header.Set("Connection", "keep-alive")
+	req.Header.Set("Host", "www.reddit.com")
 
-	resp, err := Client.Do(req)
+	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		log.Println(err)
 	}
@@ -46,7 +42,7 @@ func GetSubredditData(subreddit string) types.Subreddit {
 }
 
 func GetPosts(subreddit string, after string, flair string) types.Posts {
-	url := fmt.Sprintf("https://reddit.com/r/%v", subreddit)
+	url := fmt.Sprintf("https://www.reddit.com/r/%v", subreddit)
 	if len(flair) != 0 {
 		// stupid.
 		// https://www.reddit.com/r/ModSupport/comments/hpf6na/filtering_by_flair_broken_for_some_users_on/
@@ -64,9 +60,13 @@ func GetPosts(subreddit string, after string, flair string) types.Posts {
 		log.Println(err)
 	}
 
-	req.Header.Set("User-Agent", "go:lex:cmd777")
+	req.Header.Set("User-Agent", "go:lex:cmd777-with-"+utils.UUIDv4())
+	req.Header.Set("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8")
+	req.Header.Set("Accept-Language", "en-US,en;q=0.5")
+	req.Header.Set("Connection", "keep-alive")
+	req.Header.Set("Host", "www.reddit.com")
 
-	resp, err := Client.Do(req)
+	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		log.Println(err)
 	}

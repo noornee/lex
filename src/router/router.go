@@ -74,6 +74,7 @@ var (
 		"https://preview.redd.it":          "/preview",
 		"https://styles.redditmedia.com":   "/rstyle",
 		"https://www.redditstatic.com":     "/rstatic",
+		"https://i.imgur.com":              "/imgur",
 	}
 )
 
@@ -215,6 +216,10 @@ func StartServer() {
 			}
 		case "rstatic":
 			if err := proxy.Do(ctx, "https://www.redditstatic.com/"+fullURL); err != nil {
+				return err
+			}
+		case "imgur":
+			if err := proxy.Do(ctx, "https://i.imgur.com/"+fullURL); err != nil {
 				return err
 			}
 		default:

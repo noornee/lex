@@ -83,7 +83,7 @@ func RewriteURL(input string) string {
 			return v + input[len(k):]
 		}
 	}
-	return ""
+	return input
 }
 
 func StartServer() {
@@ -148,7 +148,7 @@ func StartServer() {
 			XSSProtection:         "1; mode=block",
 			ContentTypeNosniff:    "nosniff",
 			XFrameOptions:         "DENY",
-			ContentSecurityPolicy: "default-src 'none';font-src 'self';form-action 'self';frame-ancestors 'none';img-src 'self';script-src 'self';script-src-attr 'self';style-src 'self' 'unsafe-inline';upgrade-insecure-requests",
+			ContentSecurityPolicy: "default-src 'self';form-action 'self';worker-src 'self' blob:;frame-ancestors 'none';script-src-attr 'self' 'unsafe-inline';style-src 'self' 'unsafe-inline';upgrade-insecure-requests",
 			ReferrerPolicy:        "no-referrer",
 		}),
 		compress.New(compress.Config{
@@ -368,10 +368,10 @@ func SortPostData(Posts *types.Posts, ResolutionToUse int) {
 					if ResolutionToUse >= len(Image.Resolutions) {
 						ResolutionToUse = len(Image.Resolutions) - 1
 					}
-					Post.Preview.AutoChosenImageQuality = Image.Resolutions[ResolutionToUse].URL
+					Post.Preview.AutoChosenImageQuality = RewriteURL(Image.Resolutions[ResolutionToUse].URL)
 					Post.Preview.AutoChosenPosterQuality = Post.Preview.AutoChosenImageQuality
 				} else {
-					Post.Preview.AutoChosenImageQuality = Image.Source.URL
+					Post.Preview.AutoChosenImageQuality = RewriteURL(Image.Source.URL)
 					Post.Preview.AutoChosenPosterQuality = Post.Preview.AutoChosenImageQuality
 				}
 
@@ -382,9 +382,9 @@ func SortPostData(Posts *types.Posts, ResolutionToUse int) {
 						if ResolutionToUse >= len(Image.Variants.MP4.Resolutions) {
 							ResolutionToUse = len(Image.Variants.MP4.Resolutions) - 1
 						}
-						Post.Preview.AutoChosenImageQuality = Image.Variants.MP4.Resolutions[ResolutionToUse].URL
+						Post.Preview.AutoChosenImageQuality = RewriteURL(Image.Variants.MP4.Resolutions[ResolutionToUse].URL)
 					} else {
-						Post.Preview.AutoChosenImageQuality = Image.Variants.MP4.Source.URL
+						Post.Preview.AutoChosenImageQuality = RewriteURL(Image.Variants.MP4.Source.URL)
 					}
 				}
 
@@ -417,6 +417,10 @@ func SortPostData(Posts *types.Posts, ResolutionToUse int) {
 				}
 			}
 
+			if len(Post.LinkURL) > 0 {
+				Post.LinkURL = RewriteURL(Post.LinkURL)
+			}
+
 			Post.SelfText = strings.ReplaceAll(Post.SelfText, "&#x200B;", "")
 
 			Posts.Data.Children[i].Data = *Post
@@ -429,13 +433,13 @@ func vmediaappendor(MData types.InternalMetaData, ResolutionToUse int) types.Int
 	var Poster, Source string
 
 	if len(MData.P) > 0 {
-		Poster = MData.P[ResolutionToUse].U
+		Poster = RewriteURL(MData.P[ResolutionToUse].U)
 	}
 
 	if IsVideo {
-		Source = MData.S.MP4
+		Source = RewriteURL(MData.S.MP4)
 	} else if ResolutionToUse == 11037 {
-		Source = MData.S.U
+		Source = RewriteURL(MData.S.U)
 	} else {
 		Source = Poster
 	}

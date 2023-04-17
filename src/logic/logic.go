@@ -92,3 +92,51 @@ func GetPosts(subreddit, after, flair string) types.Posts {
 
 	return posts
 }
+
+func GetComments(subreddit, id string) (types.Post, types.Comments) {
+	url := fmt.Sprintf("https://www.reddit.com/r/%v/comments/%v.json?raw_json=1", subreddit, id)
+
+	req, err := http.NewRequestWithContext(context.Background(), http.MethodGet, url, nil)
+	if err != nil {
+		log.Println(err)
+	}
+
+	req.Header.Set("User-Agent", "go:lex:cmd777-with-"+utils.UUIDv4())
+	req.Header.Set("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8")
+	req.Header.Set("Accept-Language", "en-US,en;q=0.5")
+	req.Header.Set("Connection", "keep-alive")
+	req.Header.Set("Host", "www.reddit.com")
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		log.Println(err)
+	}
+
+	defer func() {
+		if closeerr := resp.Body.Close(); closeerr != nil {
+			log.Println("Failed to close response body", closeerr)
+		}
+	}()
+
+	var commentsunmarshal types.CommentsToUnmarshal
+
+	err = json.NewDecoder(resp.Body).Decode(&commentsunmarshal.Data)
+	if err != nil {
+		log.Println(err)
+	}
+
+	var post types.Post
+	var comments types.Comments
+
+	err = json.Unmarshal(commentsunmarshal.Data[0], &post)
+	if err != nil {
+		log.Println(err)
+	}
+
+	err = json.Unmarshal(commentsunmarshal.Data[1], &comments)
+	if err != nil {
+		log.Println(err)
+	}
+
+	return post, comments
+}

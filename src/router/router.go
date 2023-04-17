@@ -321,6 +321,18 @@ func StartServer() {
 		})
 	})
 
+	router.Get("/r/:sub/comments/:id", func(ctx *fiber.Ctx) error {
+		subname := strings.ToLower(ctx.Params("sub"))
+		cid := ctx.Params("id")
+
+		post, comm := logic.GetComments(subname, cid)
+
+		return ctx.Render("test", fiber.Map{
+			"Post":     post.Data,
+			"Comments": comm.Data,
+		})
+	})
+
 	router.Post("/loadPosts", func(ctx *fiber.Ctx) error {
 		subname := ctx.FormValue("sub")
 		after := ctx.FormValue("after")

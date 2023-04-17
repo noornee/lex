@@ -1,5 +1,10 @@
 package types
 
+import (
+	"github.com/goccy/go-json"
+)
+
+// The Subreddit and Posts thmeselves
 type Subreddit struct {
 	Data struct {
 		Title               string  `json:"title"`
@@ -110,6 +115,7 @@ type Posts struct {
 	} `json:"data"`
 }
 
+// MediaMetaData - Galleries
 type InternalVData struct {
 	Video                   bool
 	Link                    string
@@ -126,4 +132,29 @@ type InternalMetaData struct {
 		MP4 string `json:"mp4"`
 	} `json:"s"`
 	// HLSUrl string `json:"hlsUrl"`
+}
+
+// Comments
+type CommentsToUnmarshal struct {
+	Data []json.RawMessage `json:"data"`
+}
+
+type Post struct {
+	Data struct {
+		Children []struct {
+			Data struct {
+				Title string `json:"title"`
+			} `json:"data"`
+		} `json:"children"`
+	} `json:"data"`
+}
+
+type Comments struct {
+	Data struct {
+		Children []struct {
+			Data struct {
+				Body string `json:"body"`
+			} `json:"data"`
+		} `json:"children"`
+	} `json:"data"`
 }

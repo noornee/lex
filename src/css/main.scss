@@ -340,9 +340,10 @@ img:not(.malign), video {
     .gallery-nav {
         position: absolute;
         bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
         display: flex;
+        justify-content: center;
+        align-content: center;
+        width: 100%;
 
         label {
             width: 10px;

@@ -4,6 +4,7 @@
 package version
 
 import (
+	"context"
 	"io"
 	"log"
 	"net/http"

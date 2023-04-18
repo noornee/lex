@@ -1,5 +1,27 @@
 # LEX <br> ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/cmd777/lex/build_all_os.yml?logo=github&style=flat-square)
 
+> **Note** about the current status of the project.
+
+### First and foremost, thank you for showing interest in LEX. It means a lot to me.
+
+Unforunately, due to my deteriorating mental health, I need to stop working on this project.
+<br>As I absolutely do not feel any more satisfaction from working on this project.
+<br> And I don't really see a point to continue for now, as interest in it is next to non-existant.
+
+### What next?
+
+The repository will not be archived, but development will be halted for an indefinite time.
+
+No new features will be added, and existing issues are not going to be worked on.
+
+I may update the dependencies every now and then.
+
+**However, if you find an app breaking bug, please, do report it. While it is not guaranteed, I may try to fix it. Sorry.**
+
+### Thank you for reading, and have a wonderful day.
+
+---
+
 ## Table of Contents
 
 [**ℹ️ Information about the project**](#ℹ️-information-about-the-project)

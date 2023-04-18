@@ -99,6 +99,11 @@ func StartServer() {
 	templateEngine.AddFuncMap(template.FuncMap{
 		"contains":      strings.Contains,
 		"sterilizepath": RewriteURL,
+		// REMOVE ME LATER
+		"stringify": func(input []byte) string {
+			return string(input)
+		},
+		// REMOVE ME LATER
 		"add": func(input int) int {
 			return input + 1
 		},

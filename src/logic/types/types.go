@@ -117,10 +117,8 @@ type internalPostData struct {
 }
 
 type internalCommentData struct {
-	Body string `json:"body"`
-	/* Replies struct {
-		Data *internalCommentData `json:"data"`
-	} `json:"replies"` */
+	Body    string          `json:"body"`
+	Replies json.RawMessage `json:"replies"`
 }
 
 // MediaMetaData - Galleries

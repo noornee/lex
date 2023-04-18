@@ -11,9 +11,16 @@
         {{.Data.Title}}
     {{end}}
     <br><br>
+    <hr>
 
     {{range .Comments.Children}}
         {{.Data.Body}}
+        <br><br>
+    {{end}}
+    <hr>
+
+    {{range .Comments.Children}}
+        {{.Data.Replies|stringify}}
         <br><br>
     {{end}}
 </body>

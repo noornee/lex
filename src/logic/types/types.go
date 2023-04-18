@@ -18,7 +18,7 @@ type Subreddit struct {
 type Posts struct {
 	Data struct {
 		After string `json:"after"`
-		//GeoFilter any    `json:"geo_filter"` todo
+		// GeoFilter any    `json:"geo_filter"` todo
 		Children []struct {
 			Data struct {
 				Title        string  `json:"title"`
@@ -102,7 +102,7 @@ type Posts struct {
 
 				VMediaMetaData []InternalVData
 				CrossPost      []struct {
-					//todo: finish
+					// todo: finish
 					Permalink string `json:"permalink"`
 				} `json:"crosspost_parent_list"`
 			} `json:"data"`
@@ -117,7 +117,7 @@ type InternalVData struct {
 }
 
 type InternalMetaData struct {
-	//M string `json:"m"`
+	// M string `json:"m"`
 	P []struct {
 		U string `json:"u"`
 	} `json:"p"`
@@ -125,5 +125,5 @@ type InternalMetaData struct {
 		U   string `json:"u"`
 		MP4 string `json:"mp4"`
 	} `json:"s"`
-	//HLSUrl string `json:"hlsUrl"`
+	// HLSUrl string `json:"hlsUrl"`
 }

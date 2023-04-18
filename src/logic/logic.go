@@ -1,10 +1,12 @@
 package logic
 
 import (
+	"context"
 	"fmt"
 	"log"
-	"main/logic/types"
 	"net/http"
+
+	"main/logic/types"
 
 	"github.com/goccy/go-json"
 	"github.com/gofiber/fiber/v2/utils"
@@ -13,7 +15,7 @@ import (
 func GetSubredditData(subreddit string) types.Subreddit {
 	url := fmt.Sprintf("https://www.reddit.com/r/%v/about.json?raw_json=1", subreddit)
 
-	req, err := http.NewRequest(http.MethodGet, url, nil)
+	req, err := http.NewRequestWithContext(context.Background(), http.MethodGet, url, nil)
 	if err != nil {
 		log.Println(err)
 	}
@@ -29,19 +31,23 @@ func GetSubredditData(subreddit string) types.Subreddit {
 		log.Println(err)
 	}
 
-	defer resp.Body.Close()
+	defer func() {
+		if closeerr := resp.Body.Close(); closeerr != nil {
+			log.Println("Failed to close response body", closeerr)
+		}
+	}()
 
-	var Sub types.Subreddit
+	var sub types.Subreddit
 
-	err = json.NewDecoder(resp.Body).Decode(&Sub)
+	err = json.NewDecoder(resp.Body).Decode(&sub)
 	if err != nil {
 		log.Println(err)
 	}
 
-	return Sub
+	return sub
 }
 
-func GetPosts(subreddit string, after string, flair string) types.Posts {
+func GetPosts(subreddit, after, flair string) types.Posts {
 	url := fmt.Sprintf("https://www.reddit.com/r/%v", subreddit)
 	if len(flair) != 0 {
 		// stupid.
@@ -55,7 +61,7 @@ func GetPosts(subreddit string, after string, flair string) types.Posts {
 		url += fmt.Sprintf("&after=%v", after)
 	}
 
-	req, err := http.NewRequest(http.MethodGet, url, nil)
+	req, err := http.NewRequestWithContext(context.Background(), http.MethodGet, url, nil)
 	if err != nil {
 		log.Println(err)
 	}
@@ -71,14 +77,18 @@ func GetPosts(subreddit string, after string, flair string) types.Posts {
 		log.Println(err)
 	}
 
-	defer resp.Body.Close()
+	defer func() {
+		if closeerr := resp.Body.Close(); closeerr != nil {
+			log.Println("Failed to close response body", closeerr)
+		}
+	}()
 
-	var Posts types.Posts
+	var posts types.Posts
 
-	err = json.NewDecoder(resp.Body).Decode(&Posts)
+	err = json.NewDecoder(resp.Body).Decode(&posts)
 	if err != nil {
 		log.Println(err)
 	}
 
-	return Posts
+	return posts
 }

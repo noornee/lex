@@ -27,14 +27,23 @@ func CurrentVersion() (ok bool, current int) {
 	return true, version
 }
 
-func CheckForUpdates() (ok bool, latest int) {
-	resp, err := http.Get("https://raw.githubusercontent.com/cmd777/lex/main/VERSION.txt")
+func CheckForUpdates() (bool, int) {
+	req, err := http.NewRequestWithContext(context.Background(), http.MethodGet, "https://raw.githubusercontent.com/cmd777/lex/main/VERSION.txt", nil)
 	if err != nil {
 		log.Println(err)
 		return false, 0
 	}
 
-	defer resp.Body.Close()
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		log.Println(err)
+	}
+
+	defer func() {
+		if closeerr := resp.Body.Close(); closeerr != nil {
+			log.Println("Failed to close response body", closeerr)
+		}
+	}()
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {

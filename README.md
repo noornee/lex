@@ -1,12 +1,11 @@
-# LEX
-![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/cmd777/lex/build_all_os.yml?logo=github&style=flat-square)
+# LEX <br> ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/cmd777/lex/build_all_os.yml?logo=github&style=flat-square)
 
-# Table of Contents
+## Table of Contents
 
 [**ℹ️ Information about the project**](#ℹ️-information-about-the-project)
-- [What is Lex?](#what-is-lex)
-  - [Why create Lex?](#why-create-lex)
-- [How do I use Lex?](#how-do-i-use-lex)
+- [What is LEX? / Issues with Reddit](#what-is-lex--issues-with-reddit)
+- [How does LEX Fix these Issues?](#how-does-lex-fix-these-issues)
+- [How do I use LEX?](#how-do-i-use-lex)
   
 [**⚙️ Installation Instructions**](#%EF%B8%8F-installation-instructions)
 - [Building Instructions](#building-instructions)
@@ -18,27 +17,54 @@
 
 [**📜 Legal Disclaimer**](#-legal-disclaimer)
 
-[**🧰 Technologies that were used to create Lex**](#-technologies-that-were-used-to-create-lex)
+[**🧰 Technologies that were used to create LEX**](#-technologies-that-were-used-to-create-lex)
 
 ---
 
 # ℹ️ Information about the project
 
-## What is Lex?
-LEX (LazerEX) is a lightweight, open source frontend for reddit written in Go.
+## What is LEX? / Issues with Reddit
+**LEX** (**L**azer**EX**) is a Lightweight, Open Source Frontend for Reddit written in Go.<br>
+The name "Lazer" is an intentional misspelling of the word "Laser"
 
-## Why create Lex?
+## Why?
+Reddit has a lot of potential, but is purposely degraded.<br>
+Why? It was likely done to push their mobile app, which is kind of saddening.
 
-Reddit can be very slow, and is very bloated, that's no secret. It was really annoying to either wait a super long time for a single post to load, or the UI freezing up for no apparent reason, these were just some of the issues that were common for me in every browser I tried (Chrome, Firefox, Brave, etc.), even more annoying, is that it uses a ton of data, meaning on slower internet connections, getting posts to load can take extremely long. Lex can save up to 60% more bandwidth, while keeping very similar image/video quality, and the time to interactive is about 800ms-1.2s on average (with all images, scripts, stylesheets loaded, note: videos are not preloaded.)
+The issues with Reddit currently are some of the following:
+- NSFW is heavily blocked (even if the post is not actually NSFW)
+  - [On mobile, Reddit won't even allow you to view ANY subreddit. Be it NSFW or Not.](https://raw.githubusercontent.com/cmd777/lex/main/docs/images/fullexperience.png)
+  <br><sub>You can even test this, by setting your user agent to something like `Mozilla/5.0 (Android 13; Mobile; rv:68.0) Gecko/68.0 Firefox/112.0`</sub>
+- The UI is extremely slow, and unresponsive.
+  - To the point that it can take 20 seconds just to go back from a comment section.
+- Too much bloat, and therefore the data usage is very high.
 
-As for the UI, I went for the newer reddit redesign, but with a little tweaking.
+These issues can be observed on all browsers (for example: Chrome, Firefox, Brave, etc.)
 
-## How do I use Lex?
+These are some of the issues that LEX aims to fix.
 
-Unfortunately, unlike other open source reddit frontends, **Lex does not provide a demo website**, and there is two ways to build/use Lex.
+## How does LEX Fix these Issues?
 
-1. [Downloading a Binary and running it](#downloading-binaries)
-2. [Building Lex yourself](#building-instructions)
+- NSFW content is allowed, but only if you allow it.
+  - In the settings page (located at `http://localhost:9090/config` there is an option to enable NSFW subreddits, and posts.)
+- Optional Javascript and Configurations.
+  - A lot of configurations, so you can use LEX as you want to!
+  <br>Configurations include:
+    - Enabling HLS Videos
+    - Enabling Infinite "Scroll"
+    - Enabling Gallery Navigation via Arrow Keys
+    - Allowing NSFW Subreddits and Posts
+    - Allowing Images from Unknown Sources
+    - Using Advanced Math to Re-size the Page
+    - Setting Preferred Image Resolutions
+- No Ads.
+
+## How do I use LEX?
+
+Unfortunately, unlike other open source reddit frontends, **LEX does not provide a demo website**, and there is two ways to build/use LEX.
+
+1. [Downloading a pre-built binary](#downloading-binaries)
+2. [Building LEX yourself](#building-instructions)
 
 # ⚙️ Installation Instructions
 
@@ -54,11 +80,13 @@ cd src
 go get -u
 go build
 ```
-and, you're pretty much done, all that's left to do is launch the built binary, and navigate to `localhost:9090/r/{subreddit}`
+That's everything! All you need to do next, is just navigate to `http://localhost:9090/r/{your_favorite_subreddit}`
 
 ## Downloading Binaries
 
-To install LEX via automatically built binaries, go to the [releases](https://github.com/cmd777/lex/releases/latest) tab, and download the appropriate zip for your OS + ARCH, and extract it.
+LEX provides downloadable, pre-built binaries for all major operating systems, including Windows, Linux, and MacOS.
+
+To install LEX via these automatically built binaries, go to the [releases](https://github.com/cmd777/lex/releases/latest) tab, and download the appropriate zip for your OS + ARCH, and extract it.
 
 - For 32 bit Windows machines, download `lex-windows.zip`, then launch lex-i386-windows.exe
 - For 64 bit Windows machines, download `lex-windows.zip`, then launch lex-amd64-windows.exe
@@ -73,7 +101,9 @@ To install LEX via automatically built binaries, go to the [releases](https://gi
 - For Intel MacOS machines, download `lex-osx.zip`, then launch lex-amd64-osx
 - For M1 MacOS machines, download `lex-osx.zip`, then launch lex-arm64-osx
 
-After launching, navigate to `localhost:9090/r/{subreddit}`, and you're done.
+That's everything! All you need to do next, is just navigate to `http://localhost:9090/r/{your_favorite_subreddit}`
+
+<sub>* Pre-built binaries are published every time there is a push to the main branch.</sub>
 
 # 🔬 Compatibility
 
@@ -150,13 +180,13 @@ After launching, navigate to `localhost:9090/r/{subreddit}`, and you're done.
 
 # 🚩 Bugs, Issues, and other Important Information
 
-Lex is still in early stages of development, a lot of features are missing, and it might be prone to bugs.
+LEX is still in early stages of development, a lot of features are missing, and it might be prone to bugs.
 
 I try to fix most of the critical bugs before pushing any changes, but if you find a bug, or have any questions, feel free to [create an issue](https://github.com/cmd777/lex/issues) for it.
 
 For the features that are planned to be added, or the things that need to be fixed, you can once again, take a look at the [issues tab](https://github.com/cmd777/lex/issues) 
 
-I work on Lex in my free time as a hobby, so development may be slow, thank you for your patience!
+I work on LEX in my free time as a hobby, so development may be slow, thank you for your patience!
 
 # 📜 Legal Disclaimer
 
@@ -166,7 +196,7 @@ All content that is displayed on LEX has been sourced from Reddit. LEX does not 
 
 In case of any issues with a post, such as copyright infringement, trademark infringement, or violation of Reddit's community rules, the reports should be directed to Reddit.
 
-# 🧰 Technologies that were used to create Lex
+# 🧰 Technologies that were used to create LEX
 
 - [Go](https://go.dev) ➡️ Programming Language
 - [Humanize (go-humanize)](https://github.com/dustin/go-humanize) ➡️ Formatting time, numbers, etc.. to Human Friendly Units 

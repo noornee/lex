@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"log"
+
 	"main/logic/version"
 	"main/router"
 
@@ -15,13 +16,13 @@ func main() {
 		flag.Parse()
 
 		if *checkUpdate {
-			if okf, CVersion := version.CurrentVersion(); okf {
-				log.Printf("Running LEX Version %d", CVersion)
+			if okf, cversion := version.CurrentVersion(); okf {
+				log.Printf("Running LEX Version %d", cversion)
 				log.Println("Checking for updates... (to disable update checking, run the application with -checkupdate=false)")
 				if ok, latest := version.CheckForUpdates(); !ok {
 					log.Println("There was an error while attempting to check for updates, try again later.")
-				} else if CVersion < latest {
-					log.Printf("Your LEX version is outdated (version mismatch -> [gh:%d | local:%d])\r\n", latest, CVersion)
+				} else if cversion < latest {
+					log.Printf("Your LEX version is outdated (version mismatch -> [gh:%d | local:%d])\r\n", latest, cversion)
 				} else {
 					log.Println("You are running the latest version of LEX")
 				}

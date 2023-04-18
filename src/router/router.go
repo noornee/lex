@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"html/template"
 	"log"
-	"main/logic"
-	"main/logic/types"
 	"math/rand"
 	"net/url"
 	"path/filepath"
@@ -13,6 +11,9 @@ import (
 	"strings"
 	"sync"
 	"time"
+
+	"main/logic"
+	"main/logic/types"
 
 	"github.com/dustin/go-humanize"
 	"github.com/goccy/go-json"
@@ -93,31 +94,29 @@ func RewriteURL(input string) string {
 func StartServer() {
 	// region Template Engine
 
-	TemplateEngine := html.New("./views", ".html")
+	templateEngine := html.New("./views", ".html")
 
-	TemplateEngine.AddFuncMap(template.FuncMap{
-		"contains": strings.Contains,
-		"sterilizepath": func(input string) string {
-			return RewriteURL(input)
-		},
+	templateEngine.AddFuncMap(template.FuncMap{
+		"contains":      strings.Contains,
+		"sterilizepath": RewriteURL,
 		"add": func(input int) int {
 			return input + 1
 		},
 		"ugidgen": func() string {
 			ubytes := make([]byte, 28)
 			for i := 0; i < len(ubytes); i++ {
-				ubytes[i] = ValidCharacters[rand.Intn(len(ValidCharacters))]
+				ubytes[i] = ValidCharacters[rand.Intn(len(ValidCharacters))] //nolint:gosec,revive // We do not need to use crypto/rand here.
 			}
 			return string(ubytes)
 		},
 		"sanitize": func(input string) template.HTML {
-			Markdown := blackfriday.Run([]byte(input), blackfriday.WithExtensions(CommonExtNoNSH))
-			SHTML := bluemonday.UGCPolicy().
+			markdown := blackfriday.Run([]byte(input), blackfriday.WithExtensions(CommonExtNoNSH))
+			sHTML := bluemonday.UGCPolicy().
 				RequireNoFollowOnLinks(true).
 				RequireNoReferrerOnLinks(true).
 				AddTargetBlankToFullyQualifiedLinks(true).
-				SanitizeBytes(Markdown)
-			return template.HTML(SHTML)
+				SanitizeBytes(markdown)
+			return template.HTML(sHTML) //nolint:gosec,revive // bluemonday sanitizes this.
 		},
 		"qualifiesAsImg": func(input string) bool {
 			return ValidImageExts[filepath.Ext(input)]
@@ -125,9 +124,7 @@ func StartServer() {
 		"fmtEpochDate": func(input float64) string {
 			return time.Unix(int64(input), 0).Format("Created Jan 02, 2006")
 		},
-		"fmtHumanComma": func(input int64) string {
-			return humanize.Comma(input)
-		},
+		"fmtHumanComma": humanize.Comma,
 		"fmtHumanDate": func(input float64) string {
 			return humanize.Time(time.Unix(int64(input), 0))
 		},
@@ -140,7 +137,7 @@ func StartServer() {
 
 	router := fiber.New(fiber.Config{
 		Prefork:     true,
-		Views:       TemplateEngine,
+		Views:       templateEngine,
 		JSONEncoder: json.Marshal,
 		JSONDecoder: json.Unmarshal,
 	})
@@ -166,7 +163,7 @@ func StartServer() {
 			trustusrc := ctx.Cookies(USRCCookieValue)
 			advmath := ctx.Cookies(MathCookieValue)
 
-			ctx.Bind(fiber.Map{ //nolint:errcheck // ctx.Bind always returns nil
+			ctx.Bind(fiber.Map{ //nolint:errcheck,gosec,revive // ctx.Bind always returns nil
 				JSCookie:      jsenabled == "1",
 				INFCookie:     infscrollenabled == "1",
 				NSFWCookie:    nsfwallowed == "1",
@@ -287,26 +284,26 @@ func StartServer() {
 		flair := url.QueryEscape(ctx.Query("f"))
 		subname := strings.ToLower(ctx.Params("sub"))
 
-		Posts := logic.GetPosts(subname, after, flair)
+		posts := logic.GetPosts(subname, after, flair)
 
-		if len(Posts.Data.Children) == 0 {
+		if len(posts.Data.Children) == 0 {
 			return ctx.Render("404", nil)
 		}
 
 		// Cache subreddit data, so we don't have to keep making requests every single time.
 		// This will store it in memory, which may not be the best, and a disk based cache would be better.
-		var Sub types.Subreddit
+		var sub types.Subreddit
 
 		if scache, exists := SubCache.Load(subname); exists {
-			Sub = scache.(types.Subreddit)
+			sub = scache.(types.Subreddit) //nolint:errcheck,revive,forcetypeassert // This should not error out.
 		} else {
-			Sub = logic.GetSubredditData(subname)
-			SubCache.Store(subname, Sub)
+			sub = logic.GetSubredditData(subname)
+			SubCache.Store(subname, sub)
 		}
 
-		ResolutionToUse, err := strconv.Atoi(ctx.Cookies(ResCookieValue))
+		resolutionToUse, err := strconv.Atoi(ctx.Cookies(ResCookieValue))
 		if err != nil {
-			ResolutionToUse = 3
+			resolutionToUse = 3
 		}
 
 		flairuesc, err := url.QueryUnescape(flair)
@@ -314,12 +311,12 @@ func StartServer() {
 			log.Println(err)
 		}
 
-		SortPostData(&Posts, ResolutionToUse)
+		SortPostData(&posts, resolutionToUse)
 
 		return ctx.Render("sub", fiber.Map{
 			"SubName":       subname,
-			"SubData":       Sub.Data,
-			"Posts":         Posts.Data,
+			"SubData":       sub.Data,
+			"Posts":         posts.Data,
 			"FlairFiltered": flairuesc,
 		})
 	})
@@ -329,11 +326,11 @@ func StartServer() {
 		after := ctx.FormValue("after")
 		flair := url.QueryEscape(ctx.FormValue("flair"))
 
-		Posts := logic.GetPosts(subname, after, flair)
+		posts := logic.GetPosts(subname, after, flair)
 
-		ResolutionToUse, err := strconv.Atoi(ctx.Cookies(ResCookieValue))
+		resolutionToUse, err := strconv.Atoi(ctx.Cookies(ResCookieValue))
 		if err != nil {
-			ResolutionToUse = 3
+			resolutionToUse = 3
 		}
 
 		flairuesc, err := url.QueryUnescape(flair)
@@ -341,11 +338,11 @@ func StartServer() {
 			log.Println(err)
 		}
 
-		SortPostData(&Posts, ResolutionToUse)
+		SortPostData(&posts, resolutionToUse)
 
 		return ctx.Render("posts", fiber.Map{
 			"SubName":       subname,
-			"Posts":         Posts.Data,
+			"Posts":         posts.Data,
 			"FlairFiltered": flairuesc,
 		})
 	})
@@ -356,12 +353,12 @@ func StartServer() {
 	})
 
 	// localhost:9090
-	log.Fatal(router.Listen(":9090"))
+	log.Fatal(router.Listen(":9090")) //nolint:revive // No
 }
 
-func SortPostData(Posts *types.Posts, ResolutionToUse int) {
-	OrigRes := ResolutionToUse
-	for i, t := range Posts.Data.Children {
+func SortPostData(posts *types.Posts, resolutionToUse int) {
+	origRes := resolutionToUse
+	for i := range posts.Data.Children {
 		func() {
 			defer func() {
 				if rec := recover(); rec != nil {
@@ -369,94 +366,94 @@ func SortPostData(Posts *types.Posts, ResolutionToUse int) {
 				}
 			}()
 
-			Post := &t.Data
+			post := &posts.Data.Children[i].Data
 
-			if len(Post.Preview.Images) > 0 {
-				Image := Post.Preview.Images[0]
+			if len(post.Preview.Images) > 0 {
+				image := post.Preview.Images[0]
 
-				if len(Image.Resolutions) > 0 && ResolutionToUse != 11037 {
-					if ResolutionToUse >= len(Image.Resolutions) {
-						ResolutionToUse = len(Image.Resolutions) - 1
+				if len(image.Resolutions) > 0 && resolutionToUse != 11037 {
+					if resolutionToUse >= len(image.Resolutions) {
+						resolutionToUse = len(image.Resolutions) - 1
 					}
-					Post.Preview.AutoChosenImageQuality = RewriteURL(Image.Resolutions[ResolutionToUse].URL)
-					Post.Preview.AutoChosenPosterQuality = Post.Preview.AutoChosenImageQuality
+					post.Preview.AutoChosenImageQuality = RewriteURL(image.Resolutions[resolutionToUse].URL)
+					post.Preview.AutoChosenPosterQuality = post.Preview.AutoChosenImageQuality
 				} else {
-					Post.Preview.AutoChosenImageQuality = RewriteURL(Image.Source.URL)
-					Post.Preview.AutoChosenPosterQuality = Post.Preview.AutoChosenImageQuality
+					post.Preview.AutoChosenImageQuality = RewriteURL(image.Source.URL)
+					post.Preview.AutoChosenPosterQuality = post.Preview.AutoChosenImageQuality
 				}
 
-				ResolutionToUse = OrigRes
+				resolutionToUse = origRes
 
-				if strings.Contains(Image.Source.URL, ".gif") {
-					if len(Image.Variants.MP4.Resolutions) > 0 && ResolutionToUse != 11037 {
-						if ResolutionToUse >= len(Image.Variants.MP4.Resolutions) {
-							ResolutionToUse = len(Image.Variants.MP4.Resolutions) - 1
+				if strings.Contains(image.Source.URL, ".gif") {
+					if len(image.Variants.MP4.Resolutions) > 0 && resolutionToUse != 11037 {
+						if resolutionToUse >= len(image.Variants.MP4.Resolutions) {
+							resolutionToUse = len(image.Variants.MP4.Resolutions) - 1
 						}
-						Post.Preview.AutoChosenImageQuality = RewriteURL(Image.Variants.MP4.Resolutions[ResolutionToUse].URL)
+						post.Preview.AutoChosenImageQuality = RewriteURL(image.Variants.MP4.Resolutions[resolutionToUse].URL)
 					} else {
-						Post.Preview.AutoChosenImageQuality = RewriteURL(Image.Variants.MP4.Source.URL)
+						post.Preview.AutoChosenImageQuality = RewriteURL(image.Variants.MP4.Source.URL)
 					}
 				}
 
-				ResolutionToUse = OrigRes
+				resolutionToUse = origRes
 			}
 
-			if len(Post.MediaMetaData) > 0 {
-				if len(Post.GalleryData.Items) > 0 {
-					for j := 0; j < len(Post.GalleryData.Items); j++ {
-						ItemID := Post.GalleryData.Items[j].MediaID
-						MediaData := Post.MediaMetaData[ItemID]
-						if ResolutionToUse >= len(MediaData.P) {
-							ResolutionToUse = len(MediaData.P) - 1
+			if len(post.MediaMetaData) > 0 {
+				if len(post.GalleryData.Items) > 0 {
+					for j := 0; j < len(post.GalleryData.Items); j++ {
+						itemID := post.GalleryData.Items[j].MediaID
+						mediaData := post.MediaMetaData[itemID]
+						if resolutionToUse >= len(mediaData.P) {
+							resolutionToUse = len(mediaData.P) - 1
 						}
 
-						Post.VMediaMetaData = append(Post.VMediaMetaData, vmediaappendor(MediaData, ResolutionToUse))
-						ResolutionToUse = OrigRes
+						post.VMediaMetaData = append(post.VMediaMetaData, vmediaappendor(mediaData, resolutionToUse))
+						resolutionToUse = origRes
 					}
 				} else {
 					// range is random, therefore the images *may* be mixed up.
 					// may, because there is a chance that images are in order, due to the randomness.
 					// there is no way to sort this.
-					for _, MediaData := range Post.MediaMetaData {
-						if ResolutionToUse >= len(MediaData.P) {
-							ResolutionToUse = len(MediaData.P) - 1
+					for _, MediaData := range post.MediaMetaData {
+						if resolutionToUse >= len(MediaData.P) {
+							resolutionToUse = len(MediaData.P) - 1
 						}
-						Post.VMediaMetaData = append(Post.VMediaMetaData, vmediaappendor(MediaData, ResolutionToUse))
-						ResolutionToUse = OrigRes
+						post.VMediaMetaData = append(post.VMediaMetaData, vmediaappendor(MediaData, resolutionToUse))
+						resolutionToUse = origRes
 					}
 				}
 			}
 
-			if len(Post.LinkURL) > 0 {
-				Post.LinkURL = RewriteURL(Post.LinkURL)
+			if len(post.LinkURL) > 0 {
+				post.LinkURL = RewriteURL(post.LinkURL)
 			}
 
-			Post.SelfText = strings.ReplaceAll(Post.SelfText, "&#x200B;", "")
+			post.SelfText = strings.ReplaceAll(post.SelfText, "&#x200B;", "")
 
-			Posts.Data.Children[i].Data = *Post
+			posts.Data.Children[i].Data = *post
 		}()
 	}
 }
 
-func vmediaappendor(MData types.InternalMetaData, ResolutionToUse int) types.InternalVData {
-	IsVideo := len(MData.S.MP4) > 0
-	var Poster, Source string
+func vmediaappendor(mData types.InternalMetaData, resolutionToUse int) types.InternalVData {
+	isVideo := len(mData.S.MP4) > 0
+	var poster, source string
 
-	if len(MData.P) > 0 {
-		Poster = RewriteURL(MData.P[ResolutionToUse].U)
+	if len(mData.P) > 0 {
+		poster = RewriteURL(mData.P[resolutionToUse].U)
 	}
 
-	if IsVideo {
-		Source = RewriteURL(MData.S.MP4)
-	} else if ResolutionToUse == 11037 {
-		Source = RewriteURL(MData.S.U)
+	if isVideo {
+		source = RewriteURL(mData.S.MP4)
+	} else if resolutionToUse == 11037 {
+		source = RewriteURL(mData.S.U)
 	} else {
-		Source = Poster
+		source = poster
 	}
 	return types.InternalVData{
-		Video:                   IsVideo,
-		Link:                    Source,
-		AutoChosenPosterQuality: Poster,
+		Video:                   isVideo,
+		Link:                    source,
+		AutoChosenPosterQuality: poster,
 	}
 }
 

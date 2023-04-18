@@ -76,7 +76,7 @@
                 {{end}}
 
                 {{if .Data.CrossPost}}
-                    <p style="text-align: center;">Sorry, crossposting is not supported yet. here is a link to the original post: <a href="https://reddit.com{{(index .Data.CrossPost 0).Permalink}}" rel="noreferrer noopener nofollow">https://reddit.com{{(index .Data.CrossPost 0).Permalink}}</a></p>
+                    <p style="text-align: center;">Sorry, crossposting is not supported yet. here is a link to the original post: <a href="https://reddit.com{{(index .Data.CrossPost 0).Permalink}}" rel="noreferrer noopener nofollow" target="_blank">https://reddit.com{{(index .Data.CrossPost 0).Permalink}}</a></p>
                 {{end}}
 
                 {{if contains .Data.PostHint "image"}}
@@ -161,14 +161,14 @@
 
                 {{if .Data.LinkURL}}
                     <div class="m-top10">
-                        <a href="{{.Data.LinkURL}}" style="font-size:12px" rel="noreferrer noopener nofollow">{{.Data.LinkURL}}</a>
+                        <a href="{{.Data.LinkURL}}" style="font-size:12px" rel="noreferrer noopener nofollow" target="_blank">{{.Data.LinkURL}}</a>
                     </div>
                 {{end}}
             </div>
             {{if or (contains .Data.PostHint "link") (contains .Data.PostHint "rich:video")}}
                 <div>
                     <div class="flexbox position-relative">
-                        <a href="{{.Data.LinkURL}}" rel="noreferrer noopener nofollow">
+                        <a href="{{.Data.LinkURL}}" rel="noreferrer noopener nofollow" target="_blank">
                             <img src="{{.Data.Preview.AutoChosenPosterQuality}}" class="preview">
                             <div class="extlinkicon">
                                 <svg width="14" height="14" viewBox="0 0 1920 1920" version="1.1">
@@ -188,7 +188,7 @@
 
                 <span class="gtext">{{.Data.CommentCount|fmtHumanComma}} Comments</span>
             </div>
-            <a href="https://reddit.com{{.Data.Permalink}}" class="l-hovergray" rel="noreferrer noopener nofollow">
+            <a href="https://reddit.com{{.Data.Permalink}}" class="l-hovergray" rel="noreferrer noopener nofollow" target="_blank">
                 <svg width="16" height="16" viewBox="0 0 24 24" version="1.1" class="gicon">
                     <path fill-rule="evenodd" d="M18 1C15.7909 1 14 2.79086 14 5C14 5.19436 14.0139 5.38549 14.0407 5.57244L8.4479 8.83625C7.77136 8.31202 6.92212 8 6 8C3.79086 8 2 9.79086 2 12C2 14.2091 3.79086 16 6 16C6.92229 16 7.77167 15.6879 8.44827 15.1635L14.0414 18.4227C14.0141 18.6112 14 18.8039 14 19C14 21.2091 15.7909 23 18 23C20.2091 23 22 21.2091 22 19C22 16.7909 20.2091 15 18 15C17.0797 15 16.232 15.3108 15.5561 15.8332L9.95943 12.5719C9.98617 12.3851 10 12.1942 10 12C10 11.8057 9.98614 11.6146 9.95936 11.4277L15.5522 8.16382C16.2287 8.688 17.0779 9 18 9C20.2091 9 22 7.20914 22 5C22 2.79086 20.2091 1 18 1z"></path>
                 </svg>
@@ -206,7 +206,7 @@
 
             {{if .Data.Preview.AutoChosenImageQuality}}
                 {{if (index .Data.Preview.Images 0).Variants.GIF.Source.URL}}
-                <a href="{{(index .Data.Preview.Images 0).Variants.GIF.Source.URL|sterilizepath}}" class="l-hovergray" rel="noreferrer noopener nofollow">
+                <a href="{{(index .Data.Preview.Images 0).Variants.GIF.Source.URL|sterilizepath}}" class="l-hovergray" rel="noreferrer noopener nofollow" target="_blank">
                     <svg width="16" height="16" viewBox="0 0 24 24" version="1.1" class="gicon">
                         <path fill-rule="evenodd" d="M21.7092 2.295C21.8041 2.3904 21.8757 2.5001 21.9241 2.6172 21.9727 2.7342 21.9996 2.8625 22 2.997L22 3V9C22 9.5523 21.5523 10 21 10 20.4477 10 20 9.5523 20 9V5.4142L14.7071 10.7071C14 10 14 10 13.2929 9.2929L18.5858 4H15C14.4477 4 14 3.5523 14 3 14 2.4477 14.4477 2 15 2H20.9998C21.2749 2 21.5242 2.1111 21.705 2.2908L21.7092 2.295M14.709 10.707 5.4142 20H9C9.5523 20 10 20.4477 10 21 10 21.5523 9.5523 22 9 22H3.0007L2.997 22C2.743 21.9992 2.4892 21.9023 2.295 21.7092L2.2908 21.705C2.1959 21.6096 2.1243 21.4999 2.0759 21.3828 2.027 21.2649 2 21.1356 2 21V15C2 14.4477 2.4477 14 3 14 3.5523 14 4 14.4477 4 15V18.5858L13.291 9.292z"></path>
                     </svg>
@@ -216,7 +216,7 @@
                 {{end}}
 
                 {{if (index .Data.Preview.Images 0).Variants.MP4.Source.URL}}
-                <a href="{{(index .Data.Preview.Images 0).Variants.MP4.Source.URL|sterilizepath}}" class="l-hovergray" rel="noreferrer noopener nofollow">
+                <a href="{{(index .Data.Preview.Images 0).Variants.MP4.Source.URL|sterilizepath}}" class="l-hovergray" rel="noreferrer noopener nofollow" target="_blank">
                     <svg width="16" height="16" viewBox="0 0 24 24" version="1.1" class="gicon">
                         <path fill-rule="evenodd" d="M21.7092 2.295C21.8041 2.3904 21.8757 2.5001 21.9241 2.6172 21.9727 2.7342 21.9996 2.8625 22 2.997L22 3V9C22 9.5523 21.5523 10 21 10 20.4477 10 20 9.5523 20 9V5.4142L14.7071 10.7071C14 10 14 10 13.2929 9.2929L18.5858 4H15C14.4477 4 14 3.5523 14 3 14 2.4477 14.4477 2 15 2H20.9998C21.2749 2 21.5242 2.1111 21.705 2.2908L21.7092 2.295M14.709 10.707 5.4142 20H9C9.5523 20 10 20.4477 10 21 10 21.5523 9.5523 22 9 22H3.0007L2.997 22C2.743 21.9992 2.4892 21.9023 2.295 21.7092L2.2908 21.705C2.1959 21.6096 2.1243 21.4999 2.0759 21.3828 2.027 21.2649 2 21.1356 2 21V15C2 14.4477 2.4477 14 3 14 3.5523 14 4 14.4477 4 15V18.5858L13.291 9.292z"></path>
                     </svg>
@@ -226,7 +226,7 @@
                 {{end}}
 
                 {{if (index .Data.Preview.Images 0).Source.URL}}
-                    <a href="{{(index .Data.Preview.Images 0).Source.URL|sterilizepath}}" class="l-hovergray" rel="noreferrer noopener nofollow">
+                    <a href="{{(index .Data.Preview.Images 0).Source.URL|sterilizepath}}" class="l-hovergray" rel="noreferrer noopener nofollow" target="_blank">
                         <svg width="16" height="16" viewBox="0 0 24 24" version="1.1" class="gicon">
                             <path fill-rule="evenodd" d="M21.7092 2.295C21.8041 2.3904 21.8757 2.5001 21.9241 2.6172 21.9727 2.7342 21.9996 2.8625 22 2.997L22 3V9C22 9.5523 21.5523 10 21 10 20.4477 10 20 9.5523 20 9V5.4142L14.7071 10.7071C14 10 14 10 13.2929 9.2929L18.5858 4H15C14.4477 4 14 3.5523 14 3 14 2.4477 14.4477 2 15 2H20.9998C21.2749 2 21.5242 2.1111 21.705 2.2908L21.7092 2.295M14.709 10.707 5.4142 20H9C9.5523 20 10 20.4477 10 21 10 21.5523 9.5523 22 9 22H3.0007L2.997 22C2.743 21.9992 2.4892 21.9023 2.295 21.7092L2.2908 21.705C2.1959 21.6096 2.1243 21.4999 2.0759 21.3828 2.027 21.2649 2 21.1356 2 21V15C2 14.4477 2.4477 14 3 14 3.5523 14 4 14.4477 4 15V18.5858L13.291 9.292z"></path>
                         </svg>
@@ -236,7 +236,7 @@
                 {{end}}
             {{end}}
             {{if .Data.SecureMedia.RedditVideo.FallbackURL}}
-                <a href="{{.Data.SecureMedia.RedditVideo.FallbackURL|sterilizepath}}" class="l-hovergray" rel="noreferrer noopener nofollow">
+                <a href="{{.Data.SecureMedia.RedditVideo.FallbackURL|sterilizepath}}" class="l-hovergray" rel="noreferrer noopener nofollow" target="_blank">
                     <svg width="16" height="16" viewBox="0 0 24 24" version="1.1" class="gicon">
                         <path fill-rule="evenodd" d="M21.7092 2.295C21.8041 2.3904 21.8757 2.5001 21.9241 2.6172 21.9727 2.7342 21.9996 2.8625 22 2.997L22 3V9C22 9.5523 21.5523 10 21 10 20.4477 10 20 9.5523 20 9V5.4142L14.7071 10.7071C14 10 14 10 13.2929 9.2929L18.5858 4H15C14.4477 4 14 3.5523 14 3 14 2.4477 14.4477 2 15 2H20.9998C21.2749 2 21.5242 2.1111 21.705 2.2908L21.7092 2.295M14.709 10.707 5.4142 20H9C9.5523 20 10 20.4477 10 21 10 21.5523 9.5523 22 9 22H3.0007L2.997 22C2.743 21.9992 2.4892 21.9023 2.295 21.7092L2.2908 21.705C2.1959 21.6096 2.1243 21.4999 2.0759 21.3828 2.027 21.2649 2 21.1356 2 21V15C2 14.4477 2.4477 14 3 14 3.5523 14 4 14.4477 4 15V18.5858L13.291 9.292z"></path>
                     </svg>

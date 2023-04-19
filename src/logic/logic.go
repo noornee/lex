@@ -138,5 +138,20 @@ func GetComments(subreddit, id string) (types.Post, types.Comments) {
 		log.Println(err)
 	}
 
+	internalDecode(&comments)
+
 	return post, comments
+}
+
+func internalDecode(comments *types.Comments) {
+	for _, v := range comments.Data.Children {
+		log.Printf("%v: %v\r\n", v.Data.Author, v.Data.Body)
+
+		var newdecoded types.Comments
+
+		if err := json.Unmarshal(v.Data.Replies, &newdecoded); err == nil {
+			// No decoding failure.
+			internalDecode(&newdecoded)
+		}
+	}
 }

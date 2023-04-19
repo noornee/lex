@@ -117,6 +117,7 @@ type internalPostData struct {
 }
 
 type internalCommentData struct {
+	Author  string          `json:"author"`
 	Body    string          `json:"body"`
 	Replies json.RawMessage `json:"replies"`
 }

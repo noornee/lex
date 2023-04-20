@@ -140,18 +140,23 @@ func GetComments(subreddit, id string) (types.Post, types.Comments) {
 
 	internalDecode(&comments)
 
+	for i := 0; i < len(comments.MReplies); i++ {
+		log.Printf("%v: %v\r\n", comments.MReplies[i].Author, comments.MReplies[i].Body)
+	}
+
 	return post, comments
 }
 
 func internalDecode(comments *types.Comments) {
 	for _, v := range comments.Data.Children {
-		log.Printf("%v: %v\r\n", v.Data.Author, v.Data.Body)
+		comments.MReplies = append(comments.MReplies, v.Data)
 
 		var newdecoded types.Comments
 
 		if err := json.Unmarshal(v.Data.Replies, &newdecoded); err == nil {
 			// No decoding failure.
 			internalDecode(&newdecoded)
+			comments.MReplies = append(comments.MReplies, newdecoded.MReplies...)
 		}
 	}
 }

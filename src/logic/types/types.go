@@ -116,7 +116,7 @@ type internalPostData struct {
 	} `json:"crosspost_parent_list"`
 }
 
-type internalCommentData struct {
+type InternalCommentData struct {
 	Author  string          `json:"author"`
 	Body    string          `json:"body"`
 	Replies json.RawMessage `json:"replies"`
@@ -157,7 +157,8 @@ type Post struct {
 type Comments struct {
 	Data struct {
 		Children []struct {
-			Data internalCommentData `json:"data"`
+			Data InternalCommentData `json:"data"`
 		} `json:"children"`
 	} `json:"data"`
+	MReplies []InternalCommentData
 }

@@ -6,8 +6,8 @@ require (
 	github.com/dustin/go-humanize v1.0.1
 	github.com/goccy/go-json v0.10.2
 	github.com/gofiber/fiber/v2 v2.44.0
-	github.com/gofiber/helmet/v2 v2.2.25
-	github.com/gofiber/template v1.8.0
+	github.com/gofiber/helmet/v2 v2.2.26
+	github.com/gofiber/template v1.8.1
 	github.com/microcosm-cc/bluemonday v1.0.23
 	github.com/russross/blackfriday/v2 v2.1.0
 )

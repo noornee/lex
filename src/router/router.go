@@ -99,11 +99,6 @@ func StartServer() {
 	templateEngine.AddFuncMap(template.FuncMap{
 		"contains":      strings.Contains,
 		"sterilizepath": RewriteURL,
-		// REMOVE ME LATER
-		"stringify": func(input []byte) string {
-			return string(input)
-		},
-		// REMOVE ME LATER
 		"add": func(input int) int {
 			return input + 1
 		},
@@ -332,9 +327,9 @@ func StartServer() {
 
 		post, comm := logic.GetComments(subname, cid)
 
-		return ctx.Render("test", fiber.Map{
+		return ctx.Render("comments", fiber.Map{
 			"Post":     post.Data,
-			"Comments": comm.Data,
+			"Comments": comm,
 		})
 	})
 

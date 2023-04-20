@@ -93,7 +93,7 @@ func GetPosts(subreddit, after, flair string) types.Posts {
 	return posts
 }
 
-func GetComments(subreddit, id string) (types.Post, types.Comments) {
+func GetComments(subreddit, id string) (types.Post, []types.InternalCommentData) {
 	url := fmt.Sprintf("https://www.reddit.com/r/%v/comments/%v.json?raw_json=1", subreddit, id)
 
 	req, err := http.NewRequestWithContext(context.Background(), http.MethodGet, url, nil)
@@ -140,11 +140,7 @@ func GetComments(subreddit, id string) (types.Post, types.Comments) {
 
 	internalDecode(&comments)
 
-	for i := 0; i < len(comments.MReplies); i++ {
-		log.Printf("%v: %v\r\n", comments.MReplies[i].Author, comments.MReplies[i].Body)
-	}
-
-	return post, comments
+	return post, comments.MReplies
 }
 
 func internalDecode(comments *types.Comments) {

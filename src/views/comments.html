@@ -13,15 +13,9 @@
     <br><br>
     <hr>
 
-    {{range .Comments.Children}}
-        {{.Data.Body}}
-        <br><br>
-    {{end}}
-    <hr>
-
-    {{range .Comments.Children}}
-        {{.Data.Replies|stringify}}
-        <br><br>
+    {{range .Comments}}
+        <p>{{.Author}}</p>
+        <p style="margin-left: 15px">{{.Body}}</p>
     {{end}}
 </body>
 </html>

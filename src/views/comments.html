@@ -14,8 +14,10 @@
     <hr>
 
     {{range .Comments}}
-        <p>{{.Author}}</p>
-        <p style="margin-left: 15px">{{.Body}}</p>
+        <div {{if gt .Depth 0}} style="margin-left: calc({{.Depth}} * 15px)" {{end}}>
+            <p>{{.Author}}</p>
+            <p style="margin-left: 15px">{{.Body}}</p>    
+        </div>
     {{end}}
 </body>
 </html>

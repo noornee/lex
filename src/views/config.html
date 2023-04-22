@@ -96,6 +96,18 @@
             </pre>
 
             <label>
+                <input type="checkbox" name="BlockAwards" {{if .DisableAwards}} checked {{end}}>
+                <input type="hidden" name="BlockAwards" value="off">
+                Disable Awards
+            </label>
+            <pre>
+                Enabling this config will not load any awards
+                Including comment achievements, and starred comments
+                Useful if there is a LOT of awards on a post (and it may be distracting)
+                Can also speed up load times and uses less data
+            </pre>
+
+            <label>
                 Preferred Resolution
                 <select name="PrefRes">
                     <!-- dear lord -->

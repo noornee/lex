@@ -39,6 +39,7 @@ const (
 	GalleryCookie = "GalleryNav"
 	USRCCookie    = "TrustUSrc"
 	MathCookie    = "UseAdvMath"
+	AwardCookie   = "DisableAwards"
 
 	JSCookieValue      = "js_enabled"
 	INFCookieValue     = "infscroll_enabled"
@@ -47,6 +48,7 @@ const (
 	GalleryCookieValue = "gallery_navigation"
 	USRCCookieValue    = "trust_unknownsources"
 	MathCookieValue    = "advanced_math"
+	AwardCookieValue   = "disable_awards"
 )
 
 var (
@@ -60,6 +62,7 @@ var (
 		"EnableGalleryNav": GalleryCookieValue,
 		"TrustUnknownSrc":  USRCCookieValue,
 		"UseAdvancedMath":  MathCookieValue,
+		"BlockAwards":      AwardCookieValue,
 	}
 
 	ValidImageExts = map[string]bool{
@@ -162,6 +165,7 @@ func StartServer() {
 			gallerynav := ctx.Cookies(GalleryCookieValue)
 			trustusrc := ctx.Cookies(USRCCookieValue)
 			advmath := ctx.Cookies(MathCookieValue)
+			disableawards := ctx.Cookies(AwardCookieValue)
 
 			ctx.Bind(fiber.Map{ //nolint:errcheck,gosec,revive // ctx.Bind always returns nil
 				JSCookie:      jsenabled == "1",
@@ -170,6 +174,7 @@ func StartServer() {
 				GalleryCookie: gallerynav == "1",
 				USRCCookie:    trustusrc == "1",
 				MathCookie:    advmath == "1",
+				AwardCookie:   disableawards == "1",
 			})
 
 			return ctx.Next()

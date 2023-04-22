@@ -65,11 +65,11 @@ var (
 		"BlockAwards":      AwardCookieValue,
 	}
 
-	ValidImageExts = map[string]bool{
-		".gif":  true,
-		".png":  true,
-		".jpg":  true,
-		".jpeg": true,
+	ValidImageExts = map[string]struct{}{
+		".gif":  {},
+		".png":  {},
+		".jpg":  {},
+		".jpeg": {},
 	}
 
 	RewritePath = map[string]string{
@@ -122,7 +122,7 @@ func StartServer() {
 			return template.HTML(sHTML) //nolint:gosec,revive // bluemonday sanitizes this.
 		},
 		"qualifiesAsImg": func(input string) bool {
-			return ValidImageExts[filepath.Ext(input)]
+			return ValidImageExts[filepath.Ext(input)] == struct{}{}
 		},
 		"fmtEpochDate": func(input float64) string {
 			return time.Unix(int64(input), 0).Format("Created Jan 02, 2006")

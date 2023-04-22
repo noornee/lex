@@ -321,14 +321,21 @@ func StartServer() {
 		})
 	})
 
-	router.Get("/r/:sub/comments/:id", func(ctx *fiber.Ctx) error {
+	router.Get("/r/:sub/comments/:id/*", func(ctx *fiber.Ctx) error {
 		subname := strings.ToLower(ctx.Params("sub"))
 		cid := ctx.Params("id")
 
 		post, comm := logic.GetComments(subname, cid)
 
+		resolutionToUse, err := strconv.Atoi(ctx.Cookies(ResCookieValue))
+		if err != nil {
+			resolutionToUse = 3
+		}
+
+		SortPostData(&post, resolutionToUse)
+
 		return ctx.Render("comments", fiber.Map{
-			"Post":     post.Data,
+			"Posts":    post.Data,
 			"Comments": comm,
 		})
 	})

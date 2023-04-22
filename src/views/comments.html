@@ -4,13 +4,246 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="/css/main.min.css">
+    <title>LEX | comments</title>
 </head>
 <body>
-    {{range .Post.Children}}
-        {{.Data.Title}}
+    {{range .Posts.Children}}
+        <div style="display: flex; flex-direction: column; align-items: center;">
+            <div style="width: 720px; height: auto;">
+                <div class="postdata">
+                    <span>
+                        {{if .Data.Pinned}}
+                            <svg width="16" height="16" viewBox="0 0 512 512" version="1.1" class="licon">
+                                <path fill-rule="evenodd" d="M335.719 0l-49.953 49.953 26.453 26.438c0 0-20.563 20.578-55.844 55.828-61.688 61.703-133.813 48.891-165.859 16.828l-45.406 45.406 272.438 272.453 45.406-45.422c-32.047-32.047-44.859-104.172 16.828-165.859 35.25-35.266 55.828-55.828 55.828-55.828l26.438 26.438L512 176.297 335.719 0M158 306 3.719 460.234 0 512 51.781 508.297 202 350z"></path>
+                            </svg>
+                            Pinned by Moderators &bullet;
+                        {{end}}
+                        Posted by u/{{.Data.Author}}
+                        {{if .Data.AuthorFlair}}
+                            <span class="authorflair">{{.Data.AuthorFlair}}</span>
+                        {{end}}
+    
+                        {{if eq .Data.Distinguished "moderator"}}
+                            <svg width="16" height="16" viewBox="0 0 32 32" version="1.1" class="licon scale">
+                                <path fill-rule="evenodd" d="M16 1c1.562 1.5 6.25 4.5 9.375 4.5 0 1.5 0 4.5 0 6 0 6-4.688 15-9.375 19.5-4.688-4.5-9.375-13.5-9.375-19.5 0-1.5 0-4.5 0-6 3.126 0.001 7.813-2.999 9.375-4.5v0z"></path>
+                            </svg>
+                        {{else if eq .Data.Distinguished "admin"}}
+                            <svg width="16" height="16" viewBox="0 0 260 260" version="1.1" class="ricon">
+                                <path fill-rule="evenodd" d="M258 2l-16 48L97.06 181.76l-7.23-11.14-11.68-7.58L210 18 258 2zM101.029 238.26l11.314-11.314-31.176-48.02-48.02-31.176-11.314 11.314 31.386 31.386-34.26 37.693c-4.464-.586-9.138.82-12.568 4.249-5.858 5.858-5.858 15.355 0 21.213 5.858 5.858 15.355 5.858 21.213 0 3.428-3.428 4.834-8.1 4.25-12.562l37.695-34.262L101.029 238.26z"></path>
+                            </svg>
+                        {{end}}
+    
+                        &bullet; {{.Data.Created|fmtHumanDate}}
+    
+                        {{if .Data.Archived}}
+                            <svg width="16" height="16" viewBox="0 0 24 24" version="1.1" class="goldicon">
+                                <path fill-rule="evenodd" d="M0 4.6A2.6 2.6 0 0 1 2.6 2h18.8A2.6 2.6 0 0 1 24 4.6v.8A2.6 2.6 0 0 1 21.4 8H21v10.6c0 1.33-1.07 2.4-2.4 2.4H5.4C4.07 21 3 19.93 3 18.6V8h-.4A2.6 2.6 0 0 1 0 5.4v-.8ZM2.6 4a.6.6 0 0 0-.6.6v.8a.6.6 0 0 0 .6.6h18.8a.6.6 0 0 0 .6-.6v-.8a.6.6 0 0 0-.6-.6H2.6ZM8 10a1 1 0 1 0 0 2h8a1 1 0 1 0 0-2H8z"></path>
+                            </svg>
+                        {{end}}
+    
+                        {{if .Data.Locked}}
+                            <svg width="16" height="16" viewBox="0 0 1024 1024" version="1.1" class="goldicon">
+                                <path fill-rule="evenodd" d="M829.4 1024H194.6c-60.3 0-109.3-49-109.3-109.3v-464c0-60.3 49-109.3 109.3-109.3h634.7c60.3 0 109.3 49 109.3 109.3v464c.1 60.3-49 109.3-109.2 109.3zM726 385c-18-18-17-17-42.7-42.7V256c0-94.1-76.6-170.7-170.7-170.7S341.3 161.9 341.3 256v88S341 344 256 342V256C256 114.8 370.8 0 512 0s256 114.8 256 256v87zc-17-17-26-26-42.7-42.7z"></path>
+                            </svg>
+                        {{end}}
+                    </span>
+                    {{if .Data.Awardings}}
+                    <div style="display: inline;">
+                        {{range .Data.Awardings}}
+                            {{if contains .AwardSubType "MODERATOR"}}
+                                <span style="padding-left: 5px;">
+                                    <img class="malign" width="16" height="16" src="{{(index .ResizedIcons 0).URL|sterilizepath}}"> {{.Name}}
+                                </span>
+                            {{else}}
+                                <span style="padding-left: 5px;">
+                                    <img class="malign" width="16" height="16" src="{{(index .ResizedIcons 0).URL|sterilizepath}}">
+                                    {{if gt .Count 1}}
+                                        {{.Count}}
+                                    {{end}}
+                                </span>
+                            {{end}}
+                        {{end}}
+                    </div>
+                    {{end}}
+                </div>
+    
+                <div class="post-content flexbox" {{if and (.Data.NSFW) (not $.NSFWAllowed)}} style="filter: blur(18px);" {{end}}>
+                    <div class="flex-auto">
+                        {{if .Data.PostFlair}}
+                            <span class="post-flair flex-start" style="font-weight: bold; background-color: {{if .Data.PostFlairHex}}{{.Data.PostFlairHex}}{{else}}#777{{end}};">{{.Data.PostFlair}}</span>
+                        {{end}}
+                        <span class="post-title">{{.Data.Title}}
+                            {{if .Data.NSFW}}<span class="nsfwtag">nsfw</span>{{end}}
+                            {{if .Data.Spoiler}}<span class="spoilertag">spoiler</span>{{end}}
+                        </span>
+    
+                        {{if .Data.SelfText}}
+                            <div class="m-top10">
+                                <span style="font-size: 14px;">{{.Data.SelfText|sanitize}}</span>
+                            </div>
+                        {{end}}
+    
+                        {{if .Data.CrossPost}}
+                            <p style="text-align: center;">Sorry, crossposting is not supported yet. here is a link to the original post: <a href="https://reddit.com{{(index .Data.CrossPost 0).Permalink}}" rel="noreferrer noopener nofollow" target="_blank">https://reddit.com{{(index .Data.CrossPost 0).Permalink}}</a></p>
+                        {{end}}
+    
+                        {{if contains .Data.PostHint "image"}}
+                            {{if or (contains .Data.Preview.AutoChosenImageQuality ".gif") (contains .Data.LinkURL ".gif")}}
+                                <div class="m-top10">
+                                    <video preload="none" poster="{{.Data.Preview.AutoChosenPosterQuality}}" controls loop>
+                                        <source src="
+                                        {{if and ($.JSEnabled) (.Data.Preview.RedditVideoPreview.HLSURL)}}
+                                            {{.Data.Preview.RedditVideoPreview.HLSURL|sterilizepath}}
+                                        {{else if .Data.Preview.RedditVideoPreview.FallbackURL}}
+                                            {{.Data.Preview.RedditVideoPreview.FallbackURL|sterilizepath}}
+                                        {{else}}
+                                            {{.Data.Preview.AutoChosenImageQuality}}
+                                        {{end}}">
+                                    </video>
+                                </div>
+                            {{else}}
+                                <div class="m-top10">
+                                    <img src="{{.Data.Preview.AutoChosenImageQuality}}">
+                                </div>
+                            {{end}}
+                        {{end}}
+    
+                        <!--only filter galleries with 2 or more images.-->
+                        {{if gt (len .Data.MediaMetaData) 1}}
+                            {{$UID := ugidgen}}
+                            <div class="m-top10">
+                                <div class="gallery" tabindex="-1">
+                                    {{range $i, $v := .Data.VMediaMetaData}}
+                                        <input type="radio" name="{{$UID}}-gallery" id="{{$UID}}-slide{{$i|add}}" {{if eq $i 0}}checked{{end}}>
+                                        <div class="gallery-img">
+                                            {{if $v.Video}}
+                                                <video preload="none" poster="{{$v.AutoChosenPosterQuality}}" controls loop>
+                                                    <source src="{{$v.Link}}">
+                                                </video>
+                                            {{else}}
+                                                <img src="{{$v.Link}}">
+                                            {{end}}
+                                        </div>
+                                    {{end}}
+                                    <div class="gallery-nav">
+                                        {{range $i, $tmp := .Data.VMediaMetaData}}
+                                            <label for="{{$UID}}-slide{{$i|add}}"></label>
+                                        {{end}}
+                                    </div>
+                                </div>
+                            </div>
+                        {{else}}
+                            {{range .Data.VMediaMetaData}}
+                                <div class="m-top10">
+                                    {{if .Video}}
+                                        <video preload="none" poster="{{.AutoChosenPosterQuality}}" controls loop>
+                                            <source src="{{.Link}}">
+                                        </video>
+                                    {{else}}
+                                        <img src="{{.Link}}">
+                                    {{end}}
+                                </div>
+                            {{end}}
+                        {{end}}
+    
+                        {{if .Data.SecureMedia.RedditVideo.FallbackURL}}
+                            <div class="pad-10">
+                                <video preload="none" poster="{{.Data.Preview.AutoChosenPosterQuality}}" controls>
+                                    <source src="
+                                    {{if and ($.JSEnabled) (.Data.SecureMedia.RedditVideo.HLSURL)}}
+                                        {{.Data.SecureMedia.RedditVideo.HLSURL|sterilizepath}}
+                                    {{else}}
+                                        {{.Data.SecureMedia.RedditVideo.FallbackURL|sterilizepath}}
+                                    {{end}}">
+                                </video>
+                            </div>
+                        {{end}}
+    
+                        {{if $.TrustUSrc}}
+                            {{if and (not .Data.PostHint) (not .Data.SecureMedia.RedditVideo.FallbackURL) (.Data.LinkURL|qualifiesAsImg)}}
+                                <div class="m-top10">
+                                    <img src="{{.Data.LinkURL}}">
+                                </div>
+                            {{end}}
+                        {{end}}
+                    </div>
+                    {{if or (contains .Data.PostHint "link") (contains .Data.PostHint "rich:video")}}
+                        <div>
+                            <div class="flexbox position-relative">
+                                <a href="{{.Data.LinkURL}}" rel="noreferrer noopener nofollow" target="_blank">
+                                    <img src="{{.Data.Preview.AutoChosenPosterQuality}}" class="preview">
+                                    <div class="extlinkicon">
+                                        <svg width="14" height="14" viewBox="0 0 1920 1920" version="1.1">
+                                            <path fill-rule="evenodd" d="M1866.003 351.563 1565.128 50.575c-69.46-67.652-180.932-67.426-248.923.565L906.23 461.116c-68.33 68.443-68.33 179.69.113 248.132l31.623 31.624 79.737-79.963-31.624-31.51c-24.282-24.396-24.282-64.038 0-88.433l409.977-409.977c24.508-24.395 64.828-24.17 89.675 0l299.859 299.972c24.734 25.186 24.847 65.619.564 90.014l-409.976 409.977c-24.508 24.282-64.15 24.282-88.546 0l-110.795-110.909 159.473-159.36-79.85-79.85-435.614 435.502-109.779-109.779c-32.866-33.656-76.8-52.292-123.67-52.63-43.596 1.694-92.273 18.296-126.156 52.178L51.377 1316.081c-68.442 68.442-68.442 179.69 0 248.132l301.553 301.553c34.108 34.108 79.059 51.275 124.01 51.275 44.95 0 89.9-17.167 124.122-51.275l409.976-409.977c33.77-33.882 52.405-78.607 52.066-126.042-.226-46.984-18.974-90.918-52.066-123.219l-30.494-30.494-79.85 79.85 30.946 30.945c11.86 11.633 18.41 27.106 18.523 43.595.113 16.942-6.664 33.092-18.974 45.516l-409.977 409.976c-23.492 23.492-64.94 23.492-88.433 0l-301.553-301.553c-11.746-11.746-18.183-27.444-18.183-44.273 0-16.715 6.437-32.414 18.183-44.16l409.977-409.976c12.197-12.31 28.235-19.087 45.063-19.087h.452c16.49.113 31.962 6.663 43.934 19.087l110.344 110.23-162.184 162.297 79.85 79.85 438.324-438.438 110.796 110.908c34.334 34.221 79.171 51.275 124.122 51.275 44.95 0 89.901-17.054 124.122-51.275l409.977-409.977c67.877-67.99 67.99-179.463 0-249.26"></path>
+                                        </svg>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    {{end}}
+                </div>
+                <div class="post-footer">
+                    <div class="l-hovergray">
+                        <svg width="16" height="16" viewBox="0 0 32 32" version="1.1" class="gicon">
+                            <path fill-rule="evenodd" d="M25.785 4.952h-19.57c-1.235 0-2.236 1.002-2.236 2.236v12.488c0 1.234 1.001 2.236 2.236 2.236h3.729l.001 5.137 5.704-5.137h10.137c1.236 0 2.236-1.002 2.236-2.236v-12.488c-.001-1.234-1.001-2.236-2.237-2.236z"></path>
+                        </svg>
+    
+                        <span class="gtext">{{.Data.CommentCount|fmtHumanComma}} Comments</span>
+                    </div>
+                    
+                    <div style="float: left; padding: 5px; margin-right: 15px;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" version="1.1" class="gicon">
+                            <path fill-rule="evenodd" d="M11.2929 4.29289C11.6834 3.90237 12.3166 3.90237 12.7071 4.29289L18.7071 10.2929C19.0976 10.6834 19.0976 11.3166 18.7071 11.7071C18.3166 12.0976 17.6834 12.0976 17.2929 11.7071L13 7.41421V19C13 19.5523 12.5523 20 12 20C11.4477 20 11 19.5523 11 19V7.41421L6.70711 11.7071C6.31658 12.0976 5.68342 12.0976 5.29289 11.7071C4.90237 11.3166 4.90237 10.6834 5.29289 10.2929L11.2929 4.29289z"></path>
+                        </svg>
+    
+                        <span class="gtext"> {{.Data.Ups|fmtHumanComma}} Upvotes &bullet; {{.Data.UpvoteRatio|toPercentage}}% Upvote Ratio</span>
+                    </div>
+    
+                    {{if .Data.Preview.AutoChosenImageQuality}}
+                        {{if (index .Data.Preview.Images 0).Variants.GIF.Source.URL}}
+                        <a href="{{(index .Data.Preview.Images 0).Variants.GIF.Source.URL|sterilizepath}}" class="l-hovergray" rel="noreferrer noopener nofollow" target="_blank">
+                            <svg width="16" height="16" viewBox="0 0 24 24" version="1.1" class="gicon">
+                                <path fill-rule="evenodd" d="M21.7092 2.295C21.8041 2.3904 21.8757 2.5001 21.9241 2.6172 21.9727 2.7342 21.9996 2.8625 22 2.997L22 3V9C22 9.5523 21.5523 10 21 10 20.4477 10 20 9.5523 20 9V5.4142L14.7071 10.7071C14 10 14 10 13.2929 9.2929L18.5858 4H15C14.4477 4 14 3.5523 14 3 14 2.4477 14.4477 2 15 2H20.9998C21.2749 2 21.5242 2.1111 21.705 2.2908L21.7092 2.295M14.709 10.707 5.4142 20H9C9.5523 20 10 20.4477 10 21 10 21.5523 9.5523 22 9 22H3.0007L2.997 22C2.743 21.9992 2.4892 21.9023 2.295 21.7092L2.2908 21.705C2.1959 21.6096 2.1243 21.4999 2.0759 21.3828 2.027 21.2649 2 21.1356 2 21V15C2 14.4477 2.4477 14 3 14 3.5523 14 4 14.4477 4 15V18.5858L13.291 9.292z"></path>
+                            </svg>
+                            
+                            <span class="gtext">GIF</span>
+                        </a>
+                        {{end}}
+    
+                        {{if (index .Data.Preview.Images 0).Variants.MP4.Source.URL}}
+                        <a href="{{(index .Data.Preview.Images 0).Variants.MP4.Source.URL|sterilizepath}}" class="l-hovergray" rel="noreferrer noopener nofollow" target="_blank">
+                            <svg width="16" height="16" viewBox="0 0 24 24" version="1.1" class="gicon">
+                                <path fill-rule="evenodd" d="M21.7092 2.295C21.8041 2.3904 21.8757 2.5001 21.9241 2.6172 21.9727 2.7342 21.9996 2.8625 22 2.997L22 3V9C22 9.5523 21.5523 10 21 10 20.4477 10 20 9.5523 20 9V5.4142L14.7071 10.7071C14 10 14 10 13.2929 9.2929L18.5858 4H15C14.4477 4 14 3.5523 14 3 14 2.4477 14.4477 2 15 2H20.9998C21.2749 2 21.5242 2.1111 21.705 2.2908L21.7092 2.295M14.709 10.707 5.4142 20H9C9.5523 20 10 20.4477 10 21 10 21.5523 9.5523 22 9 22H3.0007L2.997 22C2.743 21.9992 2.4892 21.9023 2.295 21.7092L2.2908 21.705C2.1959 21.6096 2.1243 21.4999 2.0759 21.3828 2.027 21.2649 2 21.1356 2 21V15C2 14.4477 2.4477 14 3 14 3.5523 14 4 14.4477 4 15V18.5858L13.291 9.292z"></path>
+                            </svg>
+    
+                            <span class="gtext">MP4</span>
+                        </a>
+                        {{end}}
+    
+                        {{if (index .Data.Preview.Images 0).Source.URL}}
+                            <a href="{{(index .Data.Preview.Images 0).Source.URL|sterilizepath}}" class="l-hovergray" rel="noreferrer noopener nofollow" target="_blank">
+                                <svg width="16" height="16" viewBox="0 0 24 24" version="1.1" class="gicon">
+                                    <path fill-rule="evenodd" d="M21.7092 2.295C21.8041 2.3904 21.8757 2.5001 21.9241 2.6172 21.9727 2.7342 21.9996 2.8625 22 2.997L22 3V9C22 9.5523 21.5523 10 21 10 20.4477 10 20 9.5523 20 9V5.4142L14.7071 10.7071C14 10 14 10 13.2929 9.2929L18.5858 4H15C14.4477 4 14 3.5523 14 3 14 2.4477 14.4477 2 15 2H20.9998C21.2749 2 21.5242 2.1111 21.705 2.2908L21.7092 2.295M14.709 10.707 5.4142 20H9C9.5523 20 10 20.4477 10 21 10 21.5523 9.5523 22 9 22H3.0007L2.997 22C2.743 21.9992 2.4892 21.9023 2.295 21.7092L2.2908 21.705C2.1959 21.6096 2.1243 21.4999 2.0759 21.3828 2.027 21.2649 2 21.1356 2 21V15C2 14.4477 2.4477 14 3 14 3.5523 14 4 14.4477 4 15V18.5858L13.291 9.292z"></path>
+                                </svg>
+    
+                                <span class="gtext">Source Image</span>
+                            </a>
+                        {{end}}
+                    {{end}}
+                    {{if .Data.SecureMedia.RedditVideo.FallbackURL}}
+                        <a href="{{.Data.SecureMedia.RedditVideo.FallbackURL|sterilizepath}}" class="l-hovergray" rel="noreferrer noopener nofollow" target="_blank">
+                            <svg width="16" height="16" viewBox="0 0 24 24" version="1.1" class="gicon">
+                                <path fill-rule="evenodd" d="M21.7092 2.295C21.8041 2.3904 21.8757 2.5001 21.9241 2.6172 21.9727 2.7342 21.9996 2.8625 22 2.997L22 3V9C22 9.5523 21.5523 10 21 10 20.4477 10 20 9.5523 20 9V5.4142L14.7071 10.7071C14 10 14 10 13.2929 9.2929L18.5858 4H15C14.4477 4 14 3.5523 14 3 14 2.4477 14.4477 2 15 2H20.9998C21.2749 2 21.5242 2.1111 21.705 2.2908L21.7092 2.295M14.709 10.707 5.4142 20H9C9.5523 20 10 20.4477 10 21 10 21.5523 9.5523 22 9 22H3.0007L2.997 22C2.743 21.9992 2.4892 21.9023 2.295 21.7092L2.2908 21.705C2.1959 21.6096 2.1243 21.4999 2.0759 21.3828 2.027 21.2649 2 21.1356 2 21V15C2 14.4477 2.4477 14 3 14 3.5523 14 4 14.4477 4 15V18.5858L13.291 9.292z"></path>
+                            </svg>
+    
+                            <span class="gtext">Source Video</span>
+                        </a>
+                    {{end}}
+                </div>
+            </div>
+        </div>
     {{end}}
-    <br><br>
     <hr>
 
     {{range .Comments}}

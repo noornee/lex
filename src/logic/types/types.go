@@ -147,14 +147,6 @@ type CommentsToUnmarshal struct {
 	Data []json.RawMessage `json:"data"`
 }
 
-type Post struct {
-	Data struct {
-		Children []struct {
-			Data internalPostData `json:"data"`
-		} `json:"children"`
-	} `json:"data"`
-}
-
 type Comments struct {
 	Data struct {
 		Children []struct {

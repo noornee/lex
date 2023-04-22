@@ -54,6 +54,7 @@ html, body {
     @extend %max-view;
     overflow-x: hidden;
     font-family: $open-sans;
+    color: #fff;
     background-color: #181818;
 }
 
@@ -102,7 +103,6 @@ pre {
     font-family: $josefin-sans;
     font-size: 36px;
     text-align: center;
-    color: #fff;
     justify-content: space-around;
 
     @extend %max-view
@@ -159,7 +159,6 @@ pre {
         margin-top: 25px;
         width: 720px;
         height: auto;
-        color: #fff;
         background-color: #292828;
         border-radius: 4px;    
     }

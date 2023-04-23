@@ -71,27 +71,31 @@ var (
 		".jpg":  {},
 		".jpeg": {},
 	}
-
-	RewritePath = map[string]string{
-		"https://v.redd.it":                "/video",
-		"https://i.redd.it":                "/image",
-		"https://a.thumbs.redditmedia.com": "/athumb",
-		"https://b.thumbs.redditmedia.com": "/bthumb",
-		"https://external-preview.redd.it": "/external",
-		"https://preview.redd.it":          "/preview",
-		"https://styles.redditmedia.com":   "/rstyle",
-		"https://www.redditstatic.com":     "/rstatic",
-		"https://i.imgur.com":              "/imgur",
-	}
 )
 
 func RewriteURL(input string) string {
-	for k, v := range RewritePath {
-		if strings.HasPrefix(input, k) {
-			return v + input[len(k):]
-		}
+	switch {
+	case strings.HasPrefix(input, "https://v.redd.it"):
+		return "/video" + input[17:]
+	case strings.HasPrefix(input, "https://i.redd.it"):
+		return "/image" + input[17:]
+	case strings.HasPrefix(input, "https://a.thumbs.redditmedia.com"):
+		return "/athumb" + input[32:]
+	case strings.HasPrefix(input, "https://b.thumbs.redditmedia.com"):
+		return "/bthumb" + input[32:]
+	case strings.HasPrefix(input, "https://external-preview.redd.it"):
+		return "/external" + input[32:]
+	case strings.HasPrefix(input, "https://preview.redd.it"):
+		return "/preview" + input[23:]
+	case strings.HasPrefix(input, "https://styles.redditmedia.com"):
+		return "/rstyle" + input[30:]
+	case strings.HasPrefix(input, "https://www.redditstatic.com"):
+		return "/rstatic" + input[28:]
+	case strings.HasPrefix(input, "https://i.imgur.com"):
+		return "/imgur" + input[19:]
+	default:
+		return input
 	}
-	return input
 }
 
 func StartServer() {

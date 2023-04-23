@@ -37,7 +37,7 @@
                     </svg>
                 {{end}}
             </span>
-            {{if .Data.Awardings}}
+            {{if and (.Data.Awardings) (not $.DisableAwards)}}
             <div style="display: inline;">
                 {{range .Data.Awardings}}
                     {{if contains .AwardSubType "MODERATOR"}}

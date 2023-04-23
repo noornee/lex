@@ -247,9 +247,16 @@
     <hr>
 
     {{range .Comments}}
-        <div {{if gt .Depth 0}} style="margin-left: calc({{.Depth}} * 15px)" {{end}}>
-            <p>{{.Author}}</p>
-            <p style="margin-left: 15px">{{.Body}}</p>    
+        <div style="display: flex; flex-direction: column; align-items: center; {{if gt .Depth 0}} margin-left: calc({{.Depth}} * 15px) {{end}}">
+            <div style="width: 720px; height: auto;">
+                <div>
+                    <p>{{.Author}}</p>
+                    <div style="display:inline-flex;">
+                        <hr>
+                        <span style="margin-left: 15px">{{.Body|sanitize}}</span>        
+                    </div>
+                </div>
+            </div>
         </div>
     {{end}}
 </body>

@@ -1,0 +1,9 @@
+{{define "rep"}}
+    <p>{{.Author}}</p>
+    <div style="display:inline-flex;">
+        <hr>
+        <span style="margin-left: 15px">
+            {{.Body|sanitize}}
+        </span>
+    </div>
+{{end}}

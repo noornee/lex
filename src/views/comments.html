@@ -246,18 +246,25 @@
     {{end}}
     <hr>
 
-    {{range .Comments}}
-        <div style="display: flex; flex-direction: column; align-items: center; {{if gt .Depth 0}} margin-left: calc({{.Depth}} * 15px) {{end}}">
-            <div style="width: 720px; height: auto;">
-                <div>
-                    <p>{{.Author}}</p>
-                    <div style="display:inline-flex;">
-                        <hr>
-                        <span style="margin-left: 15px">{{.Body|sanitize}}</span>        
+    {{range $i, $ccom := .Comments}}
+        {{if not (gt $ccom.Depth 0)}}
+            <div style="display: flex; flex-direction: column; align-items: center; {{if gt .Depth 0}} margin-left: calc({{.Depth}} * 15px) {{end}}">
+                <div style="width: 720px; height: auto;">
+                    <div>
+                        <p>{{$ccom.Author}}</p>
+                        <div style="display:inline-flex;">
+                            <hr>
+                            <span style="margin-left: 15px">
+                                {{$ccom.Body|sanitize}}
+                                {{if gt (len $ccom.Replies) 2}}
+                                    {{template "rep" (index $.Comments ($i|add) )}}
+                                {{end}}
+                            </span>        
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        {{end}}
     {{end}}
 </body>
 </html>

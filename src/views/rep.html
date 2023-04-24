@@ -1,9 +1,13 @@
 {{define "rep"}}
-    <p>{{.Author}}</p>
+    {{$ccom := (index .root.Comments .index)}}
+    <p>{{$ccom.Author}}</p>
     <div style="display:inline-flex;">
         <hr>
         <span style="margin-left: 15px">
-            {{.Body|sanitize}}
-        </span>
+            {{$ccom.Body|sanitize}}
+            {{if gt (len $ccom.Replies) 2}}
+                {{template "rep" (addVarToCtx "index" (.index|add) "root" .root)}}
+            {{end}}
+        </span>        
     </div>
 {{end}}

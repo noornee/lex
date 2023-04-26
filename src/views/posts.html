@@ -181,13 +181,13 @@
             {{end}}
         </div>
         <div class="post-footer">
-            <div class="l-hovergray">
+            <a class="l-hovergray" href="{{.Data.Permalink}}" rel="noreferrer noopener nofollow" target="_blank">
                 <svg width="16" height="16" viewBox="0 0 32 32" version="1.1" class="gicon">
                     <path fill-rule="evenodd" d="M25.785 4.952h-19.57c-1.235 0-2.236 1.002-2.236 2.236v12.488c0 1.234 1.001 2.236 2.236 2.236h3.729l.001 5.137 5.704-5.137h10.137c1.236 0 2.236-1.002 2.236-2.236v-12.488c-.001-1.234-1.001-2.236-2.237-2.236z"></path>
                 </svg>
 
                 <span class="gtext">{{.Data.CommentCount|fmtHumanComma}} Comments</span>
-            </div>
+            </a>
             <a href="https://reddit.com{{.Data.Permalink}}" class="l-hovergray" rel="noreferrer noopener nofollow" target="_blank">
                 <svg width="16" height="16" viewBox="0 0 24 24" version="1.1" class="gicon">
                     <path fill-rule="evenodd" d="M18 1C15.7909 1 14 2.79086 14 5C14 5.19436 14.0139 5.38549 14.0407 5.57244L8.4479 8.83625C7.77136 8.31202 6.92212 8 6 8C3.79086 8 2 9.79086 2 12C2 14.2091 3.79086 16 6 16C6.92229 16 7.77167 15.6879 8.44827 15.1635L14.0414 18.4227C14.0141 18.6112 14 18.8039 14 19C14 21.2091 15.7909 23 18 23C20.2091 23 22 21.2091 22 19C22 16.7909 20.2091 15 18 15C17.0797 15 16.232 15.3108 15.5561 15.8332L9.95943 12.5719C9.98617 12.3851 10 12.1942 10 12C10 11.8057 9.98614 11.6146 9.95936 11.4277L15.5522 8.16382C16.2287 8.688 17.0779 9 18 9C20.2091 9 22 7.20914 22 5C22 2.79086 20.2091 1 18 1z"></path>

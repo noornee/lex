@@ -142,8 +142,21 @@ func StartServer() {
 		"toPercentage": func(input float64) string {
 			return fmt.Sprintf("%.0f", input*100)
 		},
+		"addVarToCtx": func(input ...any) map[string]any {
+			if len(input)%2 != 0 {
+				return nil
+			}
+			d := make(map[string]any)
+			for i := 0; i < len(input); i += 2 {
+				if key, ok := input[i].(string); ok {
+					d[key] = input[i+1]
+				} else {
+					return nil
+				}
+			}
+			return d
+		},
 	})
-
 	// endregion
 
 	router := fiber.New(fiber.Config{
@@ -331,6 +344,25 @@ func StartServer() {
 			"SubData":       sub.Data,
 			"Posts":         posts.Data,
 			"FlairFiltered": flairuesc,
+		})
+	})
+
+	router.Get("/r/:sub/comments/:id/*", func(ctx *fiber.Ctx) error {
+		subname := strings.ToLower(ctx.Params("sub"))
+		cid := ctx.Params("id")
+
+		post, comm := logic.GetComments(subname, cid)
+
+		resolutionToUse, err := strconv.Atoi(ctx.Cookies(ResCookieValue))
+		if err != nil {
+			resolutionToUse = 3
+		}
+
+		SortPostData(&post, resolutionToUse)
+
+		return ctx.Render("comments", fiber.Map{
+			"Posts":    post.Data,
+			"Comments": comm,
 		})
 	})
 

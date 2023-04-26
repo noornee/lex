@@ -1,0 +1,27 @@
+{{define "rep"}}
+    {{$ccom := (index .root.Comments .index)}}
+    <p>{{$ccom.Author}}</p>
+    <div style="display:inline-flex;">
+        <hr>
+        <span style="margin-left: 15px">
+            {{$ccom.Body|sanitize}}
+            {{if gt (len $ccom.Replies) 2}}
+                {{template "rep" (addVarToCtx "index" (.index|add) "root" .root)}}
+            {{end}}
+        </span>        
+    </div>
+
+    {{$nccom := (index .root.Comments (.index|add))}}
+    {{if or (eq $nccom.Depth $ccom.Depth) (and (lt $nccom.Depth $ccom.Depth) (gt $nccom.Depth 0))}}
+        <p>{{$nccom.Author}}</p>
+        <div style="display:inline-flex;">
+            <hr>
+            <span style="margin-left: 15px">
+                {{$nccom.Body|sanitize}}
+                {{if gt (len $nccom.Replies) 2}}
+                    {{template "rep" (addVarToCtx "index" (.index|add|add) "root" .root)}}
+                {{end}}
+            </span>        
+        </div>
+    {{end}}
+{{end}}

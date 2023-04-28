@@ -143,6 +143,47 @@ func GetComments(subreddit, id string) (types.Posts, []types.InternalCommentData
 	return post, comments.MReplies
 }
 
+func GetAccount(name, after string) types.Posts {
+	url := fmt.Sprintf("https://www.reddit.com/u/%v.json?raw_json=1", name)
+
+	if len(after) != 0 {
+		url += fmt.Sprintf("&after=%v", after)
+	}
+
+	log.Println(url)
+
+	req, err := http.NewRequestWithContext(context.Background(), http.MethodGet, url, nil)
+	if err != nil {
+		log.Println(err)
+	}
+
+	req.Header.Set("User-Agent", "go:lex:cmd777-with-"+utils.UUIDv4())
+	req.Header.Set("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8")
+	req.Header.Set("Accept-Language", "en-US,en;q=0.5")
+	req.Header.Set("Connection", "keep-alive")
+	req.Header.Set("Host", "www.reddit.com")
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		log.Println(err)
+	}
+
+	defer func() {
+		if closeerr := resp.Body.Close(); closeerr != nil {
+			log.Println("Failed to close response body", closeerr)
+		}
+	}()
+
+	var posts types.Posts
+
+	err = json.NewDecoder(resp.Body).Decode(&posts)
+	if err != nil {
+		log.Println(err)
+	}
+
+	return posts
+}
+
 func internalDecode(comments *types.Comments) {
 	for _, v := range comments.Data.Children {
 		comments.MReplies = append(comments.MReplies, v.Data)

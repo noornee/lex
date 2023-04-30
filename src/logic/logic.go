@@ -150,8 +150,6 @@ func GetAccount(name, after string) types.Posts {
 		url += fmt.Sprintf("&after=%v", after)
 	}
 
-	log.Println(url)
-
 	req, err := http.NewRequestWithContext(context.Background(), http.MethodGet, url, nil)
 	if err != nil {
 		log.Println(err)

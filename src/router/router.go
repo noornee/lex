@@ -385,28 +385,26 @@ func StartServer() {
 		})
 	})
 
-	router.Post("/loadAccComments", func(ctx *fiber.Ctx) error {
+	router.Post("/loadPosts", func(ctx *fiber.Ctx) error {
 		username := ctx.FormValue("user")
 		after := ctx.FormValue("after")
+		if username != "" {
+			posts := logic.GetAccount(username, after)
 
-		posts := logic.GetAccount(username, after)
+			resolutionToUse, err := strconv.Atoi(ctx.Cookies(ResCookieValue))
+			if err != nil {
+				resolutionToUse = 3
+			}
 
-		resolutionToUse, err := strconv.Atoi(ctx.Cookies(ResCookieValue))
-		if err != nil {
-			resolutionToUse = 3
+			SortPostData(&posts, resolutionToUse)
+
+			return ctx.Render("ucomm", fiber.Map{
+				"username": username,
+				"Posts":    posts.Data,
+			})
 		}
 
-		SortPostData(&posts, resolutionToUse)
-
-		return ctx.Render("ucomm", fiber.Map{
-			"username": username,
-			"Posts":    posts.Data,
-		})
-	})
-
-	router.Post("/loadPosts", func(ctx *fiber.Ctx) error {
 		subname := ctx.FormValue("sub")
-		after := ctx.FormValue("after")
 		flair := url.QueryEscape(ctx.FormValue("flair"))
 
 		posts := logic.GetPosts(subname, after, flair)

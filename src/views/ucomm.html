@@ -259,7 +259,7 @@
         <form id="LoadPostForm">
             <input type="hidden" name="user" value="{{.username}}">
             <input type="hidden" name="after" value="{{.Posts.After}}">
-            <button type="button" class="loadMorebtn" onclick="loadUComm(){{if .JSEnabled}}.then(loadHLS){{end}}{{if .GalleryNav}}.then(initNav){{end}}" id="LoadPostButton">Load More Posts</button>
+            <button type="button" class="loadMorebtn" onclick="loadPosts(){{if .JSEnabled}}.then(loadHLS){{end}}{{if .GalleryNav}}.then(initNav){{end}}" id="LoadPostButton">Load More Posts</button>
         </form>
     {{else}}
         <a href="?after={{.Posts.After}}" class="loadMorebtn" style="text-align: center; font-size: 24px;">Go to next Page</a>

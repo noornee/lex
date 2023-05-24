@@ -1,3 +1,4 @@
+//nolint:depguard // allow flag here.
 package main
 
 import (

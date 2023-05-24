@@ -49,21 +49,8 @@ const (
 	USRCCookieValue    = "trust_unknownsources"
 	MathCookieValue    = "advanced_math"
 	AwardCookieValue   = "disable_awards"
-)
 
-var (
-	SubCache sync.Map
-
-	CFGMap = map[string]string{
-		"EnableJS":         JSCookieValue,
-		"EnableInfScroll":  INFCookieValue,
-		"AllowNSFW":        NSFWCookieValue,
-		"PrefRes":          ResCookieValue,
-		"EnableGalleryNav": GalleryCookieValue,
-		"TrustUnknownSrc":  USRCCookieValue,
-		"UseAdvancedMath":  MathCookieValue,
-		"BlockAwards":      AwardCookieValue,
-	}
+	MaxResolution = 11037
 )
 
 func RewriteURL(input string) string {
@@ -92,6 +79,19 @@ func RewriteURL(input string) string {
 }
 
 func StartServer() {
+	var subCache sync.Map
+
+	cfgMap := map[string]string{
+		"EnableJS":         JSCookieValue,
+		"EnableInfScroll":  INFCookieValue,
+		"AllowNSFW":        NSFWCookieValue,
+		"PrefRes":          ResCookieValue,
+		"EnableGalleryNav": GalleryCookieValue,
+		"TrustUnknownSrc":  USRCCookieValue,
+		"UseAdvancedMath":  MathCookieValue,
+		"BlockAwards":      AwardCookieValue,
+	}
+
 	// region Template Engine
 
 	templateEngine := html.New("./views", ".html")
@@ -105,7 +105,7 @@ func StartServer() {
 		"ugidgen": func() string {
 			ubytes := make([]byte, 28)
 			for i := 0; i < len(ubytes); i++ {
-				ubytes[i] = ValidCharacters[rand.Intn(len(ValidCharacters))] //nolint:gosec,revive // We do not need to use crypto/rand here.
+				ubytes[i] = ValidCharacters[rand.Intn(len(ValidCharacters))] //nolint:gosec // We do not need to use crypto/rand here.
 			}
 			return string(ubytes)
 		},
@@ -116,7 +116,7 @@ func StartServer() {
 				RequireNoReferrerOnLinks(true).
 				AddTargetBlankToFullyQualifiedLinks(true).
 				SanitizeBytes(markdown)
-			return template.HTML(sHTML) //nolint:gosec,revive // bluemonday sanitizes this.
+			return template.HTML(sHTML) //nolint:gosec // bluemonday sanitizes this.
 		},
 		"qualifiesAsImg": func(input string) bool {
 			switch filepath.Ext(input) {
@@ -150,8 +150,6 @@ func StartServer() {
 			for i := 0; i < len(input); i += 2 {
 				if key, ok := input[i].(string); ok {
 					d[key] = input[i+1]
-				} else {
-					return nil
 				}
 			}
 			return d
@@ -188,7 +186,7 @@ func StartServer() {
 			advmath := ctx.Cookies(MathCookieValue)
 			disableawards := ctx.Cookies(AwardCookieValue)
 
-			ctx.Bind(fiber.Map{ //nolint:errcheck,gosec,revive // ctx.Bind always returns nil
+			ctx.Bind(fiber.Map{ //nolint:errcheck,gosec // ctx.Bind always returns nil
 				JSCookie:      jsenabled == "1",
 				INFCookie:     infscrollenabled == "1",
 				NSFWCookie:    nsfwallowed == "1",
@@ -274,7 +272,7 @@ func StartServer() {
 	})
 
 	router.Post("/config", func(ctx *fiber.Ctx) error {
-		for cookiekey, cookievalue := range CFGMap {
+		for cookiekey, cookievalue := range cfgMap {
 			switch formvalue := ctx.FormValue(cookiekey); formvalue {
 			case "on":
 				if cookiekey != "PrefRes" {
@@ -320,11 +318,11 @@ func StartServer() {
 		// This will store it in memory, which may not be the best, and a disk based cache would be better.
 		var sub types.Subreddit
 
-		if scache, exists := SubCache.Load(subname); exists {
-			sub = scache.(types.Subreddit) //nolint:errcheck,revive,forcetypeassert // This should not error out.
+		if scache, exists := subCache.Load(subname); exists {
+			sub = scache.(types.Subreddit) //nolint:errcheck,forcetypeassert // This should not error out.
 		} else {
 			sub = logic.GetSubredditData(subname)
-			SubCache.Store(subname, sub)
+			subCache.Store(subname, sub)
 		}
 
 		resolutionToUse, err := strconv.Atoi(ctx.Cookies(ResCookieValue))
@@ -416,7 +414,7 @@ func SortPostData(posts *types.Posts, resolutionToUse int) {
 			if len(post.Preview.Images) > 0 {
 				image := post.Preview.Images[0]
 
-				if len(image.Resolutions) > 0 && resolutionToUse != 11037 {
+				if len(image.Resolutions) > 0 && resolutionToUse != MaxResolution {
 					if resolutionToUse >= len(image.Resolutions) {
 						resolutionToUse = len(image.Resolutions) - 1
 					}
@@ -430,7 +428,7 @@ func SortPostData(posts *types.Posts, resolutionToUse int) {
 				resolutionToUse = origRes
 
 				if strings.Contains(image.Source.URL, ".gif") {
-					if len(image.Variants.MP4.Resolutions) > 0 && resolutionToUse != 11037 {
+					if len(image.Variants.MP4.Resolutions) > 0 && resolutionToUse != MaxResolution {
 						if resolutionToUse >= len(image.Variants.MP4.Resolutions) {
 							resolutionToUse = len(image.Variants.MP4.Resolutions) - 1
 						}
@@ -488,12 +486,15 @@ func vmediaappendor(mData types.InternalMetaData, resolutionToUse int) types.Int
 		poster = RewriteURL(mData.P[resolutionToUse].U)
 	}
 
-	if isVideo {
+	switch isVideo {
+	case true:
 		source = RewriteURL(mData.S.MP4)
-	} else if resolutionToUse == 11037 {
-		source = RewriteURL(mData.S.U)
-	} else {
-		source = poster
+	case false:
+		if resolutionToUse == MaxResolution {
+			source = RewriteURL(mData.S.U)
+		} else {
+			source = poster
+		}
 	}
 	return types.InternalVData{
 		Video:                   isVideo,

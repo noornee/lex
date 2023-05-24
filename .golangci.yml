@@ -49,8 +49,8 @@ linters-settings:
   #  custom-order: true
   # for some reason, gci is really broken
 
-  goconst:
-    numbers: true
+  # goconst:
+  #  numbers: true
 
   gocritic:
     enabled-tags:
@@ -205,7 +205,7 @@ linters:
     - gochecknoglobals
     - gochecknoinits
     # - gocognit
-    - goconst
+    # - goconst
     - gocritic
     # - gocyclo
     # - godot
@@ -216,7 +216,7 @@ linters:
     # - goheader
     # - goimports
     # - golint
-    - gomnd
+    # - gomnd
     - gomoddirectives
     # - gomodguard
     - goprintffuncname

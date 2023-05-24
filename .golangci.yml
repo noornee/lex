@@ -1,32 +1,67 @@
 # From https://github.com/gofiber/fiber/blob/master/.golangci.yml
 
 run:
+  timeout: 10m
   modules-download-mode: readonly
   skip-dirs-use-default: false
-  timeout: 10m
 
 output:
   sort-results: true
 
 linters-settings:
+  depguard:
+    include-go-root: true
+    packages:
+      - flag
+      - io/ioutil
+      - reflect
+      - unsafe
+    packages-with-error-message:
+      - flag: '`flag` package is only allowed in main.go'
+      - io/ioutil: '`io/ioutil` package is deprecated, use the `io` and `os` package instead'
+      - reflect: '`reflect` package is dangerous to use'
+      - unsafe: '`unsafe` package is dangerous to use'
+
   errcheck:
-     check-type-assertions: true
-     check-blank: true
-     disable-default-exclusions: true
+    check-type-assertions: true
+    check-blank: true
+    disable-default-exclusions: true
 
   errchkjson:
     report-no-exported: true
 
   exhaustive:
+    check-generated: true
     default-signifies-exhaustive: true
 
   forbidigo:
     forbid:
       - ^(fmt\.Print(|f|ln)|print|println)$
+      - 'time\.Sleep'
+      - 'panic'
+
+  # gci:
+  #  sections:
+  #    - standard
+  #    - default
+  #    - blank
+  #    - dot
+  #  custom-order: true
+  # for some reason, gci is really broken
+
+  goconst:
+    numbers: true
 
   gocritic:
+    enabled-tags:
+      - diagnostic
+      - style
+      - performance
+      - experimental
+      - opinionated
     disabled-checks:
-      - ifElseChain
+      - hugeParam
+      - rangeValCopy
 
   gofumpt:
     module-path: main
@@ -38,12 +73,10 @@ linters-settings:
         audit: true
 
   govet:
-    check-shadowing: true
     enable-all: true
     disable:
-      - shadow
       - fieldalignment
-      - loopclosure
+      - shadow
 
   grouper:
     import-require-single-import: true
@@ -65,37 +98,44 @@ linters-settings:
   promlinter:
     strict: true
 
+  reassign:
+    patterns:
+      - '.*'
+
   revive:
     enable-all-rules: true
     rules:
+      # Provided by gomnd linter
       - name: add-constant
         disabled: true
       - name: argument-limit
         disabled: true
+      # Provided by bidichk
       - name: banned-characters
         disabled: true
       - name: cognitive-complexity
         disabled: true
+      - name: comment-spacings
+        arguments:
+          - nolint
+          - msgp
       - name: cyclomatic
-        disabled: true
-      - name: early-return
-        severity: warning
         disabled: true
       - name: exported
         disabled: true
       - name: file-header
         disabled: true
       - name: function-result-limit
-        disabled: true
+        arguments: [3]
       - name: function-length
         disabled: true
       - name: line-length-limit
         disabled: true
+      - name: nested-structs
+        disabled: true
       - name: max-public-structs
         disabled: true
       - name: modifies-parameter
-        disabled: true
-      - name: nested-structs
         disabled: true
       - name: package-comments
         disabled: true
@@ -113,13 +153,23 @@ linters-settings:
       rules:
         json: snake
 
+  tenv:
+    all: true
+
+  #unparam:
+  #  check-exported: true
+
   wrapcheck:
     ignorePackageGlobs:
       - github.com/gofiber/fiber/*
       - github.com/valyala/fasthttp
 
 issues:
-   exclude-use-default: false
+  exclude-use-default: false
+  exclude-rules:
+    - linters:
+      - goerr113
+      text: 'do not define dynamic errors, use wrapped static errors instead*'
 
 linters:
   enable:
@@ -129,8 +179,13 @@ linters:
     - bodyclose
     - containedctx
     - contextcheck
+    # - cyclop
+    - deadcode
+    # - decorder
     - depguard
     - dogsled
+    # - dupl
+    - dupword
     - durationcheck
     - errcheck
     - errchkjson
@@ -138,43 +193,86 @@ linters:
     - errorlint
     - execinquery
     - exhaustive
+    # - exhaustivestruct
+    # - exhaustruct
     - exportloopref
     - forbidigo
     - forcetypeassert
+    # - funlen
+    # - gci
+    - ginkgolinter
+    - gocheckcompilerdirectives
+    - gochecknoglobals
+    - gochecknoinits
+    # - gocognit
+    - goconst
     - gocritic
+    # - gocyclo
+    # - godot
+    # - godox
+    - goerr113
     - gofmt
     - gofumpt
-    - goimports
+    # - goheader
+    # - goimports
+    # - golint
+    - gomnd
     - gomoddirectives
+    # - gomodguard
     - goprintffuncname
     - gosec
     - gosimple
     - govet
     - grouper
+    # - ifshort
+    # - importas
+    - ineffassign
+    # - interfacebloat
+    # - interfacer
+    # - ireturn
+    # - lll
     - loggercheck
+    # - maintidx
+    # - makezero
+    # - maligned
     - misspell
+    - musttag
     - nakedret
+    # - nestif
     - nilerr
     - nilnil
+    # - nlreturn
     - noctx
     - nolintlint
     - nonamedreturns
+    - nosnakecase
     - nosprintfhostport
+    - paralleltest
+    # - prealloc
     - predeclared
     - promlinter
     - reassign
     - revive
     - rowserrcheck
+    - scopelint
     - sqlclosecheck
     - staticcheck
+    - structcheck
     - stylecheck
     - tagliatelle
+    - tenv
+    - testableexamples
+    - testpackage
     - thelper
+    - tparallel
     - typecheck
     - unconvert
     - unparam
     - unused
     - usestdlibvars
+    - varcheck
+    # - varnamelen
     - wastedassign
     - whitespace
     - wrapcheck
+    # - wsl

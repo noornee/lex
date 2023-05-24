@@ -12,7 +12,7 @@ import (
 	"strconv"
 )
 
-func CurrentVersion() (bool, int) {
+func CurrentVersion() (_ bool, _ int) {
 	intver, err := os.ReadFile("./logic/version/internalversion.txt")
 	if err != nil {
 		log.Println(err)
@@ -28,8 +28,8 @@ func CurrentVersion() (bool, int) {
 	return true, version
 }
 
-func CheckForUpdates() (bool, int) {
-	req, err := http.NewRequestWithContext(context.Background(), http.MethodGet, "https://raw.githubusercontent.com/cmd777/lex/main/VERSION.txt", nil)
+func CheckForUpdates() (_ bool, _ int) {
+	req, err := http.NewRequestWithContext(context.Background(), http.MethodGet, "https://raw.githubusercontent.com/cmd777/lex/main/VERSION.txt", http.NoBody)
 	if err != nil {
 		log.Println(err)
 		return false, 0

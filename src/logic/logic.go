@@ -141,11 +141,11 @@ func GetComments(subreddit, id string) (types.Posts, []types.InternalCommentData
 func GetAccount(name, after string) types.Posts {
 	url := fmt.Sprintf("https://www.reddit.com/u/%v.json?raw_json=1", name)
 
-	if len(after) != 0 {
+	if after != "" {
 		url += fmt.Sprintf("&after=%v", after)
 	}
 
-	req, err := http.NewRequestWithContext(context.Background(), http.MethodGet, url, nil)
+	req, err := http.NewRequestWithContext(context.Background(), http.MethodGet, url, http.NoBody)
 	if err != nil {
 		log.Println(err)
 	}

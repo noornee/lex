@@ -15,7 +15,7 @@ import (
 func GetSubredditData(subreddit string) types.Subreddit {
 	url := fmt.Sprintf("https://www.reddit.com/r/%v/about.json?raw_json=1", subreddit)
 
-	req, err := http.NewRequestWithContext(context.Background(), http.MethodGet, url, nil)
+	req, err := http.NewRequestWithContext(context.Background(), http.MethodGet, url, http.NoBody)
 	if err != nil {
 		log.Println(err)
 	}
@@ -39,8 +39,7 @@ func GetSubredditData(subreddit string) types.Subreddit {
 
 	var sub types.Subreddit
 
-	err = json.NewDecoder(resp.Body).Decode(&sub)
-	if err != nil {
+	if err = json.NewDecoder(resp.Body).Decode(&sub); err != nil {
 		log.Println(err)
 	}
 
@@ -49,7 +48,7 @@ func GetSubredditData(subreddit string) types.Subreddit {
 
 func GetPosts(subreddit, after, flair string) types.Posts {
 	url := fmt.Sprintf("https://www.reddit.com/r/%v", subreddit)
-	if len(flair) != 0 {
+	if flair != "" {
 		// stupid.
 		// https://www.reddit.com/r/ModSupport/comments/hpf6na/filtering_by_flair_broken_for_some_users_on/
 		url += fmt.Sprintf(`/search.json?raw_json=1&q=flair:"%v"&restrict_sr=1&sr_nsfw=1&include_over_18=1`, flair)
@@ -57,11 +56,11 @@ func GetPosts(subreddit, after, flair string) types.Posts {
 		url += ".json?raw_json=1"
 	}
 
-	if len(after) != 0 {
+	if after != "" {
 		url += fmt.Sprintf("&after=%v", after)
 	}
 
-	req, err := http.NewRequestWithContext(context.Background(), http.MethodGet, url, nil)
+	req, err := http.NewRequestWithContext(context.Background(), http.MethodGet, url, http.NoBody)
 	if err != nil {
 		log.Println(err)
 	}
@@ -85,8 +84,7 @@ func GetPosts(subreddit, after, flair string) types.Posts {
 
 	var posts types.Posts
 
-	err = json.NewDecoder(resp.Body).Decode(&posts)
-	if err != nil {
+	if err = json.NewDecoder(resp.Body).Decode(&posts); err != nil {
 		log.Println(err)
 	}
 
@@ -96,7 +94,7 @@ func GetPosts(subreddit, after, flair string) types.Posts {
 func GetComments(subreddit, id string) (types.Posts, []types.InternalCommentData) {
 	url := fmt.Sprintf("https://www.reddit.com/r/%v/comments/%v.json?raw_json=1", subreddit, id)
 
-	req, err := http.NewRequestWithContext(context.Background(), http.MethodGet, url, nil)
+	req, err := http.NewRequestWithContext(context.Background(), http.MethodGet, url, http.NoBody)
 	if err != nil {
 		log.Println(err)
 	}
@@ -120,21 +118,18 @@ func GetComments(subreddit, id string) (types.Posts, []types.InternalCommentData
 
 	var commentsunmarshal types.CommentsToUnmarshal
 
-	err = json.NewDecoder(resp.Body).Decode(&commentsunmarshal.Data)
-	if err != nil {
+	if err = json.NewDecoder(resp.Body).Decode(&commentsunmarshal.Data); err != nil {
 		log.Println(err)
 	}
 
 	var post types.Posts
 	var comments types.Comments
 
-	err = json.Unmarshal(commentsunmarshal.Data[0], &post)
-	if err != nil {
+	if err = json.Unmarshal(commentsunmarshal.Data[0], &post); err != nil {
 		log.Println(err)
 	}
 
-	err = json.Unmarshal(commentsunmarshal.Data[1], &comments)
-	if err != nil {
+	if err = json.Unmarshal(commentsunmarshal.Data[1], &comments); err != nil {
 		log.Println(err)
 	}
 

@@ -33,10 +33,32 @@ jobs:
         git add .
         git commit -m "Version bump to $(($version + 1))" -m "For any changes, check the previous (${{github.event.after}}) commit."
         git push
+    
+  runtests:
+    needs: updateversion
+    strategy:
+      matrix:
+        goversion:
+          - '1.19'
+          - '1.20'
+        platform: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Go Environment
+        uses: actions/setup-go@v3
+        with:
+          go-version: ${{ matrix.goversion }}
+      
+      - name: Run Tests
+        run: go test -v -race .
+        working-directory: src/router
 
   linuxbuild:
     runs-on: ubuntu-latest
-    needs: updateversion
+    needs: runtests
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -80,7 +102,7 @@ jobs:
           
   macbuild:
     runs-on: macos-latest
-    needs: updateversion
+    needs: runtests
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -124,7 +146,7 @@ jobs:
           
   winbuild:
     runs-on: windows-latest
-    needs: updateversion
+    needs: runtests
     steps:
     - name: Checkout
       uses: actions/checkout@v3

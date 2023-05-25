@@ -78,6 +78,39 @@ func RewriteURL(input string) string {
 	}
 }
 
+func UGIDGen() string {
+	ubytes := make([]byte, 28)
+	for i := 0; i < len(ubytes); i++ {
+		ubytes[i] = ValidCharacters[rand.Intn(len(ValidCharacters))] //nolint:gosec // We do not need to use crypto/rand here.
+	}
+	return string(ubytes)
+}
+
+func Sanitize(input string) template.HTML {
+	markdown := blackfriday.Run([]byte(input), blackfriday.WithExtensions(CommonExtNoNSH))
+	sHTML := bluemonday.UGCPolicy().
+		RequireNoFollowOnLinks(true).
+		RequireNoReferrerOnLinks(true).
+		AddTargetBlankToFullyQualifiedLinks(true).
+		SanitizeBytes(markdown)
+	return template.HTML(sHTML) //nolint:gosec // bluemonday sanitizes this.
+}
+
+func QualifiesAsImg(input string) bool {
+	switch filepath.Ext(input) {
+	case ".gif":
+		return true
+	case ".png":
+		return true
+	case ".jpg":
+		return true
+	case ".jpeg":
+		return true
+	default:
+		return false
+	}
+}
+
 func StartServer() {
 	var subCache sync.Map
 
@@ -102,36 +135,9 @@ func StartServer() {
 		"add": func(input int) int {
 			return input + 1
 		},
-		"ugidgen": func() string {
-			ubytes := make([]byte, 28)
-			for i := 0; i < len(ubytes); i++ {
-				ubytes[i] = ValidCharacters[rand.Intn(len(ValidCharacters))] //nolint:gosec // We do not need to use crypto/rand here.
-			}
-			return string(ubytes)
-		},
-		"sanitize": func(input string) template.HTML {
-			markdown := blackfriday.Run([]byte(input), blackfriday.WithExtensions(CommonExtNoNSH))
-			sHTML := bluemonday.UGCPolicy().
-				RequireNoFollowOnLinks(true).
-				RequireNoReferrerOnLinks(true).
-				AddTargetBlankToFullyQualifiedLinks(true).
-				SanitizeBytes(markdown)
-			return template.HTML(sHTML) //nolint:gosec // bluemonday sanitizes this.
-		},
-		"qualifiesAsImg": func(input string) bool {
-			switch filepath.Ext(input) {
-			case ".gif":
-				return true
-			case ".png":
-				return true
-			case ".jpg":
-				return true
-			case ".jpeg":
-				return true
-			default:
-				return false
-			}
-		},
+		"ugidgen":        UGIDGen,
+		"sanitize":       Sanitize,
+		"qualifiesAsImg": QualifiesAsImg,
 		"fmtEpochDate": func(input float64) string {
 			return time.Unix(int64(input), 0).Format("Created Jan 02, 2006")
 		},

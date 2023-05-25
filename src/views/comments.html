@@ -5,9 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/main.min.css">
-    <title>LEX | comments</title>
+    <title>LEX | Comments</title>
 </head>
 <body>
+    {{template "navbar" .}}
+    <div style="margin-top:20px"></div>
+
     {{range .Posts.Children}}
         <div style="display: flex; flex-direction: column; align-items: center;">
             <div style="width: 720px; height: auto;">
@@ -19,7 +22,7 @@
                             </svg>
                             Pinned by Moderators &bullet;
                         {{end}}
-                        Posted by u/{{.Data.Author}}
+                        Posted by <a href="/u/{{.Data.Author}}" target="_blank" rel="noreferrer noopener nofollow">u/{{.Data.Author}}</a>
                         {{if .Data.AuthorFlair}}
                             <span class="authorflair">{{.Data.AuthorFlair}}</span>
                         {{end}}
@@ -246,25 +249,29 @@
     {{end}}
     <hr>
 
-    {{range $i, $ccom := .Comments}}
-        {{if not (gt $ccom.Depth 0)}}
-            <div style="display: flex; flex-direction: column; align-items: center; {{if gt .Depth 0}} margin-left: calc({{.Depth}} * 15px) {{end}}">
-                <div style="width: 720px; height: auto;">
-                    <div>
-                        <p>{{$ccom.Author}}</p>
-                        <div style="display:inline-flex;">
-                            <hr>
-                            <span style="margin-left: 15px">
-                                {{$ccom.Body|sanitize}}
-                                {{if gt (len $ccom.Replies) 2}}
-                                    {{template "rep" (addVarToCtx "index" ($i|add) "root" $)}}
-                                {{end}}
-                            </span>        
+    {{if not $.DisableComments}}
+        {{range $i, $ccom := .Comments}}
+            {{if not (gt $ccom.Depth 0)}}
+                <div style="display: flex; flex-direction: column; align-items: center; {{if gt .Depth 0}} margin-left: calc({{.Depth}} * 15px) {{end}}">
+                    <div style="width: 720px; height: auto;">
+                        <div>
+                            <p>{{$ccom.Author}}</p>
+                            <div style="display:inline-flex;">
+                                <hr>
+                                <span style="margin-left: 15px">
+                                    {{$ccom.Body|sanitize}}
+                                    {{if gt (len $ccom.Replies) 2}}
+                                        {{template "rep" (addVarToCtx "index" ($i|add) "root" $)}}
+                                    {{end}}
+                                </span>        
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            {{end}}
         {{end}}
+    {{else}}
+        <p>Comments were disabled</p>
     {{end}}
 </body>
 </html>

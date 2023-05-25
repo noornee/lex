@@ -108,6 +108,17 @@
             </pre>
 
             <label>
+                <input type="checkbox" name="DontLoadComments" {{if .DisableComments}} checked {{end}}>
+                <input type="hidden" name="DontLoadComments" value="off">
+                Don't load Comments
+            </label>
+            <pre>
+                For now, this is a debug option, a cheap fix, if you may.
+                Disables loading of comments, that may cause a panic.
+                HIGHLY recommended to turn this on!
+            </pre>
+
+            <label>
                 Preferred Resolution
                 <select name="PrefRes">
                     <!-- dear lord -->

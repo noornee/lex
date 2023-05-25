@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/main.min.css">
+    <title>LEX | {{.username}}</title>
+</head>
+<body>
+    {{template "navbar" .}}
+
+    <div style="margin-top:50px;"></div>
+
+    <div id="posts">
+        {{template "ucomm" .}}
+    </div>
+
+    {{if .JSEnabled}}
+        <script src="/js/enablehls.js"></script>
+        <script src="/js/hls.min.js"></script>
+    {{end}}
+    
+    {{if .INFScroll}}
+        <script src="/js/infscroll.js"></script> 
+    {{end}}
+
+    {{if .GalleryNav}}
+        <script src="/js/gallerynav.js"></script>
+    {{end}}
+
+    {{if .UseAdvMath}}
+        <style>
+            img:not(.malign), video {
+                max-width: clamp(256px, 70vw, 512px);
+            }
+            #posts div.post {
+                width: clamp(180px, 80vw, 720px);
+            }
+        </style>
+    {{end}}
+</body>
+</html>

@@ -8,7 +8,7 @@
                     </svg>
                     Pinned by Moderators &bullet;
                 {{end}}
-                Posted by <a href="/u/{{.Data.Author}}" target="_blank" rel="noreferrer noopener nofollow">u/{{.Data.Author}}</a>
+                Posted by u/{{.Data.Author}} in <a href="/{{.Data.SubNamePref}}" target="_blank" rel="noreferrer noopener nofollow">{{.Data.SubNamePref}}</a>
                 {{if .Data.AuthorFlair}}
                     <span class="authorflair">{{.Data.AuthorFlair}}</span>
                 {{end}}
@@ -69,100 +69,106 @@
                     {{if .Data.Spoiler}}<span class="spoilertag">spoiler</span>{{end}}
                 </span>
 
-                {{if .Data.SelfText}}
+                {{if .Data.Body}}
                     <div class="m-top10">
-                        <span style="font-size: 14px;">{{.Data.SelfText|sanitize}}</span>
+                        <span style="font-size: 14px;">{{.Data.Body|sanitize}}</span>
                     </div>
-                {{end}}
-
-                {{if .Data.CrossPost}}
-                    <p style="text-align: center;">Sorry, crossposting is not supported yet. here is a link to the original post: <a href="https://reddit.com{{(index .Data.CrossPost 0).Permalink}}" rel="noreferrer noopener nofollow" target="_blank">https://reddit.com{{(index .Data.CrossPost 0).Permalink}}</a></p>
-                {{end}}
-
-                {{if contains .Data.PostHint "image"}}
-                    {{if or (contains .Data.Preview.AutoChosenImageQuality ".gif") (contains .Data.LinkURL ".gif")}}
+                {{else}}
+                    {{if .Data.SelfText}}
                         <div class="m-top10">
-                            <video preload="none" poster="{{.Data.Preview.AutoChosenPosterQuality}}" controls loop>
-                                <source src="
-                                {{if and ($.JSEnabled) (.Data.Preview.RedditVideoPreview.HLSURL)}}
-                                    {{.Data.Preview.RedditVideoPreview.HLSURL|sterilizepath}}
-                                {{else if .Data.Preview.RedditVideoPreview.FallbackURL}}
-                                    {{.Data.Preview.RedditVideoPreview.FallbackURL|sterilizepath}}
+                            <span style="font-size: 14px;">{{.Data.SelfText|sanitize}}</span>
+                        </div>
+                    {{end}}
+
+                    {{if .Data.CrossPost}}
+                        <p style="text-align: center;">Sorry, crossposting is not supported yet. here is a link to the original post: <a href="https://reddit.com{{(index .Data.CrossPost 0).Permalink}}" rel="noreferrer noopener nofollow" target="_blank">https://reddit.com{{(index .Data.CrossPost 0).Permalink}}</a></p>
+                    {{end}}
+
+                    {{if contains .Data.PostHint "image"}}
+                        {{if or (contains .Data.Preview.AutoChosenImageQuality ".gif") (contains .Data.LinkURL ".gif")}}
+                            <div class="m-top10">
+                                <video preload="none" poster="{{.Data.Preview.AutoChosenPosterQuality}}" controls loop>
+                                    <source src="
+                                    {{if and ($.JSEnabled) (.Data.Preview.RedditVideoPreview.HLSURL)}}
+                                        {{.Data.Preview.RedditVideoPreview.HLSURL|sterilizepath}}
+                                    {{else if .Data.Preview.RedditVideoPreview.FallbackURL}}
+                                        {{.Data.Preview.RedditVideoPreview.FallbackURL|sterilizepath}}
+                                    {{else}}
+                                        {{.Data.Preview.AutoChosenImageQuality}}
+                                    {{end}}">
+                                </video>
+                            </div>
+                        {{else}}
+                            <div class="m-top10">
+                                <img src="{{.Data.Preview.AutoChosenImageQuality}}">
+                            </div>
+                        {{end}}
+                    {{end}}
+
+                    <!--only filter galleries with 2 or more images.-->
+                    {{if gt (len .Data.MediaMetaData) 1}}
+                        {{$UID := ugidgen}}
+                        <div class="m-top10">
+                            <div class="gallery" tabindex="-1">
+                                {{range $i, $v := .Data.VMediaMetaData}}
+                                    <input type="radio" name="{{$UID}}-gallery" id="{{$UID}}-slide{{$i|add}}" {{if eq $i 0}}checked{{end}}>
+                                    <div class="gallery-img">
+                                        {{if $v.Video}}
+                                            <video preload="none" poster="{{$v.AutoChosenPosterQuality}}" controls loop>
+                                                <source src="{{$v.Link}}">
+                                            </video>
+                                        {{else}}
+                                            <img src="{{$v.Link}}">
+                                        {{end}}
+                                    </div>
+                                {{end}}
+                                <div class="gallery-nav">
+                                    {{range $i, $tmp := .Data.VMediaMetaData}}
+                                        <label for="{{$UID}}-slide{{$i|add}}"></label>
+                                    {{end}}
+                                </div>
+                            </div>
+                        </div>
+                    {{else}}
+                        {{range .Data.VMediaMetaData}}
+                            <div class="m-top10">
+                                {{if .Video}}
+                                    <video preload="none" poster="{{.AutoChosenPosterQuality}}" controls loop>
+                                        <source src="{{.Link}}">
+                                    </video>
                                 {{else}}
-                                    {{.Data.Preview.AutoChosenImageQuality}}
+                                    <img src="{{.Link}}">
+                                {{end}}
+                            </div>
+                        {{end}}
+                    {{end}}
+
+                    {{if .Data.SecureMedia.RedditVideo.FallbackURL}}
+                        <div class="pad-10">
+                            <video preload="none" poster="{{.Data.Preview.AutoChosenPosterQuality}}" controls>
+                                <source src="
+                                {{if and ($.JSEnabled) (.Data.SecureMedia.RedditVideo.HLSURL)}}
+                                    {{.Data.SecureMedia.RedditVideo.HLSURL|sterilizepath}}
+                                {{else}}
+                                    {{.Data.SecureMedia.RedditVideo.FallbackURL|sterilizepath}}
                                 {{end}}">
                             </video>
                         </div>
-                    {{else}}
-                        <div class="m-top10">
-                            <img src="{{.Data.Preview.AutoChosenImageQuality}}">
-                        </div>
                     {{end}}
-                {{end}}
 
-                <!--only filter galleries with 2 or more images.-->
-                {{if gt (len .Data.MediaMetaData) 1}}
-                    {{$UID := ugidgen}}
-                    <div class="m-top10">
-                        <div class="gallery" tabindex="-1">
-                            {{range $i, $v := .Data.VMediaMetaData}}
-                                <input type="radio" name="{{$UID}}-gallery" id="{{$UID}}-slide{{$i|add}}" {{if eq $i 0}}checked{{end}}>
-                                <div class="gallery-img">
-                                    {{if $v.Video}}
-                                        <video preload="none" poster="{{$v.AutoChosenPosterQuality}}" controls loop>
-                                            <source src="{{$v.Link}}">
-                                        </video>
-                                    {{else}}
-                                        <img src="{{$v.Link}}">
-                                    {{end}}
-                                </div>
-                            {{end}}
-                            <div class="gallery-nav">
-                                {{range $i, $tmp := .Data.VMediaMetaData}}
-                                    <label for="{{$UID}}-slide{{$i|add}}"></label>
-                                {{end}}
+                    {{if $.TrustUSrc}}
+                        {{if and (not .Data.PostHint) (not .Data.SecureMedia.RedditVideo.FallbackURL) (.Data.LinkURL|qualifiesAsImg)}}
+                            <div class="m-top10">
+                                <img src="{{.Data.LinkURL}}">
                             </div>
-                        </div>
-                    </div>
-                {{else}}
-                    {{range .Data.VMediaMetaData}}
+                        {{end}}
+                    {{end}}
+
+                    {{if .Data.LinkURL}}
                         <div class="m-top10">
-                            {{if .Video}}
-                                <video preload="none" poster="{{.AutoChosenPosterQuality}}" controls loop>
-                                    <source src="{{.Link}}">
-                                </video>
-                            {{else}}
-                                <img src="{{.Link}}">
-                            {{end}}
+                            <a href="{{.Data.LinkURL}}" style="font-size:12px" rel="noreferrer noopener nofollow" target="_blank">{{.Data.LinkURL}}</a>
                         </div>
                     {{end}}
-                {{end}}
-
-                {{if .Data.SecureMedia.RedditVideo.FallbackURL}}
-                    <div class="pad-10">
-                        <video preload="none" poster="{{.Data.Preview.AutoChosenPosterQuality}}" controls>
-                            <source src="
-                            {{if and ($.JSEnabled) (.Data.SecureMedia.RedditVideo.HLSURL)}}
-                                {{.Data.SecureMedia.RedditVideo.HLSURL|sterilizepath}}
-                            {{else}}
-                                {{.Data.SecureMedia.RedditVideo.FallbackURL|sterilizepath}}
-                            {{end}}">
-                        </video>
-                    </div>
-                {{end}}
-
-                {{if $.TrustUSrc}}
-                    {{if and (not .Data.PostHint) (not .Data.SecureMedia.RedditVideo.FallbackURL) (.Data.LinkURL|qualifiesAsImg)}}
-                        <div class="m-top10">
-                            <img src="{{.Data.LinkURL}}">
-                        </div>
-                    {{end}}
-                {{end}}
-
-                {{if .Data.LinkURL}}
-                    <div class="m-top10">
-                        <a href="{{.Data.LinkURL}}" style="font-size:12px" rel="noreferrer noopener nofollow" target="_blank">{{.Data.LinkURL}}</a>
-                    </div>
                 {{end}}
             </div>
             {{if or (contains .Data.PostHint "link") (contains .Data.PostHint "rich:video")}}
@@ -251,13 +257,12 @@
 {{if .Posts.After}}
     {{if .INFScroll}}
         <form id="LoadPostForm">
-            <input type="hidden" name="sub" value="{{.SubName}}">
+            <input type="hidden" name="user" value="{{.username}}">
             <input type="hidden" name="after" value="{{.Posts.After}}">
-            <input type="hidden" name="flair" value="{{.FlairFiltered}}">
             <button type="button" class="loadMorebtn" onclick="loadPosts(){{if .JSEnabled}}.then(loadHLS){{end}}{{if .GalleryNav}}.then(initNav){{end}}" id="LoadPostButton">Load More Posts</button>
         </form>
     {{else}}
-        <a href="?after={{.Posts.After}}{{if .FlairFiltered}}&f={{.FlairFiltered}}{{end}}" class="loadMorebtn" style="text-align: center; font-size: 24px;">Go to next Page</a>
+        <a href="?after={{.Posts.After}}" class="loadMorebtn" style="text-align: center; font-size: 24px;">Go to next Page</a>
     {{end}}
 {{else}}
     <span class="gtext" style="font-size: 30px; padding: 30px;">No more posts to load</span>

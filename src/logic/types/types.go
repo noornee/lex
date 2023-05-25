@@ -32,6 +32,8 @@ type Posts struct {
 type internalPostData struct {
 	Title        string  `json:"title"`
 	SelfText     string  `json:"selftext"`
+	Body         string  `json:"body"`
+	SubNamePref  string  `json:"subreddit_name_prefixed"`
 	PostFlair    string  `json:"link_flair_text"`
 	PostFlairHex string  `json:"link_flair_background_color"`
 	UpvoteRatio  float64 `json:"upvote_ratio"`

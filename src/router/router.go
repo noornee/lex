@@ -40,6 +40,7 @@ const (
 	USRCCookie    = "TrustUSrc"
 	MathCookie    = "UseAdvMath"
 	AwardCookie   = "DisableAwards"
+	CommentCookie = "DisableComments"
 
 	JSCookieValue      = "js_enabled"
 	INFCookieValue     = "infscroll_enabled"
@@ -49,6 +50,7 @@ const (
 	USRCCookieValue    = "trust_unknownsources"
 	MathCookieValue    = "advanced_math"
 	AwardCookieValue   = "disable_awards"
+	CommentCookieValue = "disable_comments"
 
 	MaxResolution = 11037
 )
@@ -123,6 +125,7 @@ func StartServer() {
 		"TrustUnknownSrc":  USRCCookieValue,
 		"UseAdvancedMath":  MathCookieValue,
 		"BlockAwards":      AwardCookieValue,
+		"DontLoadComments": CommentCookieValue,
 	}
 
 	// region Template Engine
@@ -191,6 +194,7 @@ func StartServer() {
 			trustusrc := ctx.Cookies(USRCCookieValue)
 			advmath := ctx.Cookies(MathCookieValue)
 			disableawards := ctx.Cookies(AwardCookieValue)
+			disablecomments := ctx.Cookies(CommentCookieValue)
 
 			ctx.Bind(fiber.Map{ //nolint:errcheck,gosec // ctx.Bind always returns nil
 				JSCookie:      jsenabled == "1",
@@ -200,6 +204,7 @@ func StartServer() {
 				USRCCookie:    trustusrc == "1",
 				MathCookie:    advmath == "1",
 				AwardCookie:   disableawards == "1",
+				CommentCookie: disablecomments == "1",
 			})
 
 			return ctx.Next()

@@ -113,6 +113,22 @@ func QualifiesAsImg(input string) bool {
 	}
 }
 
+func FmtEpochDate(input float64) string {
+	return time.Unix(int64(input), 0).Format("Created Jan 02, 2006")
+}
+
+func Incrementbyone(input int) int {
+	return input + 1
+}
+
+func FmtHumanDate(input float64) string {
+	return humanize.Time(time.Unix(int64(input), 0))
+}
+
+func ToPercentage(input float64) string {
+	return fmt.Sprintf("%.0f", input*100)
+}
+
 func StartServer() {
 	var subCache sync.Map
 
@@ -133,24 +149,16 @@ func StartServer() {
 	templateEngine := html.New("./views", ".html")
 
 	templateEngine.AddFuncMap(template.FuncMap{
-		"contains":      strings.Contains,
-		"sterilizepath": RewriteURL,
-		"add": func(input int) int {
-			return input + 1
-		},
+		"contains":       strings.Contains,
+		"sterilizepath":  RewriteURL,
+		"add":            Incrementbyone,
 		"ugidgen":        UGIDGen,
 		"sanitize":       Sanitize,
 		"qualifiesAsImg": QualifiesAsImg,
-		"fmtEpochDate": func(input float64) string {
-			return time.Unix(int64(input), 0).Format("Created Jan 02, 2006")
-		},
-		"fmtHumanComma": humanize.Comma,
-		"fmtHumanDate": func(input float64) string {
-			return humanize.Time(time.Unix(int64(input), 0))
-		},
-		"toPercentage": func(input float64) string {
-			return fmt.Sprintf("%.0f", input*100)
-		},
+		"fmtEpochDate":   FmtEpochDate,
+		"fmtHumanComma":  humanize.Comma,
+		"fmtHumanDate":   FmtHumanDate,
+		"toPercentage":   ToPercentage,
 		"addVarToCtx": func(input ...any) map[string]any {
 			if len(input)%2 != 0 {
 				return nil

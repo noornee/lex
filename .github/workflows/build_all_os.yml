@@ -11,31 +11,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  updateversion:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-    
-    - name: Bump Version
-      run: |
-        version=$(cat "VERSION.txt")
-        files=("VERSION.txt" "src/logic/version/internalversion.txt")
-
-        for i in "${files[@]}"
-        do
-          echo -n "$(($version + 1))" > "$i"
-        done
-
-        git config --local user.name "github-actions[bot]"
-        git config --local user.email "github-actions[bot]@users.noreply.github.com"
-
-        git add .
-        git commit -m "Version bump to $(($version + 1))" -m "For any changes, check the previous (${{github.event.after}}) commit."
-        git push
-    
   runtests:
-    needs: updateversion
     strategy:
       matrix:
         goversion:
@@ -56,9 +32,33 @@ jobs:
         run: go test -v -race .
         working-directory: src/router
 
-  linuxbuild:
+  updateversion:
     runs-on: ubuntu-latest
     needs: runtests
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    
+    - name: Bump Version
+      run: |
+        version=$(cat "VERSION.txt")
+        files=("VERSION.txt" "src/logic/version/internalversion.txt")
+
+        for i in "${files[@]}"
+        do
+          echo -n "$(($version + 1))" > "$i"
+        done
+
+        git config --local user.name "github-actions[bot]"
+        git config --local user.email "github-actions[bot]@users.noreply.github.com"
+
+        git add .
+        git commit -m "Version bump to $(($version + 1))" -m "For any changes, check the previous (${{github.event.after}}) commit."
+        git push
+
+  linuxbuild:
+    runs-on: ubuntu-latest
+    needs: updateversion
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -102,7 +102,7 @@ jobs:
           
   macbuild:
     runs-on: macos-latest
-    needs: runtests
+    needs: updateversion
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -146,7 +146,7 @@ jobs:
           
   winbuild:
     runs-on: windows-latest
-    needs: runtests
+    needs: updateversion
     steps:
     - name: Checkout
       uses: actions/checkout@v3

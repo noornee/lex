@@ -88,10 +88,10 @@ jobs:
         rm css/main.scss
         
         echo "Zipping Files"
-        7z a lex-linux.zip lex-i386-linux lex-amd64-linux views/* js/* css/* ./logic/version/internalversion.txt
+        7z a lex-linux.zip lex-i386-linux lex-amd64-linux
         
         echo "Ok."
-      working-directory: src/
+      working-directory: cmd/lex/
                                   
     - name: Release
       uses: softprops/action-gh-release@v0.1.15
@@ -132,10 +132,10 @@ jobs:
         rm css/main.scss
         
         echo "Zipping Files"
-        7z a lex-osx.zip lex-amd64-osx lex-arm64-osx views/* js/* css/* ./logic/version/internalversion.txt
+        7z a lex-osx.zip lex-amd64-osx lex-arm64-osx
         
         echo "Ok."
-      working-directory: src/
+      working-directory: cmd/lex/
                           
     - name: Release
       uses: softprops/action-gh-release@v0.1.15
@@ -181,10 +181,10 @@ jobs:
         del css/main.scss
         
         echo "Zipping Files"
-        7z a lex-windows.zip lex-i386-windows.exe lex-amd64-windows.exe views/* js/* css/* ./logic/version/internalversion.txt
+        7z a lex-windows.zip lex-i386-windows.exe lex-amd64-windows.exe
         
         echo "Ok."
-      working-directory: src/
+      working-directory: cmd/lex/
                                 
     - name: Release
       uses: softprops/action-gh-release@v0.1.15

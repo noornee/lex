@@ -116,11 +116,11 @@ go install github.com/cmd777/lex/cmd/lex@latest
 
 which will install the latest version of LEX.
 
-Afterwards, simply type `lex` in your terminal, and that's everything!
+Afterwards, simply run `lex` in your terminal, and that's everything!
 
 > **Note** you may need to add `export PATH=$PATH:$(go env GOPATH)/bin` to your `.profile` file to be able to use the command `lex`!
 
-If you wish to uninstall LEX, simply type the following command:
+If you wish to uninstall LEX, simply run the following command:
 ```shell
 rm $(go env GOPATH)/bin/lex
 ```

@@ -1,4 +1,4 @@
-module main
+module github.com/cmd777/lex
 
 go 1.20
 

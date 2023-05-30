@@ -12,8 +12,8 @@ import (
 	"sync"
 	"time"
 
-	"main/logic"
-	"main/logic/types"
+	"github.com/cmd777/lex/src/logic"
+	"github.com/cmd777/lex/src/logic/types"
 
 	"github.com/dustin/go-humanize"
 	"github.com/goccy/go-json"

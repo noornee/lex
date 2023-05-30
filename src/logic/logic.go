@@ -6,7 +6,7 @@ import (
 	"log"
 	"net/http"
 
-	"main/logic/types"
+	"github.com/cmd777/lex/src/logic/types"
 
 	"github.com/goccy/go-json"
 	"github.com/gofiber/fiber/v2/utils"

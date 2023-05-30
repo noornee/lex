@@ -5,8 +5,8 @@ import (
 	"flag"
 	"log"
 
-	"main/logic/version"
-	"main/router"
+	"github.com/cmd777/lex/src/logic/version"
+	"github.com/cmd777/lex/src/router"
 
 	"github.com/gofiber/fiber/v2"
 )

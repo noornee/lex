@@ -110,14 +110,20 @@ That's everything! All you need to do next, is just navigate to `http://localhos
 LEX can also be installed via the `go install` command.
 
 If you have at least `go 1.16 or later`, you can run the following command:
+```shell
+go install github.com/cmd777/lex/cmd/lex@latest
+```
 
-`go install github.com/cmd777/lex/cmd/lex@latest` which will install the latest version of LEX.
+which will install the latest version of LEX.
 
 Afterwards, simply type `lex` in your terminal, and that's everything!
 
 > **Note** you may need to add `export PATH=$PATH:$(go env GOPATH)/bin` to your `.profile` file to be able to use the command `lex`!
 
-If you wish to uninstall LEX, simply type the following command: `rm $(go env GOPATH)/bin/lex`
+If you wish to uninstall LEX, simply type the following command:
+```shell
+rm $(go env GOPATH)/bin/lex
+```
 
 # 🔬 Compatibility
 

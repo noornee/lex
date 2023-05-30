@@ -1,19 +1,19 @@
-//go:build release
-// +build release
-
 package version
 
 import (
 	"context"
+	"embed"
 	"io"
 	"log"
 	"net/http"
-	"os"
 	"strconv"
 )
 
+//go:embed internalversion.txt
+var staticFile embed.FS
+
 func CurrentVersion() (_ bool, _ int) {
-	intver, err := os.ReadFile("internalversion.txt")
+	intver, err := staticFile.ReadFile("internalversion.txt")
 	if err != nil {
 		log.Println(err)
 		return false, 0

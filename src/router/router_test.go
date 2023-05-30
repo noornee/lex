@@ -6,7 +6,7 @@ import (
 	"time"
 	"unicode"
 
-	. "main/router"
+	. "github.com/cmd777/lex/src/router"
 )
 
 func Test_RewriteURL(t *testing.T) {

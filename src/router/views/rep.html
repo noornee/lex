@@ -6,7 +6,7 @@
         <span style="margin-left: 15px">
             {{$ccom.Body|sanitize}}
             {{if gt (len $ccom.Replies) 2}}
-                {{template "rep" (addVarToCtx "index" (.index|add) "root" .root)}}
+                {{template "views/rep" (addVarToCtx "index" (.index|add) "root" .root)}}
             {{end}}
         </span>        
     </div>
@@ -19,7 +19,7 @@
             <span style="margin-left: 15px">
                 {{$nccom.Body|sanitize}}
                 {{if gt (len $nccom.Replies) 2}}
-                    {{template "rep" (addVarToCtx "index" (.index|add|add) "root" .root)}}
+                    {{template "views/rep" (addVarToCtx "index" (.index|add|add) "root" .root)}}
                 {{end}}
             </span>        
         </div>

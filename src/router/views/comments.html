@@ -8,7 +8,7 @@
     <title>LEX | Comments</title>
 </head>
 <body>
-    {{template "navbar" .}}
+    {{template "views/navbar" .}}
     <div style="margin-top:20px"></div>
 
     {{range .Posts.Children}}
@@ -261,7 +261,7 @@
                                 <span style="margin-left: 15px">
                                     {{$ccom.Body|sanitize}}
                                     {{if gt (len $ccom.Replies) 2}}
-                                        {{template "rep" (addVarToCtx "index" ($i|add) "root" $)}}
+                                        {{template "views/rep" (addVarToCtx "index" ($i|add) "root" $)}}
                                     {{end}}
                                 </span>        
                             </div>

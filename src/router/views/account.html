@@ -8,12 +8,12 @@
     <title>LEX | {{.username}}</title>
 </head>
 <body>
-    {{template "navbar" .}}
+    {{template "views/navbar" .}}
 
     <div style="margin-top:50px;"></div>
 
     <div id="posts">
-        {{template "ucomm" .}}
+        {{template "views/ucomm" .}}
     </div>
 
     {{if .JSEnabled}}

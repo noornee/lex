@@ -1,10 +1,12 @@
 package router
 
 import (
+	"embed"
 	"fmt"
 	"html/template"
 	"log"
 	"math/rand"
+	"net/http"
 	"net/url"
 	"path/filepath"
 	"strconv"
@@ -27,6 +29,9 @@ import (
 	"github.com/microcosm-cc/bluemonday"
 	"github.com/russross/blackfriday/v2"
 )
+
+//go:embed views
+var viewfs embed.FS
 
 const (
 	ValidCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -159,7 +164,7 @@ func StartServer() {
 
 	// region Template Engine
 
-	templateEngine := html.New("./views", ".html")
+	templateEngine := html.NewFileSystem(http.FS(viewfs), ".html")
 
 	templateEngine.AddFuncMap(template.FuncMap{
 		"contains":       strings.Contains,
@@ -278,7 +283,7 @@ func StartServer() {
 	})
 
 	router.Get("/", func(ctx *fiber.Ctx) error {
-		return ctx.Render("index", nil)
+		return ctx.Render("views/index", nil)
 	})
 
 	router.Get("/config", func(ctx *fiber.Ctx) error {
@@ -287,7 +292,7 @@ func StartServer() {
 			preferredres = 3
 		}
 
-		return ctx.Render("config", fiber.Map{
+		return ctx.Render("views/config", fiber.Map{
 			ResCookie: preferredres,
 		})
 	})
@@ -332,7 +337,7 @@ func StartServer() {
 		posts := logic.GetPosts(subname, after, flair)
 
 		if len(posts.Data.Children) == 0 {
-			return ctx.Render("404", nil)
+			return ctx.Render("views/404", nil)
 		}
 
 		// Cache subreddit data, so we don't have to keep making requests every single time.
@@ -358,7 +363,7 @@ func StartServer() {
 
 		SortPostData(&posts, resolutionToUse)
 
-		return ctx.Render("sub", fiber.Map{
+		return ctx.Render("views/sub", fiber.Map{
 			"SubName":       subname,
 			"SubData":       sub.Data,
 			"Posts":         posts.Data,
@@ -379,7 +384,7 @@ func StartServer() {
 
 		SortPostData(&post, resolutionToUse)
 
-		return ctx.Render("comments", fiber.Map{
+		return ctx.Render("views/comments", fiber.Map{
 			"Posts":    post.Data,
 			"Comments": comm,
 		})
@@ -398,7 +403,7 @@ func StartServer() {
 
 		SortPostData(&post, resolutionToUse)
 
-		return ctx.Render("account", fiber.Map{
+		return ctx.Render("views/account", fiber.Map{
 			"Posts":    post.Data,
 			"username": username,
 		})
@@ -417,7 +422,7 @@ func StartServer() {
 
 			SortPostData(&posts, resolutionToUse)
 
-			return ctx.Render("ucomm", fiber.Map{
+			return ctx.Render("views/ucomm", fiber.Map{
 				"username": username,
 				"Posts":    posts.Data,
 			})
@@ -440,7 +445,7 @@ func StartServer() {
 
 		SortPostData(&posts, resolutionToUse)
 
-		return ctx.Render("posts", fiber.Map{
+		return ctx.Render("views/posts", fiber.Map{
 			"SubName":       subname,
 			"Posts":         posts.Data,
 			"FlairFiltered": flairuesc,
@@ -449,7 +454,7 @@ func StartServer() {
 
 	// NoRoute
 	router.Use(func(ctx *fiber.Ctx) error {
-		return ctx.Status(fiber.StatusNotFound).Render("404", nil)
+		return ctx.Status(fiber.StatusNotFound).Render("views/404", nil)
 	})
 
 	// localhost:9090

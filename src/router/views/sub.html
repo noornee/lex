@@ -8,7 +8,7 @@
     <title>LEX | {{.SubData.Title}}</title>
 </head>
 <body>
-    {{template "navbar" .}}
+    {{template "views/navbar" .}}
     <div class="content">
         <span style="display:block; padding:15px; background: url({{.SubData.Banner|sterilizepath}}) center center/cover no-repeat; height: 192px; {{if and (.SubData.PrimaryColor) (not .SubData.Banner) }} background-color: {{.SubData.PrimaryColor}}; {{end}}"></span>
         <div class="subinfo">
@@ -34,7 +34,7 @@
             </div>
         {{else}}
             <div id="posts">
-                {{template "posts" .}}
+                {{template "views/posts" .}}
             </div>
         {{end}}
     </div>

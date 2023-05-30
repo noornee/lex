@@ -155,7 +155,7 @@ func Test_FmtEpochDate(t *testing.T) {
 
 	for i := range test {
 		if FmtEpochDate(test[i]) != expect[i] {
-			t.Fatalf("Test_FmtEpochDate: expected %s, got: %s (#%d)", expect[i], FmtEpochDate(test[i]), i)
+			t.Fatalf("Test_FmtEpochDate: expected: %s, got: %s (#%d)", expect[i], FmtEpochDate(test[i]), i)
 		}
 	}
 }
@@ -190,7 +190,7 @@ func Test_Incrementbyone(t *testing.T) {
 
 	for i := range test {
 		if Incrementbyone(test[i]) != expect[i] {
-			t.Fatalf("Test_Incrementbyone: expected %d, got: %d (#%d)", expect[i], Incrementbyone(test[i]), i)
+			t.Fatalf("Test_Incrementbyone: expected: %d, got: %d (#%d)", expect[i], Incrementbyone(test[i]), i)
 		}
 	}
 }
@@ -220,7 +220,7 @@ func Test_FmtHumanDate(t *testing.T) {
 
 	for i := range test {
 		if FmtHumanDate(test[i]) != expect[i] {
-			t.Fatalf("Test_FmtHumanDate: expected %s, got: %s (#%d)", expect[i], FmtHumanDate(test[i]), i)
+			t.Fatalf("Test_FmtHumanDate: expected: %s, got: %s (#%d)", expect[i], FmtHumanDate(test[i]), i)
 		}
 	}
 }
@@ -248,9 +248,38 @@ func Test_ToPercentage(t *testing.T) {
 
 	for i := range test {
 		if ToPercentage(test[i]) != expect[i] {
-			t.Fatalf("Test_ToPercentage: expected %s, got: %s (#%d)", expect[i], ToPercentage(test[i]), i)
+			t.Fatalf("Test_ToPercentage: expected: %s, got: %s (#%d)", expect[i], ToPercentage(test[i]), i)
 		}
 	}
 }
 
-// todo: addvartoctx, sortpostdata
+func Test_AddVarToCtx(t *testing.T) {
+	t.Parallel()
+
+	test := map[string]any{
+		"a": "a2",
+		"b": "b2",
+		"c": "c2",
+		"d": "d2",
+		"e": "e2",
+		"f": "f2",
+	}
+
+	expect := map[string]any{
+		"a": "a2",
+		"b": "b2",
+		"c": "c2",
+		"d": "d2",
+		"e": "e2",
+		"f": "f2",
+	}
+
+	for key, val := range test {
+		res := AddVarToCtx(key, val)
+		if res[key] != expect[key] {
+			t.Fatalf("Test_AddVarToCtx: expected: %s, got: %s", expect[key], res[key])
+		}
+	}
+}
+
+// todo: sortpostdata

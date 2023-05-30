@@ -73,19 +73,19 @@ jobs:
       run: |
         echo "Updating Go Dependencies"
         go get -u
+                
+        echo "Installing Sass"
+        npm install -g sass
         
+        echo "Converting SCSS to CSS"
+        sass --style=compressed --no-source-map ../../src/router/css/main.scss ../../src/router/css/main.min.css
+        rm ../../src/router/css/main.scss
+
         echo "Building for 64bit Linux"
         go build -ldflags="-s -w" -v -o lex-amd64-linux main.go
         
         echo "Building for 32bit Linux"
         GOARCH=386 go build -ldflags="-s -w" -v -o lex-i386-linux main.go
-        
-        echo "Installing Sass"
-        npm install -g sass
-        
-        echo "Converting SCSS to CSS"
-        sass --style=compressed --no-source-map css/main.scss css/main.min.css
-        rm css/main.scss
         
         echo "Zipping Files"
         7z a lex-linux.zip lex-i386-linux lex-amd64-linux
@@ -117,19 +117,19 @@ jobs:
       run: |
         echo "Updating Go Dependencies"
         go get -u
+                
+        echo "Installing Sass"
+        npm install -g sass
         
+        echo "Converting SCSS to CSS"
+        sass --style=compressed --no-source-map ../../src/router/css/main.scss ../../src/router/css/main.min.css
+        rm ../../src/router/css/main.scss
+
         echo "Building for Intel OSX"
         go build -ldflags="-s -w" -v -o lex-amd64-osx main.go
         
         echo "Building for M1 OSX"
         GOARCH=arm64 go build -ldflags="-s -w" -v -o lex-arm64-osx main.go
-        
-        echo "Installing Sass"
-        npm install -g sass
-        
-        echo "Converting SCSS to CSS"
-        sass --style=compressed --no-source-map css/main.scss css/main.min.css
-        rm css/main.scss
         
         echo "Zipping Files"
         7z a lex-osx.zip lex-amd64-osx lex-arm64-osx
@@ -166,19 +166,19 @@ jobs:
         echo "RNAME=$(Get-Date -UFormat 'snapshot %Y-%m-%d %H:%M')" >> $env:GITHUB_ENV
         echo "RTXT=$(Get-Date -UFormat '### This release was automatically generated on %A %Y/%m/%d at %H:%M')" >> $env:GITHUB_ENV
         
+        echo "Installing Sass"
+        npm install -g sass
+        
+        echo "Converting SCSS to CSS"
+        sass --style=compressed --no-source-map ../../src/router/css/main.scss ../../src/router/css/main.min.css
+        del ../../src/router/css/main.scss
+
         echo "Building for Windows x64"
         go build -ldflags="-s -w" -v -o lex-amd64-windows.exe main.go
         
         echo "Building for Windows x32"
         $Env:GOARCH = '386'
         go build -ldflags="-s -w" -v -o lex-i386-windows.exe main.go
-        
-        echo "Installing Sass"
-        npm install -g sass
-        
-        echo "Converting SCSS to CSS"
-        sass --style=compressed --no-source-map css/main.scss css/main.min.css
-        del css/main.scss
         
         echo "Zipping Files"
         7z a lex-windows.zip lex-i386-windows.exe lex-amd64-windows.exe

@@ -98,7 +98,7 @@ jobs:
       with:
         tag_name: 'snapshot'
         files: |
-          src/lex-linux.zip
+          cmd/lex/lex-linux.zip
           
   macbuild:
     runs-on: macos-latest
@@ -142,7 +142,7 @@ jobs:
       with:
         tag_name: 'snapshot'
         files: |
-          src/lex-osx.zip
+          cmd/lex/lex-osx.zip
           
   winbuild:
     runs-on: windows-latest
@@ -193,4 +193,4 @@ jobs:
         body: ${{ env.RTXT }}
         tag_name: 'snapshot'
         files: |
-          src/lex-windows.zip
+          cmd/lex/lex-windows.zip

@@ -61,10 +61,11 @@ These are some of the issues that LEX aims to fix.
 
 ## How do I use LEX?
 
-Unfortunately, unlike other open source reddit frontends, **LEX does not provide a demo website**, and there is two ways to build/use LEX.
+Unfortunately, unlike other open source reddit frontends, **LEX does not provide a demo website**, and there are three ways to build/use LEX.
 
 1. [Downloading a pre-built binary](#downloading-binaries)
 2. [Building LEX yourself](#building-instructions)
+3. [Using go install](#go-install)
 
 # ⚙️ Installation Instructions
 
@@ -74,10 +75,9 @@ The only requirement to build the project is [Go](https://go.dev/dl)
 
 If Go is installed, run the following commands in your terminal
 ```shell
-git clone https://github.com/cmd777/lex.git
-cd lex
-cd src
-go get -u
+git clone https://github.com/cmd777/lex.git &&
+cd lex/cmd/lex &&
+go get -u &&
 go build
 ```
 That's everything! All you need to do next, is just navigate to `http://localhost:9090/r/{your_favorite_subreddit}`
@@ -104,6 +104,20 @@ To install LEX via these automatically built binaries, go to the [releases](http
 That's everything! All you need to do next, is just navigate to `http://localhost:9090/r/{your_favorite_subreddit}`
 
 <sub>* Pre-built binaries are published every time there is a push to the main branch.</sub>
+
+## Go Install
+
+LEX can also be installed via the `go install` command.
+
+If you have at least `go 1.16 or later`, you can run the following command:
+
+`go install github.com/cmd777/lex/cmd/lex@latest` which will install the latest version of LEX.
+
+Afterwards, simply type `lex` in your terminal, and that's everything!
+
+> **Note** you may need to add `export PATH=$PATH:$(go env GOPATH)/bin` to your `.profile` file to be able to use the command `lex`!
+
+If you wish to uninstall LEX, simply type the following command: `rm $(go env GOPATH)/bin/lex`
 
 # 🔬 Compatibility
 

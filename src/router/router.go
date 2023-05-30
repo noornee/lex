@@ -21,6 +21,7 @@ import (
 	"github.com/goccy/go-json"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/compress"
+	"github.com/gofiber/fiber/v2/middleware/filesystem"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/proxy"
 	fiberrecover "github.com/gofiber/fiber/v2/middleware/recover"
@@ -31,7 +32,16 @@ import (
 )
 
 //go:embed views
-var viewfs embed.FS
+var viewFS embed.FS
+
+//go:embed js
+var jsFS embed.FS
+
+//go:embed css
+var cssFS embed.FS
+
+//go:embed fonts
+var fontsFS embed.FS
 
 const (
 	ValidCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -164,7 +174,7 @@ func StartServer() {
 
 	// region Template Engine
 
-	templateEngine := html.NewFileSystem(http.FS(viewfs), ".html")
+	templateEngine := html.NewFileSystem(http.FS(viewFS), ".html")
 
 	templateEngine.AddFuncMap(template.FuncMap{
 		"contains":       strings.Contains,
@@ -226,9 +236,20 @@ func StartServer() {
 		},
 	)
 
-	router.Static("/js", "./js")
-	router.Static("/css", "./css")
-	router.Static("/fonts", "./fonts")
+	router.Use("/js", filesystem.New(filesystem.Config{
+		Root:       http.FS(jsFS),
+		PathPrefix: "js",
+	}))
+
+	router.Use("/css", filesystem.New(filesystem.Config{
+		Root:       http.FS(cssFS),
+		PathPrefix: "css",
+	}))
+
+	router.Use("/fonts", filesystem.New(filesystem.Config{
+		Root:       http.FS(fontsFS),
+		PathPrefix: "fonts",
+	}))
 
 	router.Get("/:proxypath/*", func(ctx *fiber.Ctx) error {
 		fullURL := ctx.Params("*")

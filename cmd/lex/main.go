@@ -7,32 +7,28 @@ import (
 
 	"github.com/cmd777/lex/src/logic/version"
 	"github.com/cmd777/lex/src/router"
-
-	"github.com/gofiber/fiber/v2"
 )
 
 func main() {
-	if !fiber.IsChild() {
-		checkUpdate := flag.Bool("checkupdate", true, "enables automatic update checking")
-		flag.Parse()
+	checkUpdate := flag.Bool("checkupdate", true, "enables automatic update checking")
+	flag.Parse()
 
-		if *checkUpdate {
-			if okf, cversion := version.CurrentVersion(); okf {
-				log.Printf("Running LEX Version %d", cversion)
-				log.Println("Checking for updates... (to disable update checking, run the application with -checkupdate=false)")
-				if ok, latest := version.CheckForUpdates(); !ok {
-					log.Println("There was an error while attempting to check for updates, try again later.")
-				} else if cversion < latest {
-					log.Printf("Your LEX version is outdated (version mismatch -> [gh:%d | local:%d])\r\n", latest, cversion)
-				} else {
-					log.Println("You are running the latest version of LEX")
-				}
+	if *checkUpdate {
+		if okf, cversion := version.CurrentVersion(); okf {
+			log.Printf("Running LEX Version %d", cversion)
+			log.Println("Checking for updates... (to disable update checking, run the application with -checkupdate=false)")
+			if ok, latest := version.CheckForUpdates(); !ok {
+				log.Println("There was an error while attempting to check for updates, try again later.")
+			} else if cversion < latest {
+				log.Printf("Your LEX version is outdated (version mismatch -> [gh:%d | local:%d])\r\n", latest, cversion)
 			} else {
-				log.Println("Failed to read local version file. (is it missing?)")
+				log.Println("You are running the latest version of LEX")
 			}
 		} else {
-			log.Printf("update checking disabled")
+			log.Println("Failed to read local version file. (is it missing?)")
 		}
+	} else {
+		log.Printf("update checking disabled")
 	}
 
 	router.StartServer()

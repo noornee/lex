@@ -31,17 +31,22 @@ import (
 	"github.com/russross/blackfriday/v2"
 )
 
-//go:embed views
-var viewFS embed.FS
+var (
+	//go:embed views
+	viewFS embed.FS
 
-//go:embed js
-var jsFS embed.FS
+	//go:embed js
+	jsFS embed.FS
 
-//go:embed css
-var cssFS embed.FS
+	//go:embed css
+	cssFS embed.FS
 
-//go:embed fonts
-var fontsFS embed.FS
+	//go:embed fonts
+	fontsFS embed.FS
+
+	//nolint:gochecknoglobals // required for backgroundJanitor
+	jsonCache sync.Map
+)
 
 const (
 	ValidCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -68,6 +73,8 @@ const (
 	CommentCookieValue = "disable_comments"
 
 	MaxResolution = 11037
+
+	CleanTimer = 2 * time.Minute
 )
 
 func RewriteURL(input string) string {
@@ -158,6 +165,8 @@ func AddVarToCtx(input ...any) map[string]any {
 }
 
 func StartServer() {
+	go backgroundJanitor()
+
 	var subCache sync.Map
 
 	cfgMap := map[string]string{
@@ -192,7 +201,6 @@ func StartServer() {
 	// endregion
 
 	router := fiber.New(fiber.Config{
-		Prefork:     true,
 		Views:       templateEngine,
 		JSONEncoder: json.Marshal,
 		JSONDecoder: json.Unmarshal,
@@ -355,7 +363,14 @@ func StartServer() {
 		flair := url.QueryEscape(ctx.Query("f"))
 		subname := strings.ToLower(ctx.Params("sub"))
 
-		posts := logic.GetPosts(subname, after, flair)
+		var posts types.Posts
+
+		if postcache, exists := jsonCache.Load(fmt.Sprintf("%s-%s-%s", subname, after, flair)); exists {
+			posts = postcache.(types.Posts) //nolint:errcheck,forcetypeassert // if this fails, we are fucked anyway.
+		} else {
+			posts = logic.GetPosts(subname, after, flair)
+			jsonCache.Store(fmt.Sprintf("%s-%s-%s", subname, after, flair), posts)
+		}
 
 		if len(posts.Data.Children) == 0 {
 			return ctx.Render("views/404", nil)
@@ -452,7 +467,14 @@ func StartServer() {
 		subname := ctx.FormValue("sub")
 		flair := url.QueryEscape(ctx.FormValue("flair"))
 
-		posts := logic.GetPosts(subname, after, flair)
+		var posts types.Posts
+
+		if postcache, exists := jsonCache.Load(fmt.Sprintf("%s-%s-%s", subname, after, flair)); exists {
+			posts = postcache.(types.Posts) //nolint:errcheck,forcetypeassert // if this fails, we are fucked anyway.
+		} else {
+			posts = logic.GetPosts(subname, after, flair)
+			jsonCache.Store(fmt.Sprintf("%s-%s-%s", subname, after, flair), posts)
+		}
 
 		resolutionToUse, err := strconv.Atoi(ctx.Cookies(ResCookieValue))
 		if err != nil {
@@ -595,4 +617,15 @@ func setcfgCookie(ctx *fiber.Ctx, cookiename, cookievalue string) {
 		HTTPOnly: true,
 		SameSite: "lax",
 	})
+}
+
+func backgroundJanitor() {
+	timer := time.NewTimer(CleanTimer)
+	for range timer.C {
+		jsonCache = sync.Map{}
+		log.Println("Scheduled maintenance: jsonCache emptied.")
+		if !timer.Stop() {
+			timer.Reset(CleanTimer)
+		}
+	}
 }

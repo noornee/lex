@@ -8,10 +8,13 @@ import (
 	"math/rand"
 	"net/http"
 	"net/url"
+	"os"
+	"os/signal"
 	"path/filepath"
 	"strconv"
 	"strings"
 	"sync"
+	"syscall"
 	"time"
 
 	"github.com/cmd777/lex/src/logic"
@@ -166,6 +169,7 @@ func AddVarToCtx(input ...any) map[string]any {
 
 func StartServer() {
 	go backgroundJanitor()
+	startTime := time.Now()
 
 	var subCache sync.Map
 
@@ -499,6 +503,19 @@ func StartServer() {
 	router.Use(func(ctx *fiber.Ctx) error {
 		return ctx.Status(fiber.StatusNotFound).Render("views/404", nil)
 	})
+
+	// Shutting down
+	signalChan := make(chan os.Signal, 1)
+	signal.Notify(signalChan, syscall.SIGINT, syscall.SIGTERM)
+	go func() {
+		<-signalChan
+
+		log.Printf("\n\n\nSession lasted %s\nSee you next time!\n\n\n", time.Since(startTime).String())
+
+		if err := router.Shutdown(); err != nil {
+			log.Println("Failed to gracefully Shutdown router.")
+		}
+	}()
 
 	// localhost:9090
 	log.Fatal(router.Listen(":9090")) //nolint:revive // No

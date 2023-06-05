@@ -1,14 +1,18 @@
 package router_test
 
 import (
+	"net/http/httptest"
 	"strings"
 	"testing"
 	"time"
 	"unicode"
 
 	. "github.com/cmd777/lex/src/router"
+	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/utils"
 )
 
+// go test -v -race -run ^Test_RewriteURL$
 func Test_RewriteURL(t *testing.T) {
 	t.Parallel()
 
@@ -37,12 +41,11 @@ func Test_RewriteURL(t *testing.T) {
 	}
 
 	for i := range urls {
-		if RewriteURL(urls[i]) != expect[i] {
-			t.Fatalf("Test_RewriteURL: expected: %s, got: %s (#%d)", expect[i], RewriteURL(urls[i]), i)
-		}
+		utils.AssertEqual(t, expect[i], RewriteURL(urls[i]))
 	}
 }
 
+// go test -v -race -run ^Test_UGIDGen$
 func Test_UGIDGen(t *testing.T) {
 	t.Parallel()
 
@@ -56,6 +59,7 @@ func Test_UGIDGen(t *testing.T) {
 	}
 }
 
+// go test -v -race -run ^Test_Sanitize$
 func Test_Sanitize(t *testing.T) {
 	t.Parallel()
 	markdowns := []string{
@@ -94,12 +98,11 @@ func Test_Sanitize(t *testing.T) {
 	for i := range markdowns {
 		trimexpect := strings.TrimSpace(expect[i])
 		trimsanitize := strings.TrimSpace(string(Sanitize(markdowns[i])))
-		if trimexpect != trimsanitize {
-			t.Fatalf("Test_Sanitize: expected: %s, got: %s (#%d)", trimexpect, trimsanitize, i)
-		}
+		utils.AssertEqual(t, trimexpect, trimsanitize)
 	}
 }
 
+// go test -v -race -run ^Test_QualifiesAsImg$
 func Test_QualifiesAsImg(t *testing.T) {
 	t.Parallel()
 
@@ -124,12 +127,11 @@ func Test_QualifiesAsImg(t *testing.T) {
 	}
 
 	for i := range test {
-		if QualifiesAsImg(test[i]) != expect[i] {
-			t.Fatalf("Test_QualifiesAsImg: expected: %t, got: %t (#%d)", expect[i], QualifiesAsImg(test[i]), i)
-		}
+		utils.AssertEqual(t, expect[i], QualifiesAsImg(test[i]))
 	}
 }
 
+// go test -v -race -run ^Test_FmtEpochDate$
 func Test_FmtEpochDate(t *testing.T) {
 	t.Parallel()
 
@@ -154,13 +156,12 @@ func Test_FmtEpochDate(t *testing.T) {
 	}
 
 	for i := range test {
-		if FmtEpochDate(test[i]) != expect[i] {
-			t.Fatalf("Test_FmtEpochDate: expected: %s, got: %s (#%d)", expect[i], FmtEpochDate(test[i]), i)
-		}
+		utils.AssertEqual(t, expect[i], FmtEpochDate(test[i]))
 	}
 }
 
 // I cannot believe I'm writing a test for this.
+// go test -v -race -run ^Test_Incrementbyone$
 func Test_Incrementbyone(t *testing.T) {
 	t.Parallel()
 
@@ -189,12 +190,11 @@ func Test_Incrementbyone(t *testing.T) {
 	}
 
 	for i := range test {
-		if Incrementbyone(test[i]) != expect[i] {
-			t.Fatalf("Test_Incrementbyone: expected: %d, got: %d (#%d)", expect[i], Incrementbyone(test[i]), i)
-		}
+		utils.AssertEqual(t, expect[i], Incrementbyone(test[i]))
 	}
 }
 
+// go test -v -race -run ^Test_FmtHumanDate$
 func Test_FmtHumanDate(t *testing.T) {
 	t.Parallel()
 
@@ -219,12 +219,11 @@ func Test_FmtHumanDate(t *testing.T) {
 	}
 
 	for i := range test {
-		if FmtHumanDate(test[i]) != expect[i] {
-			t.Fatalf("Test_FmtHumanDate: expected: %s, got: %s (#%d)", expect[i], FmtHumanDate(test[i]), i)
-		}
+		utils.AssertEqual(t, expect[i], FmtHumanDate(test[i]))
 	}
 }
 
+// go test -v -race -run ^Test_ToPercentage$
 func Test_ToPercentage(t *testing.T) {
 	t.Parallel()
 
@@ -247,12 +246,11 @@ func Test_ToPercentage(t *testing.T) {
 	}
 
 	for i := range test {
-		if ToPercentage(test[i]) != expect[i] {
-			t.Fatalf("Test_ToPercentage: expected: %s, got: %s (#%d)", expect[i], ToPercentage(test[i]), i)
-		}
+		utils.AssertEqual(t, expect[i], ToPercentage(test[i]))
 	}
 }
 
+// go test -v -race -run ^Test_AddVarToCtx$
 func Test_AddVarToCtx(t *testing.T) {
 	t.Parallel()
 
@@ -276,10 +274,45 @@ func Test_AddVarToCtx(t *testing.T) {
 
 	for key, val := range test {
 		res := AddVarToCtx(key, val)
-		if res[key] != expect[key] {
-			t.Fatalf("Test_AddVarToCtx: expected: %s, got: %s", expect[key], res[key])
-		}
+		utils.AssertEqual(t, expect[key], res[key])
 	}
+}
+
+// go test -v -race -run ^Test_SetcfgCookie$
+func Test_SetcfgCookie(t *testing.T) {
+	t.Parallel()
+
+	testrouter := fiber.New()
+
+	testrouter.Get("/", func(ctx *fiber.Ctx) error {
+		SetcfgCookie(ctx, "index", "1")
+		return ctx.SendString("Cookie Set")
+	})
+
+	testrouter.Get("/test", func(ctx *fiber.Ctx) error {
+		SetcfgCookie(ctx, "test", "2")
+		return ctx.SendString("Cookie Set")
+	})
+
+	testrouter.Post("/test2", func(ctx *fiber.Ctx) error {
+		SetcfgCookie(ctx, "test2", "3")
+		return ctx.SendString("Cookie Set")
+	})
+
+	resp, err := testrouter.Test(httptest.NewRequest(fiber.MethodGet, "/", nil))
+	utils.AssertEqual(t, nil, err)
+	utils.AssertEqual(t, "index", resp.Cookies()[0].Name)
+	utils.AssertEqual(t, "1", resp.Cookies()[0].Value)
+
+	resp, err = testrouter.Test(httptest.NewRequest(fiber.MethodGet, "/test", nil))
+	utils.AssertEqual(t, nil, err)
+	utils.AssertEqual(t, "test", resp.Cookies()[0].Name)
+	utils.AssertEqual(t, "2", resp.Cookies()[0].Value)
+
+	resp, err = testrouter.Test(httptest.NewRequest(fiber.MethodPost, "/test2", nil))
+	utils.AssertEqual(t, nil, err)
+	utils.AssertEqual(t, "test2", resp.Cookies()[0].Name)
+	utils.AssertEqual(t, "3", resp.Cookies()[0].Value)
 }
 
 // todo: sortpostdata

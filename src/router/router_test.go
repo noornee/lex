@@ -1,6 +1,7 @@
 package router_test
 
 import (
+	"net/http"
 	"net/http/httptest"
 	"strings"
 	"testing"
@@ -299,17 +300,32 @@ func Test_SetcfgCookie(t *testing.T) {
 		return ctx.SendString("Cookie Set")
 	})
 
-	resp, err := testrouter.Test(httptest.NewRequest(fiber.MethodGet, "/", nil))
+	resp, err := testrouter.Test(httptest.NewRequest(fiber.MethodGet, "/", http.NoBody))
+	defer func() {
+		if err := resp.Body.Close(); err != nil {
+			t.Fatal("Test_SetcfgCookie: failed to close response body")
+		}
+	}()
 	utils.AssertEqual(t, nil, err)
 	utils.AssertEqual(t, "index", resp.Cookies()[0].Name)
 	utils.AssertEqual(t, "1", resp.Cookies()[0].Value)
 
-	resp, err = testrouter.Test(httptest.NewRequest(fiber.MethodGet, "/test", nil))
+	resp, err = testrouter.Test(httptest.NewRequest(fiber.MethodGet, "/test", http.NoBody))
+	defer func() {
+		if err := resp.Body.Close(); err != nil {
+			t.Fatal("Test_SetcfgCookie: failed to close response body")
+		}
+	}()
 	utils.AssertEqual(t, nil, err)
 	utils.AssertEqual(t, "test", resp.Cookies()[0].Name)
 	utils.AssertEqual(t, "2", resp.Cookies()[0].Value)
 
-	resp, err = testrouter.Test(httptest.NewRequest(fiber.MethodPost, "/test2", nil))
+	resp, err = testrouter.Test(httptest.NewRequest(fiber.MethodPost, "/test2", http.NoBody))
+	defer func() {
+		if err := resp.Body.Close(); err != nil {
+			t.Fatal("Test_SetcfgCookie: failed to close response body")
+		}
+	}()
 	utils.AssertEqual(t, nil, err)
 	utils.AssertEqual(t, "test2", resp.Cookies()[0].Name)
 	utils.AssertEqual(t, "3", resp.Cookies()[0].Value)

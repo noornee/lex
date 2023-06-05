@@ -335,15 +335,15 @@ func StartServer() {
 			switch formvalue := ctx.FormValue(cookiekey); formvalue {
 			case "on":
 				if cookiekey != "PrefRes" {
-					setcfgCookie(ctx, cookievalue, "1")
+					SetcfgCookie(ctx, cookievalue, "1")
 				}
 			case "off":
 				if cookiekey != "PrefRes" {
-					setcfgCookie(ctx, cookievalue, "0")
+					SetcfgCookie(ctx, cookievalue, "0")
 				}
 			case "0", "1", "2", "3", "4", "5":
 				if cookiekey == "PrefRes" {
-					setcfgCookie(ctx, cookievalue, formvalue)
+					SetcfgCookie(ctx, cookievalue, formvalue)
 				}
 			case "Source":
 				if cookiekey == "PrefRes" {
@@ -354,7 +354,7 @@ func StartServer() {
 						value that doesn't exist, but is still valid.
 					*/
 
-					setcfgCookie(ctx, cookievalue, "11037")
+					SetcfgCookie(ctx, cookievalue, "11037")
 				}
 			}
 		}
@@ -625,7 +625,7 @@ func vmediaappendor(mData types.InternalMetaData, resolutionToUse int) types.Int
 	}
 }
 
-func setcfgCookie(ctx *fiber.Ctx, cookiename, cookievalue string) {
+func SetcfgCookie(ctx *fiber.Ctx, cookiename, cookievalue string) {
 	ctx.Cookie(&fiber.Cookie{
 		Name:     cookiename,
 		Value:    cookievalue,

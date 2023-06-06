@@ -28,6 +28,7 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/proxy"
 	fiberrecover "github.com/gofiber/fiber/v2/middleware/recover"
+	"github.com/gofiber/fiber/v2/utils"
 	"github.com/gofiber/helmet/v2"
 	"github.com/gofiber/template/html/v2"
 	"github.com/microcosm-cc/bluemonday"
@@ -365,7 +366,7 @@ func StartServer() {
 	router.Get("/r/:sub", func(ctx *fiber.Ctx) error {
 		after := ctx.Query("after")
 		flair := url.QueryEscape(ctx.Query("f"))
-		subname := strings.ToLower(ctx.Params("sub"))
+		subname := utils.ToLower(ctx.Params("sub"))
 
 		var posts types.Posts
 
@@ -412,7 +413,7 @@ func StartServer() {
 	})
 
 	router.Get("/r/:sub/comments/:id/*", func(ctx *fiber.Ctx) error {
-		subname := strings.ToLower(ctx.Params("sub"))
+		subname := utils.ToLower(ctx.Params("sub"))
 		cid := ctx.Params("id")
 
 		post, comm := logic.GetComments(subname, cid)

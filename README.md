@@ -221,6 +221,7 @@ In case of any issues with a post, such as copyright infringement, trademark inf
 - [Go](https://go.dev) ➡️ Programming Language
 - [Humanize (go-humanize)](https://github.com/dustin/go-humanize) ➡️ Formatting time, numbers, etc.. to Human Friendly Units 
 - [Fiber](https://github.com/gofiber/fiber) ➡️ HTTP Web Framework
+- [(Fiber) Utils](https://github.com/gofiber/utils) ➡️ Common functions with better performance
 - [Go-JSON](https://github.com/goccy/go-json) ➡️ Fast JSON Decoder
 - [Bluemonday](https://github.com/microcosm-cc/bluemonday) ➡️ HTML Sanitizer
 - [Blackfriday](https://github.com/russross/blackfriday/tree/v2) ➡️ Markdown Processor

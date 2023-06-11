@@ -218,18 +218,64 @@ In case of any issues with a post, such as copyright infringement, trademark inf
 
 # 🧰 Technologies that were used to create LEX
 
-- [Go](https://go.dev) ➡️ Programming Language
-- [Humanize (go-humanize)](https://github.com/dustin/go-humanize) ➡️ Formatting time, numbers, etc.. to Human Friendly Units 
-- [Fiber](https://github.com/gofiber/fiber) ➡️ HTTP Web Framework
-- [(Fiber) Utils](https://github.com/gofiber/utils) ➡️ Common functions with better performance
-- [Go-JSON](https://github.com/goccy/go-json) ➡️ Fast JSON Decoder
-- [Bluemonday](https://github.com/microcosm-cc/bluemonday) ➡️ HTML Sanitizer
-- [Blackfriday](https://github.com/russross/blackfriday/tree/v2) ➡️ Markdown Processor
-- [SASS](https://sass-lang.com) ➡️ CSS Extension
+<details>
+  <summary><a href="https://go.dev">Go</a> ➡️ Programming Language</summary>
+  https://github.com/golang/go/blob/master/LICENSE
+</details>
+
+<details>
+  <summary><a href="https://github.com/dustin/go-humanize">Humanize (go-humanize)</a> ➡️ Formatting time, numbers, etc.. to Human Friendly Units</summary>
+  https://github.com/dustin/go-humanize/blob/master/LICENSE
+</details>
+
+<details>
+  <summary><a href="https://github.com/gofiber/fiber">Fiber</a> ➡️ HTTP Web Framework</summary>
+  https://github.com/gofiber/fiber/blob/master/LICENSE
+</details>
+
+<details>
+  <summary><a href="https://github.com/gofiber/utils">(Fiber) Utils</a> ➡️ Common functions with better performance</summary>
+  https://github.com/gofiber/utils/blob/master/LICENSE
+</details>
+
+<details>
+  <summary><a href="https://github.com/goccy/go-json">Go-JSON</a> ➡️ Fast JSON Decoder</summary>
+  https://github.com/goccy/go-json/blob/master/LICENSE
+</details>
+
+<details>
+  <summary><a href="https://github.com/microcosm-cc/bluemonday">Bluemonday</a> ➡️ HTML Sanitizer</summary>
+  https://github.com/microcosm-cc/bluemonday/blob/main/LICENSE.md
+</details>
+
+<details>
+  <summary><a href="https://github.com/russross/blackfriday/tree/v2">Blackfriday</a>  ➡️ Markdown Processor</summary>
+  https://github.com/russross/blackfriday/blob/master/LICENSE.txt
+</details>
+
+<details>
+  <summary><a href="https://github.com/sass/sass">SASS</a> ➡️ CSS Extension</summary>
+  https://github.com/sass/sass/blob/main/LICENSE
+</details>
 
 <sub>Also used to create LEX:</sub>
 
-- [Josefin Sans](https://fonts.google.com/specimen/Josefin+Sans) ➡️ Navbar, index font
-- [Open Sans](https://fonts.google.com/specimen/Open+Sans) ➡️ Subreddit font
-- [SVGRepo](https://www.svgrepo.com) ➡️ SVGs
-- [Yqnn's SVG Path Editor](https://github.com/Yqnn/svg-path-editor) ➡️ Was used to edit almost all SVGs
+<details>
+  <summary><a href="https://github.com/googlefonts/josefinsans">Josefin Sans</a> ➡️ Navbar, index font</summary>
+  https://github.com/googlefonts/josefinsans/blob/master/OFL.txt
+</details>
+
+<details>
+  <summary><a href="https://github.com/googlefonts/opensans">Open Sans</a> ➡️ Subreddit font</summary>
+  https://github.com/googlefonts/opensans/blob/main/OFL.txt
+</details>
+
+<details>
+  <summary><a href="https://www.svgrepo.com">SVGRepo</a> ➡️ SVGs</summary>
+  https://www.svgrepo.com/page/licensing
+</details>
+
+<details>
+  <summary><a href="https://github.com/Yqnn/svg-path-editor">Yqnn's SVG Path Editor</a> ➡️ Was used to edit almost all SVGs</summary>
+  https://github.com/Yqnn/svg-path-editor/blob/master/LICENSE
+</details>

@@ -1,4 +1,4 @@
-# LEX <br> ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/cmd777/lex/build_all_os.yml?logo=github&style=flat-square)
+# LEX <br> <a href="https://github.com/cmd777/lex/actions/workflows/build_all_os.yml">![](https://img.shields.io/github/actions/workflow/status/cmd777/lex/build_all_os.yml?logo=github&style=flat-square)</a> <a href="https://github.com/cmd777/lex/blob/main/LICENSE">![](https://img.shields.io/github/license/cmd777/lex?logo=opensourceinitiative&style=flat-square)</a>
 
 ## Table of Contents
 

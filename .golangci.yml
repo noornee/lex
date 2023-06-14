@@ -64,7 +64,7 @@ linters-settings:
       - rangeValCopy
 
   gofumpt:
-    module-path: main
+    module-path: github.com/cmd777/lex
     extra-rules: true
 
   gosec:

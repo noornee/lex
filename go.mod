@@ -19,7 +19,7 @@ require (
 	github.com/gofiber/template v1.8.2 // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/gorilla/css v1.0.0 // indirect
-	github.com/klauspost/compress v1.16.5 // indirect
+	github.com/klauspost/compress v1.16.6 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.19 // indirect
 	github.com/mattn/go-runewidth v0.0.14 // indirect
@@ -31,6 +31,6 @@ require (
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasthttp v1.47.0 // indirect
 	github.com/valyala/tcplisten v1.0.0 // indirect
-	golang.org/x/net v0.10.0 // indirect
-	golang.org/x/sys v0.8.0 // indirect
+	golang.org/x/net v0.11.0 // indirect
+	golang.org/x/sys v0.9.0 // indirect
 )

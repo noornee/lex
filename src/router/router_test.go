@@ -3,11 +3,15 @@ package router_test
 import (
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"strings"
 	"testing"
 	"time"
 	"unicode"
 
+	"github.com/goccy/go-json"
+
+	"github.com/cmd777/lex/src/logic/types"
 	. "github.com/cmd777/lex/src/router"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/utils"
@@ -331,4 +335,29 @@ func Test_SetcfgCookie(t *testing.T) {
 	utils.AssertEqual(t, "3", resp.Cookies()[0].Value)
 }
 
-// todo: sortpostdata
+func Test_SortPostData(t *testing.T) {
+	t.Parallel()
+
+	var posts types.Posts
+
+	contents, err := os.ReadFile("./testdata/test.json")
+	utils.AssertEqual(t, nil, err)
+
+	err = json.Unmarshal(contents, &posts)
+	utils.AssertEqual(t, nil, err)
+
+	SortPostData(&posts, 3)
+
+	testpost := posts.Data.Children[1]
+
+	utils.AssertEqual(t, false, testpost.Data.Archived)
+	utils.AssertEqual(t, "jerf", testpost.Data.Author)
+	utils.AssertEqual(t, int64(0), testpost.Data.CommentCount)
+	utils.AssertEqual(t, "/r/golang/comments/147zgzw/reddit_api_protest/", testpost.Data.Permalink)
+	utils.AssertEqual(t, "147zgzw", testpost.Data.PostID)
+	utils.AssertEqual(t, "r/golang", testpost.Data.SubNamePref)
+	utils.AssertEqual(t, "Reddit API Protest", testpost.Data.Title)
+	utils.AssertEqual(t, int64(279), testpost.Data.Ups)
+	utils.AssertEqual(t, float64(0.84), testpost.Data.UpvoteRatio)
+	utils.AssertEqual(t, "", testpost.Data.Body)
+}

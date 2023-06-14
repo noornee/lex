@@ -90,7 +90,7 @@ jobs:
         GOARCH=386 go build -ldflags="-s -w" -v -o lex-i386-linux main.go
         
         echo "Zipping Files"
-        7z a lex-linux.zip lex-i386-linux lex-amd64-linux
+        7z a lex-linux.zip lex-i386-linux lex-amd64-linux ../../LICENSE
         
         echo "Ok."
       working-directory: cmd/lex/
@@ -134,7 +134,7 @@ jobs:
         GOARCH=arm64 go build -ldflags="-s -w" -v -o lex-arm64-osx main.go
         
         echo "Zipping Files"
-        7z a lex-osx.zip lex-amd64-osx lex-arm64-osx
+        7z a lex-osx.zip lex-amd64-osx lex-arm64-osx ../../LICENSE
         
         echo "Ok."
       working-directory: cmd/lex/
@@ -183,7 +183,7 @@ jobs:
         go build -ldflags="-s -w" -v -o lex-i386-windows.exe main.go
         
         echo "Zipping Files"
-        7z a lex-windows.zip lex-i386-windows.exe lex-amd64-windows.exe
+        7z a lex-windows.zip lex-i386-windows.exe lex-amd64-windows.exe ../../LICENSE
         
         echo "Ok."
       working-directory: cmd/lex/

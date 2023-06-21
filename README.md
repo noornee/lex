@@ -216,6 +216,8 @@ All content that is displayed on LEX has been sourced from Reddit. LEX does not 
 
 In case of any issues with a post, such as copyright infringement, trademark infringement, or violation of Reddit's community rules, the reports should be directed to Reddit.
 
+LEX does not endorse ![libel](https://www.merriam-webster.com/dictionary/libel) in the form of ![false blackmail claims](https://old.reddit.com/r/apolloapp/comments/14dkqrw/i_want_to_debunk_reddits_claims_and_talk_about).
+
 # 🧰 Technologies that were used to create LEX
 
 <details>

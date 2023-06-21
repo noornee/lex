@@ -129,14 +129,14 @@ rm $(go env GOPATH)/bin/lex
 
 <figcaption>No JavaScript</figcaption>
 
-| Chrome | Edge | Safari | Firefox | Opera | IE               |
+| ![](https://raw.githubusercontent.com/cmd777/lex/main/docs/images/chrome.svg) Chrome | ![](https://raw.githubusercontent.com/cmd777/lex/main/docs/images/edge.svg) Edge | ![](https://raw.githubusercontent.com/cmd777/lex/main/docs/images/safari.svg) Safari | ![](https://raw.githubusercontent.com/cmd777/lex/main/docs/images/firefox.svg) Firefox | ![](https://raw.githubusercontent.com/cmd777/lex/main/docs/images/opera.svg) Opera | ![](https://raw.githubusercontent.com/cmd777/lex/main/docs/images/iexplorer.svg) IE |
 |:------:|:----:|:------:|:-------:|:-----:|:----------------:|
 | 26>    | 19>  | 6.1>   | 49>     | 12.1> | 11<sup>(?)</sup> |
 
 <details>
 <summary>INFScroll Setting Enabled</summary>
 
-| Chrome | Edge | Safari | Firefox | Opera | IE |
+| ![](https://raw.githubusercontent.com/cmd777/lex/main/docs/images/chrome.svg) Chrome | ![](https://raw.githubusercontent.com/cmd777/lex/main/docs/images/edge.svg) Edge | ![](https://raw.githubusercontent.com/cmd777/lex/main/docs/images/safari.svg) Safari | ![](https://raw.githubusercontent.com/cmd777/lex/main/docs/images/firefox.svg) Firefox | ![](https://raw.githubusercontent.com/cmd777/lex/main/docs/images/opera.svg) Opera | ![](https://raw.githubusercontent.com/cmd777/lex/main/docs/images/iexplorer.svg) IE |
 |:------:|:----:|:------:|:-------:|:-----:|:--:|
 | 42>    | -    | 10.1>  | -       | 29>   | X  |
 
@@ -145,7 +145,7 @@ rm $(go env GOPATH)/bin/lex
 <details>
 <summary>GalleryNav Setting Enabled</summary>
 
-| Chrome | Edge | Safari | Firefox | Opera | IE |
+| ![](https://raw.githubusercontent.com/cmd777/lex/main/docs/images/chrome.svg) Chrome | ![](https://raw.githubusercontent.com/cmd777/lex/main/docs/images/edge.svg) Edge | ![](https://raw.githubusercontent.com/cmd777/lex/main/docs/images/safari.svg) Safari | ![](https://raw.githubusercontent.com/cmd777/lex/main/docs/images/firefox.svg) Firefox | ![](https://raw.githubusercontent.com/cmd777/lex/main/docs/images/opera.svg) Opera | ![](https://raw.githubusercontent.com/cmd777/lex/main/docs/images/iexplorer.svg) IE |
 |:------:|:----:|:------:|:-------:|:-----:|:--:|
 | 45>    | -    | 9>     | -       | 32>   | X  |
 
@@ -154,7 +154,7 @@ rm $(go env GOPATH)/bin/lex
 <details>
 <summary>HLS Setting Enabled</summary>
 
-| Chrome | Edge | Safari | Firefox | Opera | IE |
+| ![](https://raw.githubusercontent.com/cmd777/lex/main/docs/images/chrome.svg) Chrome | ![](https://raw.githubusercontent.com/cmd777/lex/main/docs/images/edge.svg) Edge | ![](https://raw.githubusercontent.com/cmd777/lex/main/docs/images/safari.svg) Safari | ![](https://raw.githubusercontent.com/cmd777/lex/main/docs/images/firefox.svg) Firefox | ![](https://raw.githubusercontent.com/cmd777/lex/main/docs/images/opera.svg) Opera | ![](https://raw.githubusercontent.com/cmd777/lex/main/docs/images/iexplorer.svg) IE |
 |:------:|:----:|:------:|:-------:|:-----:|:--:|
 | 41>    | ?    | 9>     | -       | ?     | X  |
 
@@ -163,7 +163,7 @@ rm $(go env GOPATH)/bin/lex
 <details>
 <summary>Advanced Math Enabled</summary>
 
-| Chrome | Edge | Safari | Firefox | Opera | IE |
+| ![](https://raw.githubusercontent.com/cmd777/lex/main/docs/images/chrome.svg) Chrome | ![](https://raw.githubusercontent.com/cmd777/lex/main/docs/images/edge.svg) Edge | ![](https://raw.githubusercontent.com/cmd777/lex/main/docs/images/safari.svg) Safari | ![](https://raw.githubusercontent.com/cmd777/lex/main/docs/images/firefox.svg) Firefox | ![](https://raw.githubusercontent.com/cmd777/lex/main/docs/images/opera.svg) Opera | ![](https://raw.githubusercontent.com/cmd777/lex/main/docs/images/iexplorer.svg) IE |
 |:------:|:----:|:------:|:-------:|:-----:|:--:|
 | 79>    | 79>  | 13.1>  | 75>     | 66>   | X  |
 

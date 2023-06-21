@@ -10,8 +10,8 @@
             <circle r="45" stroke-dasharray="1.25 8.175" stroke-dashoffset="0.5" stroke-width="5.5"></circle>
             <circle r="42.5" stroke-dasharray="1.25 7.65" stroke-dashoffset="5" stroke-width="10"></circle>
         </g>
-        <path d="M6 6l-12-12-29 39" fill="#eee"></path>
-        <path d="M6 6l-12-12 41-28" fill="#f55"></path>
-        <path opacity="0.3" d="M-35 33l7-5-3 5 37-27 28-35-4 2 4-6"></path>
+        <path fill-rule="evenodd" d="M6 6l-12-12-29 39z" fill="#eee"></path>
+        <path fill-rule="evenodd" d="M6 6l-12-12 41-28z" fill="#f55"></path>
+        <path fill-rule="evenodd" opacity="0.3" d="M-35 33l7-5-3 5 37-27 28-35-4 2 4-6z"></path>
     </g>
 </svg>

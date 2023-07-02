@@ -1,8 +1,6 @@
 "use strict";
 
-window.addEventListener('load', function() {
-    initNav();
-})
+window.addEventListener('load', initNav)
 
 function initNav() {
     var gallery = document.querySelectorAll(".gallery:not([gallerynav])")

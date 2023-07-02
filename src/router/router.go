@@ -19,6 +19,7 @@ import (
 
 	"github.com/cmd777/lex/src/logic"
 	"github.com/cmd777/lex/src/logic/types"
+	"github.com/valyala/fasthttp"
 
 	"github.com/dustin/go-humanize"
 	"github.com/goccy/go-json"
@@ -173,6 +174,10 @@ func StartServer() {
 	startTime := time.Now()
 
 	var subCache sync.Map
+	defClient := &fasthttp.Client{
+		ReadBufferSize:           8192,
+		NoDefaultUserAgentHeader: true,
+	}
 
 	cfgMap := map[string]string{
 		"EnableJS":         JSCookieValue,
@@ -273,39 +278,39 @@ func StartServer() {
 
 		switch ctx.Params("proxypath") {
 		case "video":
-			if err := proxy.Do(ctx, "https://v.redd.it/"+fullURL); err != nil {
+			if err := proxy.Do(ctx, "https://v.redd.it/"+fullURL, defClient); err != nil {
 				return err
 			}
 		case "image":
-			if err := proxy.Do(ctx, "https://i.redd.it/"+fullURL); err != nil {
+			if err := proxy.Do(ctx, "https://i.redd.it/"+fullURL, defClient); err != nil {
 				return err
 			}
 		case "athumb":
-			if err := proxy.Do(ctx, "https://a.thumbs.redditmedia.com/"+fullURL); err != nil {
+			if err := proxy.Do(ctx, "https://a.thumbs.redditmedia.com/"+fullURL, defClient); err != nil {
 				return err
 			}
 		case "bthumb":
-			if err := proxy.Do(ctx, "https://b.thumbs.redditmedia.com/"+fullURL); err != nil {
+			if err := proxy.Do(ctx, "https://b.thumbs.redditmedia.com/"+fullURL, defClient); err != nil {
 				return err
 			}
 		case "external":
-			if err := proxy.Do(ctx, "https://external-preview.redd.it/"+fullURL); err != nil {
+			if err := proxy.Do(ctx, "https://external-preview.redd.it/"+fullURL, defClient); err != nil {
 				return err
 			}
 		case "preview":
-			if err := proxy.Do(ctx, "https://preview.redd.it/"+fullURL); err != nil {
+			if err := proxy.Do(ctx, "https://preview.redd.it/"+fullURL, defClient); err != nil {
 				return err
 			}
 		case "rstyle":
-			if err := proxy.Do(ctx, "https://styles.redditmedia.com/"+fullURL); err != nil {
+			if err := proxy.Do(ctx, "https://styles.redditmedia.com/"+fullURL, defClient); err != nil {
 				return err
 			}
 		case "rstatic":
-			if err := proxy.Do(ctx, "https://www.redditstatic.com/"+fullURL); err != nil {
+			if err := proxy.Do(ctx, "https://www.redditstatic.com/"+fullURL, defClient); err != nil {
 				return err
 			}
 		case "imgur":
-			if err := proxy.Do(ctx, "https://i.imgur.com/"+fullURL); err != nil {
+			if err := proxy.Do(ctx, "https://i.imgur.com/"+fullURL, defClient); err != nil {
 				return err
 			}
 		default:

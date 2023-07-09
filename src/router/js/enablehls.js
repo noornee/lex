@@ -7,7 +7,7 @@ function loadHLS() {
         return;
     }
 
-    var videos = document.querySelectorAll("video:not([hlsinit])")
+    var videos = document.querySelectorAll("video:not([data-hls-init])")
 
     videos.forEach(function(v) {
         var source = v.querySelector("source");
@@ -29,7 +29,7 @@ function loadHLS() {
                 v.removeEventListener("play", playV);
             });
             
-            v.setAttribute("hlsinit", "");
+            v.setAttribute("data-hls-init", "1");
         }
     })
 }

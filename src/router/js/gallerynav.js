@@ -3,7 +3,7 @@
 window.addEventListener('load', initNav)
 
 function initNav() {
-    var gallery = document.querySelectorAll(".gallery:not([gallerynav])")
+    var gallery = document.querySelectorAll(".gallery:not([data-gallery-nav])")
 
     gallery.forEach(function(thisgallery) {
         var inps = thisgallery.querySelectorAll("input[type='radio']")
@@ -28,6 +28,6 @@ function initNav() {
             }
         })
 
-        thisgallery.setAttribute("gallerynav", "")
+        thisgallery.setAttribute("data-gallery-nav", "1")
     })
 }

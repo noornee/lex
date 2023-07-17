@@ -269,6 +269,7 @@ func StartServer() {
 		PathPrefix: "fonts",
 	}))
 
+	// todo: seperate into different GETs
 	router.Get("/:proxypath/*", func(ctx *fiber.Ctx) error {
 		fullURL := ctx.Params("*")
 
@@ -282,6 +283,8 @@ func StartServer() {
 				return err
 			}
 		case "image":
+			ctx.Request().Header.Set("Accept", "image/avif,image/webp,*/*")
+
 			if err := proxy.Do(ctx, "https://i.redd.it/"+fullURL, defClient); err != nil {
 				return err
 			}
@@ -294,10 +297,14 @@ func StartServer() {
 				return err
 			}
 		case "external":
+			ctx.Request().Header.Set("Accept", "image/avif,image/webp,*/*")
+
 			if err := proxy.Do(ctx, "https://external-preview.redd.it/"+fullURL, defClient); err != nil {
 				return err
 			}
 		case "preview":
+			ctx.Request().Header.Set("Accept", "video/webm,video/ogg,video/*;q=0.9,application/ogg;q=0.7,audio/*;q=0.6,*/*;q=0.5")
+
 			if err := proxy.Do(ctx, "https://preview.redd.it/"+fullURL, defClient); err != nil {
 				return err
 			}

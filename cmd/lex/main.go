@@ -3,10 +3,10 @@ package main
 
 import (
 	"flag"
-	"log"
 
 	"github.com/cmd777/lex/src/logic/version"
 	"github.com/cmd777/lex/src/router"
+	"github.com/gofiber/fiber/v2/log"
 )
 
 func main() {
@@ -15,20 +15,20 @@ func main() {
 
 	if *checkUpdate {
 		if okf, cversion := version.CurrentVersion(); okf {
-			log.Printf("Running LEX Version %d", cversion)
-			log.Println("Checking for updates... (to disable update checking, run the application with -checkupdate=false)")
+			log.Infof("Running LEX Version %d", cversion)
+			log.Info("Checking for updates... (to disable update checking, run the application with -checkupdate=false)")
 			if ok, latest := version.CheckForUpdates(); !ok {
-				log.Println("There was an error while attempting to check for updates, try again later.")
+				log.Error("There was an error while attempting to check for updates, try again later.")
 			} else if cversion < latest {
-				log.Printf("Your LEX version is outdated (version mismatch -> [gh:%d | local:%d])\r\n", latest, cversion)
+				log.Warnf("Your LEX version is outdated (version mismatch -> [gh:%d | local:%d])\r\n", latest, cversion)
 			} else {
-				log.Println("You are running the latest version of LEX")
+				log.Info("You are running the latest version of LEX")
 			}
 		} else {
-			log.Println("Failed to read local version file. (is it missing?)")
+			log.Error("Failed to read local version file. (is it missing?)")
 		}
 	} else {
-		log.Printf("update checking disabled")
+		log.Warn("update checking disabled")
 	}
 
 	router.StartServer()

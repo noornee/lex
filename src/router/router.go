@@ -4,7 +4,6 @@ import (
 	"embed"
 	"fmt"
 	"html/template"
-	"log"
 	"math/rand"
 	"net/http"
 	"net/url"
@@ -24,6 +23,7 @@ import (
 	"github.com/dustin/go-humanize"
 	"github.com/goccy/go-json"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/log"
 	"github.com/gofiber/fiber/v2/middleware/compress"
 	"github.com/gofiber/fiber/v2/middleware/filesystem"
 	"github.com/gofiber/fiber/v2/middleware/logger"
@@ -404,7 +404,7 @@ func StartServer() {
 
 		flairuesc, err := url.QueryUnescape(flair)
 		if err != nil {
-			log.Println(err)
+			log.Errorf("Failed to unescape flair: %w", err)
 		}
 
 		SortPostData(&posts, resolutionToUse)
@@ -493,7 +493,7 @@ func StartServer() {
 
 		flairuesc, err := url.QueryUnescape(flair)
 		if err != nil {
-			log.Println(err)
+			log.Errorf("Failed to unescape flair: %w", err)
 		}
 
 		SortPostData(&posts, resolutionToUse)
@@ -516,10 +516,10 @@ func StartServer() {
 	go func() {
 		<-signalChan
 
-		log.Printf("\n\n\nSession lasted %s\nSee you next time!\n\n\n", time.Since(startTime).String())
+		log.Infof("\n\n\nSession lasted %s\nSee you next time!\n\n\n", time.Since(startTime).String())
 
 		if err := router.Shutdown(); err != nil {
-			log.Println("Failed to gracefully Shutdown router.")
+			log.Errorf("Failed to gracefully Shutdown router: %w", err)
 		}
 	}()
 
@@ -533,7 +533,7 @@ func SortPostData(posts *types.Posts, resolutionToUse int) {
 		func() {
 			defer func() {
 				if rec := recover(); rec != nil {
-					log.Println("Recovered from fatal panic...", rec)
+					log.Warnf("Recovered from fatal panic: %w", rec)
 				}
 			}()
 
@@ -646,7 +646,7 @@ func backgroundJanitor() {
 	timer := time.NewTimer(CleanTimer)
 	for range timer.C {
 		jsonCache = sync.Map{}
-		log.Println("Scheduled maintenance: jsonCache emptied.")
+		log.Info("Scheduled maintenance: jsonCache emptied.")
 		if !timer.Stop() {
 			timer.Reset(CleanTimer)
 		}

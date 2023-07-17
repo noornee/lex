@@ -3,12 +3,12 @@ package logic
 import (
 	"context"
 	"fmt"
-	"log"
 	"net/http"
 
 	"github.com/cmd777/lex/src/logic/types"
 
 	"github.com/goccy/go-json"
+	"github.com/gofiber/fiber/v2/log"
 	"github.com/gofiber/fiber/v2/utils"
 )
 
@@ -17,7 +17,7 @@ func GetSubredditData(subreddit string) types.Subreddit {
 
 	req, err := http.NewRequestWithContext(context.Background(), http.MethodGet, url, http.NoBody)
 	if err != nil {
-		log.Println(err)
+		log.Errorf("Failed to create New Request with Context: %w", err)
 	}
 
 	req.Header.Set("User-Agent", "go:lex:cmd777-with-"+utils.UUIDv4())
@@ -28,19 +28,19 @@ func GetSubredditData(subreddit string) types.Subreddit {
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
-		log.Println(err)
+		log.Errorf("DefaultClient failed to do the request: %w", err)
 	}
 
 	defer func() {
 		if closeerr := resp.Body.Close(); closeerr != nil {
-			log.Println("Failed to close response body", closeerr)
+			log.Errorf("Failed to close response body: %w", closeerr)
 		}
 	}()
 
 	var sub types.Subreddit
 
 	if err = json.NewDecoder(resp.Body).Decode(&sub); err != nil {
-		log.Println(err)
+		log.Errorf("json NewDecoder failed to decode JSON: %w", err)
 	}
 
 	return sub
@@ -62,7 +62,7 @@ func GetPosts(subreddit, after, flair string) types.Posts {
 
 	req, err := http.NewRequestWithContext(context.Background(), http.MethodGet, url, http.NoBody)
 	if err != nil {
-		log.Println(err)
+		log.Errorf("Failed to create New Request with Context: %w", err)
 	}
 
 	req.Header.Set("User-Agent", "go:lex:cmd777-with-"+utils.UUIDv4())
@@ -73,19 +73,19 @@ func GetPosts(subreddit, after, flair string) types.Posts {
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
-		log.Println(err)
+		log.Errorf("DefaultClient failed to do the request: %w", err)
 	}
 
 	defer func() {
 		if closeerr := resp.Body.Close(); closeerr != nil {
-			log.Println("Failed to close response body", closeerr)
+			log.Errorf("Failed to close response body: %w", closeerr)
 		}
 	}()
 
 	var posts types.Posts
 
 	if err = json.NewDecoder(resp.Body).Decode(&posts); err != nil {
-		log.Println(err)
+		log.Errorf("json NewDecoder failed to decode JSON: %w", err)
 	}
 
 	return posts
@@ -96,7 +96,7 @@ func GetComments(subreddit, id string) (types.Posts, []types.InternalCommentData
 
 	req, err := http.NewRequestWithContext(context.Background(), http.MethodGet, url, http.NoBody)
 	if err != nil {
-		log.Println(err)
+		log.Errorf("Failed to create New Request with Context: %w", err)
 	}
 
 	req.Header.Set("User-Agent", "go:lex:cmd777-with-"+utils.UUIDv4())
@@ -107,30 +107,30 @@ func GetComments(subreddit, id string) (types.Posts, []types.InternalCommentData
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
-		log.Println(err)
+		log.Errorf("DefaultClient failed to do the request: %w", err)
 	}
 
 	defer func() {
 		if closeerr := resp.Body.Close(); closeerr != nil {
-			log.Println("Failed to close response body", closeerr)
+			log.Errorf("Failed to close response body: %w", closeerr)
 		}
 	}()
 
 	var commentsunmarshal types.CommentsToUnmarshal
 
 	if err = json.NewDecoder(resp.Body).Decode(&commentsunmarshal.Data); err != nil {
-		log.Println(err)
+		log.Errorf("json NewDecoder failed to decode JSON: %w", err)
 	}
 
 	var post types.Posts
 	var comments types.Comments
 
 	if err = json.Unmarshal(commentsunmarshal.Data[0], &post); err != nil {
-		log.Println(err)
+		log.Errorf("json failed to unmarshal JSON: %w", err)
 	}
 
 	if err = json.Unmarshal(commentsunmarshal.Data[1], &comments); err != nil {
-		log.Println(err)
+		log.Errorf("json failed to unmarshal JSON: %w", err)
 	}
 
 	internalDecode(&comments)
@@ -147,7 +147,7 @@ func GetAccount(name, after string) types.Posts {
 
 	req, err := http.NewRequestWithContext(context.Background(), http.MethodGet, url, http.NoBody)
 	if err != nil {
-		log.Println(err)
+		log.Errorf("Failed to create New Request with Context: %w", err)
 	}
 
 	req.Header.Set("User-Agent", "go:lex:cmd777-with-"+utils.UUIDv4())
@@ -158,12 +158,12 @@ func GetAccount(name, after string) types.Posts {
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
-		log.Println(err)
+		log.Errorf("DefaultClient failed to do the request: %w", err)
 	}
 
 	defer func() {
 		if closeerr := resp.Body.Close(); closeerr != nil {
-			log.Println("Failed to close response body", closeerr)
+			log.Errorf("Failed to close response body: %w", closeerr)
 		}
 	}()
 
@@ -171,7 +171,7 @@ func GetAccount(name, after string) types.Posts {
 
 	err = json.NewDecoder(resp.Body).Decode(&posts)
 	if err != nil {
-		log.Println(err)
+		log.Errorf("json NewDecoder failed to decode JSON: %w", err)
 	}
 
 	return posts

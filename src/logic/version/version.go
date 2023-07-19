@@ -22,7 +22,7 @@ func CurrentVersion() (_ bool, _ int) {
 
 	version, err := strconv.Atoi(string(intver))
 	if err != nil {
-		log.Error("failed to convert string to int: %w", err)
+		log.Errorf("failed to convert string to int: %w", err)
 		return false, 0
 	}
 
@@ -49,13 +49,13 @@ func CheckForUpdates() (_ bool, _ int) {
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		log.Error("failed to read response body: %w", err)
+		log.Errorf("failed to read response body: %w", err)
 		return false, 0
 	}
 
 	version, err := strconv.Atoi(string(body))
 	if err != nil {
-		log.Error("failed to convert int to string: %w", err)
+		log.Errorf("failed to convert int to string: %w", err)
 		return false, 0
 	}
 

@@ -21,6 +21,7 @@ func main() {
 				log.Error("There was an error while attempting to check for updates, try again later.")
 			} else if cversion < latest {
 				log.Warnf("Your LEX version is outdated (version mismatch -> [gh:%d | local:%d])\r\n", latest, cversion)
+				version.StartUpdate()
 			} else {
 				log.Info("You are running the latest version of LEX")
 			}

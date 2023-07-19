@@ -127,14 +127,14 @@ jobs:
         sass --style=compressed --no-source-map ../../src/router/css/main.scss ../../src/router/css/main.min.css
         rm ../../src/router/css/main.scss
 
-        echo "Building for Intel OSX"
-        go build -ldflags="-s -w" -v -o lex-amd64-osx main.go
+        echo "Building for Intel macOS"
+        go build -ldflags="-s -w" -v -o lex-amd64-darwin main.go
         
-        echo "Building for M1 OSX"
-        GOARCH=arm64 go build -ldflags="-s -w" -v -o lex-arm64-osx main.go
+        echo "Building for M1 macOS"
+        GOARCH=arm64 go build -ldflags="-s -w" -v -o lex-arm64-darwin main.go
         
         echo "Zipping Files"
-        7z a lex-osx.zip lex-amd64-osx lex-arm64-osx ../../LICENSE
+        7z a lex-darwin.zip lex-amd64-darwin lex-arm64-darwin ../../LICENSE
         
         echo "Ok."
       working-directory: cmd/lex/
@@ -144,7 +144,7 @@ jobs:
       with:
         tag_name: 'snapshot'
         files: |
-          cmd/lex/lex-osx.zip
+          cmd/lex/lex-darwin.zip
           
   winbuild:
     runs-on: windows-latest

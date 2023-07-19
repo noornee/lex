@@ -3,6 +3,7 @@ package main
 
 import (
 	"flag"
+	"os"
 
 	"github.com/cmd777/lex/src/logic/version"
 	"github.com/cmd777/lex/src/router"
@@ -21,7 +22,9 @@ func main() {
 				log.Error("There was an error while attempting to check for updates, try again later.")
 			} else if cversion < latest {
 				log.Warnf("Your LEX version is outdated (version mismatch -> [gh:%d | local:%d])\r\n", latest, cversion)
-				version.StartUpdate()
+				if version.LaunchUpdater() {
+					os.Exit(0)
+				}
 			} else {
 				log.Info("You are running the latest version of LEX")
 			}

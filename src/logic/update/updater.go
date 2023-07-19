@@ -1,4 +1,4 @@
-package version
+package main
 
 import (
 	"archive/zip"
@@ -16,7 +16,7 @@ import (
 	"github.com/gofiber/fiber/v2/log"
 )
 
-func StartUpdate() {
+func main() {
 	log.Info("A new version was detected, do you wish to install it now? [Y/n]")
 
 	inputchan := make(chan string, 1)
@@ -37,6 +37,7 @@ func StartUpdate() {
 			UpdatePrep()
 		} else {
 			log.Info("Canceling update")
+			// launch old version
 		}
 		return
 	case <-timer.C:

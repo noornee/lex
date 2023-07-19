@@ -5,6 +5,8 @@ import (
 	"embed"
 	"io"
 	"net/http"
+	"os/exec"
+	"runtime"
 	"strconv"
 
 	"github.com/gofiber/fiber/v2/log"
@@ -60,4 +62,25 @@ func CheckForUpdates() (_ bool, _ int) {
 	}
 
 	return true, version
+}
+
+func LaunchUpdater() bool {
+	var cmd *exec.Cmd
+
+	switch runtime.GOOS {
+	case "windows":
+		cmd = exec.Command("updater.exe")
+	case "linux", "darwin":
+		cmd = exec.Command("updater")
+	default:
+		log.Errorf("Unsupported OS: %s", runtime.GOOS)
+		return false
+	}
+
+	if err := cmd.Start(); err != nil {
+		log.Errorf("failed to start updater: %w", err)
+		return false
+	}
+
+	return true
 }

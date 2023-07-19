@@ -67,17 +67,15 @@ func UpdatePrep() {
 		return
 	}
 
-	defer func() {
-		if closeerr := resp.Body.Close(); closeerr != nil {
-			log.Errorf("Failed to close response body: %w", closeerr)
-		}
-	}()
-
 	log.Infof("Reading body (%d bytes)", resp.ContentLength)
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		log.Errorf("failed to read response body: %w", err)
 		return
+	}
+
+	if closeerr := resp.Body.Close(); closeerr != nil {
+		log.Errorf("Failed to close response body: %w", closeerr)
 	}
 
 	log.Infof("Writing %d bytes to %s", len(body), targetfile)
@@ -187,27 +185,30 @@ func launchLEX() bool {
 
 	switch runtime.GOOS {
 	case "windows":
-		if runtime.GOARCH == "amd64" {
+		switch runtime.GOARCH {
+		case "amd64":
 			cmd = exec.Command("lex-amd64-windows.exe")
-		} else if runtime.GOARCH == "386" {
+		case "386":
 			cmd = exec.Command("lex-i386-windows.exe")
-		} else {
+		default:
 			return false
 		}
 	case "linux":
-		if runtime.GOARCH == "amd64" {
+		switch runtime.GOARCH {
+		case "amd64":
 			cmd = exec.Command("lex-amd64-linux")
-		} else if runtime.GOARCH == "386" {
+		case "386":
 			cmd = exec.Command("lex-i386-linux")
-		} else {
+		default:
 			return false
 		}
 	case "darwin":
-		if runtime.GOARCH == "amd64" {
+		switch runtime.GOARCH {
+		case "amd64":
 			cmd = exec.Command("lex-amd64-darwin")
-		} else if runtime.GOARCH == "arm64" {
+		case "arm64":
 			cmd = exec.Command("lex-arm64-darwin")
-		} else {
+		default:
 			return false
 		}
 	default:

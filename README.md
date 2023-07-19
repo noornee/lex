@@ -98,8 +98,8 @@ To install LEX via these automatically built binaries, go to the [releases](http
 
 <br>
 
-- For Intel MacOS machines, download `lex-osx.zip`, then launch lex-amd64-osx
-- For M1 MacOS machines, download `lex-osx.zip`, then launch lex-arm64-osx
+- For Intel MacOS machines, download `lex-darwin.zip`, then launch lex-amd64-darwin
+- For M1 MacOS machines, download `lex-darwin.zip`, then launch lex-arm64-darwin
 
 That's everything! All you need to do next, is just navigate to `http://localhost:9090/r/{your_favorite_subreddit}`
 

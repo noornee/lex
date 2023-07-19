@@ -89,14 +89,14 @@ func UpdatePrep() {
 	}
 
 	log.Infof("Unzipping %s to %s", targetfile, currentdir)
-	if err := Unzip(targetfile, currentdir, resp.ContentLength); err != nil {
+	if err := Unzip(targetfile, currentdir); err != nil {
 		log.Errorf("Failed to unzip file: %w", err)
 	}
 
 	log.Infof("Unzipped %s without any errors", targetfile)
 }
 
-func Unzip(src, dst string, contentLength int64) error {
+func Unzip(src, dst string) error {
 	log.Infof("Reading zip file %s", src)
 	archive, err := zip.OpenReader(src)
 	if err != nil {
@@ -134,8 +134,8 @@ func Unzip(src, dst string, contentLength int64) error {
 				return fmt.Errorf("failed to create file: %w", err)
 			}
 
-			log.Infof("Copying data from reader to %s", destfile.Name())
-			if _, err := io.CopyN(destfile, reader, contentLength); err != nil {
+			log.Infof("Copying %d bytes from reader to %s", file.FileInfo().Size(), destfile.Name())
+			if _, err := io.CopyN(destfile, reader, file.FileInfo().Size()); err != nil {
 				return fmt.Errorf("failed to copy file data: %w", err)
 			}
 			log.Infof("File %s was created without any errors", destfile.Name())

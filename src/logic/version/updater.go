@@ -3,6 +3,7 @@ package version
 import (
 	"archive/zip"
 	"context"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -88,20 +89,24 @@ func UpdatePrep() {
 	}
 
 	log.Infof("Unzipping %s to %s", targetfile, currentdir)
-	if err := Unzip(targetfile, currentdir); err != nil {
+	if err := Unzip(targetfile, currentdir, resp.ContentLength); err != nil {
 		log.Errorf("Failed to unzip file: %w", err)
 	}
 
 	log.Infof("Unzipped %s without any errors", targetfile)
 }
 
-func Unzip(src, dst string) error {
+func Unzip(src, dst string, contentLength int64) error {
 	log.Infof("Reading zip file %s", src)
 	archive, err := zip.OpenReader(src)
 	if err != nil {
 		return fmt.Errorf("failed to read zip file: %w", err)
 	}
-	defer archive.Close()
+	defer func() {
+		if err := archive.Close(); err != nil {
+			log.Errorf("failed to close zip file: %w", err)
+		}
+	}()
 
 	for _, file := range archive.File {
 		log.Infof("Opening file %s", file.Name)
@@ -109,9 +114,13 @@ func Unzip(src, dst string) error {
 		if err != nil {
 			return fmt.Errorf("failed to open file: %w", err)
 		}
-		defer reader.Close()
 
-		destpath := filepath.Join(dst, file.Name)
+		destpath, err := checkInvalidPath(dst, file.Name)
+		if err != nil {
+			return err
+		}
+
+		destpath = filepath.Clean(destpath)
 
 		if file.FileInfo().IsDir() {
 			log.Infof("Creating directory %s", destpath)
@@ -120,19 +129,34 @@ func Unzip(src, dst string) error {
 			}
 		} else {
 			log.Infof("Creating file %s", destpath)
-			destfile, err := os.OpenFile(destpath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, file.Mode())
+			destfile, err := os.OpenFile(destpath, 0x00001|0x00040|0x00200, file.Mode()) // os.O_WRONLY|os.O_CREATE|os.O_TRUNC
 			if err != nil {
 				return fmt.Errorf("failed to create file: %w", err)
 			}
-			defer destfile.Close()
 
 			log.Infof("Copying data from reader to %s", destfile.Name())
-			if _, err := io.Copy(destfile, reader); err != nil {
+			if _, err := io.CopyN(destfile, reader, contentLength); err != nil {
 				return fmt.Errorf("failed to copy file data: %w", err)
 			}
 			log.Infof("File %s was created without any errors", destfile.Name())
+
+			if err := destfile.Close(); err != nil {
+				return fmt.Errorf("failed to close created file: %w", err)
+			}
+		}
+
+		if err := reader.Close(); err != nil {
+			return fmt.Errorf("failed to close reader: %w", err)
 		}
 	}
 
 	return nil
+}
+
+func checkInvalidPath(k, v string) (string, error) {
+	destpath := filepath.Join(k, v)
+	if !strings.HasPrefix(destpath, filepath.Clean(k)) {
+		return "", errors.New("illegal filepath")
+	}
+	return destpath, nil
 }

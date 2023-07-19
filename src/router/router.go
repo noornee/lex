@@ -269,59 +269,87 @@ func StartServer() {
 		PathPrefix: "fonts",
 	}))
 
-	// todo: seperate into different GETs
-	router.Get("/:proxypath/*", func(ctx *fiber.Ctx) error {
-		fullURL := ctx.Params("*")
-
-		if index := strings.Index(ctx.OriginalURL(), "?"); index != 1 {
-			fullURL += "?" + ctx.OriginalURL()[index+1:]
+	router.Get("/video/*", func(ctx *fiber.Ctx) error {
+		if err := proxy.Do(ctx, "https://v.redd.it/"+ctx.OriginalURL()[7:], defClient); err != nil {
+			return err
 		}
 
-		switch ctx.Params("proxypath") {
-		case "video":
-			if err := proxy.Do(ctx, "https://v.redd.it/"+fullURL, defClient); err != nil {
-				return err
-			}
-		case "image":
-			ctx.Request().Header.Set("Accept", "image/avif,image/webp,*/*")
+		ctx.Response().Header.Del(fiber.HeaderServer)
+		return nil
+	})
 
-			if err := proxy.Do(ctx, "https://i.redd.it/"+fullURL, defClient); err != nil {
-				return err
-			}
-		case "athumb":
-			if err := proxy.Do(ctx, "https://a.thumbs.redditmedia.com/"+fullURL, defClient); err != nil {
-				return err
-			}
-		case "bthumb":
-			if err := proxy.Do(ctx, "https://b.thumbs.redditmedia.com/"+fullURL, defClient); err != nil {
-				return err
-			}
-		case "external":
-			ctx.Request().Header.Set("Accept", "image/avif,image/webp,*/*")
+	router.Get("/image/*", func(ctx *fiber.Ctx) error {
+		ctx.Request().Header.Set("Accept", "image/avif,image/webp,*/*")
 
-			if err := proxy.Do(ctx, "https://external-preview.redd.it/"+fullURL, defClient); err != nil {
-				return err
-			}
-		case "preview":
-			ctx.Request().Header.Set("Accept", "video/webm,video/ogg,video/*;q=0.9,application/ogg;q=0.7,audio/*;q=0.6,*/*;q=0.5")
+		if err := proxy.Do(ctx, "https://i.redd.it/"+ctx.OriginalURL()[7:], defClient); err != nil {
+			return err
+		}
 
-			if err := proxy.Do(ctx, "https://preview.redd.it/"+fullURL, defClient); err != nil {
-				return err
-			}
-		case "rstyle":
-			if err := proxy.Do(ctx, "https://styles.redditmedia.com/"+fullURL, defClient); err != nil {
-				return err
-			}
-		case "rstatic":
-			if err := proxy.Do(ctx, "https://www.redditstatic.com/"+fullURL, defClient); err != nil {
-				return err
-			}
-		case "imgur":
-			if err := proxy.Do(ctx, "https://i.imgur.com/"+fullURL, defClient); err != nil {
-				return err
-			}
-		default:
-			return ctx.Next()
+		ctx.Response().Header.Del(fiber.HeaderServer)
+		return nil
+	})
+
+	router.Get("/athumb/*", func(ctx *fiber.Ctx) error {
+		if err := proxy.Do(ctx, "https://a.thumbs.redditmedia.com/"+ctx.OriginalURL()[8:], defClient); err != nil {
+			return err
+		}
+
+		ctx.Response().Header.Del(fiber.HeaderServer)
+		return nil
+	})
+
+	router.Get("/bthumb/*", func(ctx *fiber.Ctx) error {
+		if err := proxy.Do(ctx, "https://b.thumbs.redditmedia.com/"+ctx.OriginalURL()[8:], defClient); err != nil {
+			return err
+		}
+
+		ctx.Response().Header.Del(fiber.HeaderServer)
+		return nil
+	})
+
+	router.Get("/external/*", func(ctx *fiber.Ctx) error {
+		ctx.Request().Header.Set("Accept", "image/avif,image/webp,*/*")
+
+		if err := proxy.Do(ctx, "https://external-preview.redd.it/"+ctx.OriginalURL()[10:], defClient); err != nil {
+			return err
+		}
+
+		ctx.Response().Header.Del(fiber.HeaderServer)
+		return nil
+	})
+
+	router.Get("/preview/*", func(ctx *fiber.Ctx) error {
+		ctx.Request().Header.Set("Accept", "video/webm,video/ogg,video/*;q=0.9,application/ogg;q=0.7,audio/*;q=0.6,*/*;q=0.5")
+
+		if err := proxy.Do(ctx, "https://preview.redd.it/"+ctx.OriginalURL()[9:], defClient); err != nil {
+			return err
+		}
+
+		ctx.Response().Header.Del(fiber.HeaderServer)
+		return nil
+	})
+
+	router.Get("/rstyle/*", func(ctx *fiber.Ctx) error {
+		if err := proxy.Do(ctx, "https://styles.redditmedia.com/"+ctx.OriginalURL()[8:], defClient); err != nil {
+			return err
+		}
+
+		ctx.Response().Header.Del(fiber.HeaderServer)
+		return nil
+	})
+
+	router.Get("/rstatic/*", func(ctx *fiber.Ctx) error {
+		if err := proxy.Do(ctx, "https://www.redditstatic.com/"+ctx.OriginalURL()[9:], defClient); err != nil {
+			return err
+		}
+
+		ctx.Response().Header.Del(fiber.HeaderServer)
+		return nil
+	})
+
+	router.Get("/imgur/*", func(ctx *fiber.Ctx) error {
+		if err := proxy.Do(ctx, "https://i.imgur.com/"+ctx.OriginalURL()[7:], defClient); err != nil {
+			return err
 		}
 
 		ctx.Response().Header.Del(fiber.HeaderServer)

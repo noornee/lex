@@ -110,7 +110,7 @@ func UpdatePrep() {
 	for range timer.C {
 		timer.Stop()
 		if launchLEX() {
-			os.Exit(0)
+			os.Exit(0) //nolint:revive // We will exit here
 		}
 	}
 }

@@ -8,6 +8,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"runtime"
 	"strings"
@@ -37,7 +38,9 @@ func main() {
 			UpdatePrep()
 		} else {
 			log.Info("Canceling update")
-			// launch old version
+			if launchLEX() {
+				os.Exit(0)
+			}
 		}
 		return
 	case <-timer.C:
@@ -95,6 +98,23 @@ func UpdatePrep() {
 	}
 
 	log.Infof("Unzipped %s without any errors", targetfile)
+
+	log.Infof("Removing %s from %s", targetfile, currentdir)
+
+	if err := os.Remove(targetfile); err != nil {
+		log.Errorf("failed to remove %s: %w", targetfile, err)
+	}
+
+	log.Info("LEX was updated successfully, starting LEX and exiting updater in 60 seconds.")
+
+	timer := time.NewTimer(1 * time.Minute)
+
+	for range timer.C {
+		timer.Stop()
+		if launchLEX() {
+			os.Exit(0)
+		}
+	}
 }
 
 func Unzip(src, dst string) error {
@@ -160,4 +180,45 @@ func checkInvalidPath(k, v string) (string, error) {
 		return "", errors.New("illegal filepath")
 	}
 	return destpath, nil
+}
+
+func launchLEX() bool {
+	var cmd *exec.Cmd
+
+	switch runtime.GOOS {
+	case "windows":
+		if runtime.GOARCH == "amd64" {
+			cmd = exec.Command("lex-amd64-windows.exe")
+		} else if runtime.GOARCH == "386" {
+			cmd = exec.Command("lex-i386-windows.exe")
+		} else {
+			return false
+		}
+	case "linux":
+		if runtime.GOARCH == "amd64" {
+			cmd = exec.Command("lex-amd64-linux")
+		} else if runtime.GOARCH == "386" {
+			cmd = exec.Command("lex-i386-linux")
+		} else {
+			return false
+		}
+	case "darwin":
+		if runtime.GOARCH == "amd64" {
+			cmd = exec.Command("lex-amd64-darwin")
+		} else if runtime.GOARCH == "arm64" {
+			cmd = exec.Command("lex-arm64-darwin")
+		} else {
+			return false
+		}
+	default:
+		log.Errorf("Unsupported OS: %s", runtime.GOOS)
+		return false
+	}
+
+	if err := cmd.Start(); err != nil {
+		log.Errorf("failed to launch LEX: %w", err)
+		return false
+	}
+
+	return true
 }

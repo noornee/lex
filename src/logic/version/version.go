@@ -285,8 +285,10 @@ func Unzip(src, dst string, skipfile ...string) error {
 	}()
 
 	for _, file := range archive.File {
-		if skipfile[0] != "" && strings.Contains(file.Name, skipfile[0]) {
-			continue
+		if len(skipfile) > 0 {
+			if strings.Contains(file.Name, skipfile[0]) {
+				continue
+			}
 		}
 
 		log.Infof("Opening file %s", file.Name)

@@ -29,7 +29,7 @@ jobs:
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
 
         git add .
-        git commit -m "Version bump to $(($version + 1))" -m "For any changes, check the previous (${{github.event.after}}) commit."
+        git commit -m "Updater Version bump to $(($version + 1))" -m "For any changes, check the previous (${{github.event.after}}) commit."
         git push
 
   linuxbuild:
@@ -125,7 +125,7 @@ jobs:
         go get -u
         
         echo "Adding Time to Github Env"
-        echo "RNAME=$(Get-Date -UFormat 'snapshot %Y-%m-%d %H:%M')" >> $env:GITHUB_ENV
+        echo "RNAME=$(Get-Date -UFormat 'updater %Y-%m-%d %H:%M')" >> $env:GITHUB_ENV
         echo "RTXT=$(Get-Date -UFormat '### This release was automatically generated on %A %Y/%m/%d at %H:%M')" >> $env:GITHUB_ENV
         
         echo "Building 64bit Updater"

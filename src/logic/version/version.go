@@ -25,7 +25,7 @@ const (
 	updaterPath = "https://raw.githubusercontent.com/cmd777/lex/main/src/logic/version/updater_VERSION.txt"
 )
 
-func CurrentVersion() (bool, int) {
+func CurrentVersion() (_ bool, _ int) {
 	intver, err := staticVersion.ReadFile("VERSION.txt")
 	if err != nil {
 		log.Errorf("failed to read version file: %w", err)
@@ -41,7 +41,7 @@ func CurrentVersion() (bool, int) {
 	return true, version
 }
 
-func CurrentUpdaterVersion() (bool, int) {
+func CurrentUpdaterVersion() (_ bool, _ int) {
 	intver, err := updaterVersion.ReadFile("updater_VERSION.txt")
 	if err != nil {
 		log.Errorf("failed to read updater version file: %w", err)
@@ -57,7 +57,7 @@ func CurrentUpdaterVersion() (bool, int) {
 	return true, version
 }
 
-func CheckForUpdates() (bool, int) {
+func CheckForUpdates() (_ bool, _ int) {
 	req, err := http.NewRequestWithContext(context.Background(), http.MethodGet, versionPath, http.NoBody)
 	if err != nil {
 		log.Errorf("Failed to create New Request with Context: %w", err)
@@ -91,7 +91,7 @@ func CheckForUpdates() (bool, int) {
 	return true, version
 }
 
-func CheckForUpdaterUpdates() (bool, int) {
+func CheckForUpdaterUpdates() (_ bool, _ int) {
 	req, err := http.NewRequestWithContext(context.Background(), http.MethodGet, updaterPath, http.NoBody)
 	if err != nil {
 		log.Errorf("Failed to create New Request with Context: %w", err)
@@ -125,6 +125,7 @@ func CheckForUpdaterUpdates() (bool, int) {
 	return true, version
 }
 
+// #nosec G204
 func LaunchUpdater() bool {
 	var cmd *exec.Cmd
 

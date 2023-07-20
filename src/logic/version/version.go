@@ -224,18 +224,20 @@ func CheckForUpdates() {
 					log.Error("There was an error while attempting to check for updater updates, do you wish to use the old one? [Y/n]")
 					if inputHandler() {
 						if launchUpdater() {
-							os.Exit(0)
+							os.Exit(0) //nolint:revive // We will exit here
 						}
 					}
 				} else if cuversion < nuversion {
 					log.Warnf("Updater is outdated (version mismatch -> [gh:%d | local:%d])", nuversion, cuversion)
 					log.Warn("Do you wish to install the new updater now? [Y/n]")
-					UpdateUpdater()
+					if inputHandler() {
+						UpdateUpdater()
+					}
 				} else {
 					log.Info("Updater is up-to-date, do you wish to update LEX now? [Y/n]")
 					if inputHandler() {
 						if launchUpdater() {
-							os.Exit(0)
+							os.Exit(0) //nolint:revive // We will exit here
 						}
 					}
 				}
@@ -262,9 +264,8 @@ func inputHandler() bool {
 	case in := <-inputchan:
 		if strings.HasPrefix(strings.ToLower(in), "y") {
 			return true
-		} else {
-			return false
 		}
+		return false
 	case <-timer.C:
 		log.Warn("Timeout exceeded, not updating")
 		return false
@@ -401,7 +402,7 @@ func UpdateUpdater() {
 	for range timer.C {
 		timer.Stop()
 		if launchUpdater() {
-			os.Exit(0)
+			os.Exit(0) //nolint:revive // We will exit here
 		}
 	}
 }

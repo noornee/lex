@@ -91,7 +91,7 @@ func GetPosts(subreddit, after, flair string) types.Posts {
 	return posts
 }
 
-func GetComments(subreddit, id string) (types.Posts, types.CommentsToUnmarshal) {
+func GetComments(subreddit, id string) (types.Posts, types.Comments) {
 	url := fmt.Sprintf("https://www.reddit.com/r/%v/comments/%v.json?raw_json=1", subreddit, id)
 
 	req, err := http.NewRequestWithContext(context.Background(), http.MethodGet, url, http.NoBody)
@@ -135,7 +135,7 @@ func GetComments(subreddit, id string) (types.Posts, types.CommentsToUnmarshal) 
 
 	internalDecode(&comments)
 
-	return post, commentsunmarshal
+	return post, comments
 }
 
 func GetAccount(name, after string) types.Posts {
@@ -183,6 +183,7 @@ func internalDecode(comments *types.Comments) {
 		First, we construct a similar type of that to the JSON's
 		Then, we decode the Replies field to that, and iterate until it's over
 			(instead of blindly guessing)
+				(decode again? / create seperate fields for reply?)
 		Then, we do the same iteration in the HTML as well
 			(this will be more flexible, as it will be easier to indent, and also may help provide a way to collapse it.)
 

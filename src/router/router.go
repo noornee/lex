@@ -156,19 +156,6 @@ func ToPercentage(input float64) string {
 	return fmt.Sprintf("%.0f", input*100)
 }
 
-func AddVarToCtx(input ...any) map[string]any {
-	if len(input)%2 != 0 {
-		return nil
-	}
-	d := make(map[string]any)
-	for i := 0; i < len(input); i += 2 {
-		if key, ok := input[i].(string); ok {
-			d[key] = input[i+1]
-		}
-	}
-	return d
-}
-
 func StartServer() {
 	go backgroundJanitor()
 	startTime := time.Now()
@@ -206,7 +193,9 @@ func StartServer() {
 		"fmtHumanComma":  humanize.Comma,
 		"fmtHumanDate":   FmtHumanDate,
 		"toPercentage":   ToPercentage,
-		"addVarToCtx":    AddVarToCtx,
+		"stringifyDEVELOPERFUNCTIONREMOVEME": func(input []byte) string {
+			return string(input)
+		},
 	})
 	// endregion
 
@@ -467,7 +456,7 @@ func StartServer() {
 
 		return ctx.Render("views/comments", fiber.Map{
 			"Posts":    post.Data,
-			"Comments": string(comm.Data[1]),
+			"Comments": comm.Data.Children,
 		})
 	})
 

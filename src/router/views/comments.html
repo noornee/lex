@@ -250,7 +250,11 @@
     <hr>
 
     {{if not $.DisableComments}}
-        {{.Comments}}
+        {{ (index .Comments 0).Data.Author }}
+        <br>
+        {{ (index .Comments 0).Data.Body }}
+        <br>
+        {{ (index .Comments 0).Data.Replies|stringifyDEVELOPERFUNCTIONREMOVEME }}
     {{else}}
         <p>Comments were disabled</p>
     {{end}}

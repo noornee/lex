@@ -250,26 +250,7 @@
     <hr>
 
     {{if not $.DisableComments}}
-        {{range $i, $ccom := .Comments}}
-            {{if not (gt $ccom.Depth 0)}}
-                <div style="display: flex; flex-direction: column; align-items: center; {{if gt .Depth 0}} margin-left: calc({{.Depth}} * 15px) {{end}}">
-                    <div style="width: 720px; height: auto;">
-                        <div>
-                            <p>{{$ccom.Author}}</p>
-                            <div style="display:inline-flex;">
-                                <hr>
-                                <span style="margin-left: 15px">
-                                    {{$ccom.Body|sanitize}}
-                                    {{if gt (len $ccom.Replies) 2}}
-                                        {{template "views/rep" (addVarToCtx "index" ($i|add) "root" $)}}
-                                    {{end}}
-                                </span>        
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            {{end}}
-        {{end}}
+        {{.Comments}}
     {{else}}
         <p>Comments were disabled</p>
     {{end}}

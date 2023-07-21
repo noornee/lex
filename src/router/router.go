@@ -467,7 +467,7 @@ func StartServer() {
 
 		return ctx.Render("views/comments", fiber.Map{
 			"Posts":    post.Data,
-			"Comments": comm,
+			"Comments": string(comm.Data[1]),
 		})
 	})
 

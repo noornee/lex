@@ -91,7 +91,7 @@ func GetPosts(subreddit, after, flair string) types.Posts {
 	return posts
 }
 
-func GetComments(subreddit, id string) (types.Posts, []types.InternalCommentData) {
+func GetComments(subreddit, id string) (types.Posts, types.CommentsToUnmarshal) {
 	url := fmt.Sprintf("https://www.reddit.com/r/%v/comments/%v.json?raw_json=1", subreddit, id)
 
 	req, err := http.NewRequestWithContext(context.Background(), http.MethodGet, url, http.NoBody)
@@ -135,7 +135,7 @@ func GetComments(subreddit, id string) (types.Posts, []types.InternalCommentData
 
 	internalDecode(&comments)
 
-	return post, comments.MReplies
+	return post, commentsunmarshal
 }
 
 func GetAccount(name, after string) types.Posts {
@@ -178,15 +178,24 @@ func GetAccount(name, after string) types.Posts {
 }
 
 func internalDecode(comments *types.Comments) {
-	for _, v := range comments.Data.Children {
-		comments.MReplies = append(comments.MReplies, v.Data)
+	/*
+		CURRENT PLAN:
+		First, we construct a similar type of that to the JSON's
+		Then, we decode the Replies field to that, and iterate until it's over
+			(instead of blindly guessing)
+		Then, we do the same iteration in the HTML as well
+			(this will be more flexible, as it will be easier to indent, and also may help provide a way to collapse it.)
 
+		ISSUE:
+		This is ancient code. DO NOT TOUCH material.
+		I do not remember how it fully works.
+	*/
+	for _, v := range comments.Data.Children {
 		var newdecoded types.Comments
 
 		if err := json.Unmarshal(v.Data.Replies, &newdecoded); err == nil {
 			// No decoding failure.
 			internalDecode(&newdecoded)
-			comments.MReplies = append(comments.MReplies, newdecoded.MReplies...)
 		}
 	}
 }

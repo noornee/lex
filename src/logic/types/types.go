@@ -155,5 +155,4 @@ type Comments struct {
 			Data InternalCommentData `json:"data"`
 		} `json:"children"`
 	} `json:"data"`
-	MReplies []InternalCommentData
 }

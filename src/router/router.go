@@ -49,6 +49,9 @@ var (
 	//go:embed fonts
 	fontsFS embed.FS
 
+	//go:embed favicon.ico
+	faviconFS embed.FS
+
 	//nolint:gochecknoglobals // required for backgroundJanitor
 	jsonCache sync.Map
 )
@@ -267,6 +270,11 @@ func StartServer() {
 	router.Use("/fonts", filesystem.New(filesystem.Config{
 		Root:       http.FS(fontsFS),
 		PathPrefix: "fonts",
+	}))
+
+	router.Use("/favicon.ico", filesystem.New(filesystem.Config{
+		Root:       http.FS(faviconFS),
+		PathPrefix: "favicon.ico",
 	}))
 
 	router.Get("/video/*", func(ctx *fiber.Ctx) error {

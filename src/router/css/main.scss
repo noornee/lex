@@ -1,3 +1,142 @@
+/////////////////////////////////
+/// 
+/// https://github.com/cmd777
+/// 
+
+$text-dark: #e2eeed;
+$background-dark: #202020;
+$primary-dark: #108dcc;
+
+$red-dark: #d60628;
+$gray-dark: #909090;
+$gold-dark: #f8cf29;
+$green-dark: #5dc55e;
+$silver-dark: #C0C0C0;
+
+$gray-var1: #646464;
+$gray-var2: #757575;
+
+/////////////////////////////////
+/// 
+/// https://realtimecolors.com
+/// https://github.com/cmd777
+/// 
+
+$text-solarized: #e2eeed;
+$background-solarized: #081921;
+$primary-solarized: #2e8dbd;
+
+$red-solarized: #dc322f;
+$gray-solarized: #586e75;
+$gold-solarized: #b58900;
+$green-solarized: #859900;
+$silver-solarized: #657b83;
+
+$gray-var1-solarized: #93a1a1;
+$gray-var2-solarized: #839496;
+
+/////////////////////////////////
+/// 
+/// https://draculatheme.com/contribute
+/// 
+
+$text-dracula: #f8f8f2;
+$background-dracula: #282a36;
+$primary-dracula: #6272a4;
+
+$red-dracula: #ff5555;
+$gray-dracula: #97979b;
+$gold-dracula: #f1fa8c;
+$green-dracula: #50fa7b;
+$silver-dracula: #bfbfbf;
+
+$gray-var1-dracula: #5a5a5a;
+$gray-var2-dracula: #6b6b6b;
+
+/////////////////////////////////
+///
+/// https://github.com/gerane/VSCodeThemes/tree/master/gerane.Theme-Abyss
+/// 
+/// LOL, okay, so I haven't tested this yet,
+/// cause I first want to get all of them, 
+/// then look at it afterwards, and adjust if needed.
+/// But this? I guess will need a LOT of re-adjusting.
+///
+
+$text-abyss: #6688cc;
+$background-abyss: #000c18;
+$primary-abyss: #223355;
+
+$red-abyss: #770811;
+$gray-abyss: #f92672;
+$gold-abyss: #050505;
+$green-abyss: #22aa44;
+$silver-abyss: #ae81ff;
+
+$gray-var1-abyss: #9966b8;
+$gray-var2-abyss: #f280d0;
+
+/////////////////////////////////
+/// 
+/// https://github.com/gerane/VSCodeThemes/tree/master/gerane.Theme-Monokai
+/// 
+
+$text-monokai: #f8f8f0;
+$background-monokai: #272822;
+$primary-monokai: #66d9ef;
+
+$red-monokai: #f92672;
+$gray-monokai: #cfcfc2;
+$gold-monokai: #e6db74;
+$green-monokai: #a6e22e;
+$silver-monokai: #49483E;
+
+$gray-var1-monokai: #9D550F;
+$gray-var2-monokai: #75715E;
+
+/////////////////////////////////
+/// 
+/// https://realtimecolors.com
+/// https://github.com/cmd777
+/// 
+
+$text-redtheme: #f7fdfb;
+$background-redtheme: #440716;
+$primary-redtheme: #721d32;
+
+$red-redtheme: #bf3154;
+$gray-redtheme: #6c6c6c;
+$gold-redtheme: #ffd700;
+$green-redtheme: #4caf50;
+$silver-redtheme: #d0d0d0;
+
+$gray-var1-redtheme: #888888;
+$gray-var2-redtheme: #b0b0b0;
+
+/////////////////////////////////
+/// 
+/// https://realtimecolors.com
+/// https://github.com/cmd777
+/// 
+
+$text-light: #0f0905;
+$background-light: #faf4f0;
+$primary-light: #b95f22;
+
+$red-light: #fd7070;
+$gray-light: #e6e6e6;
+$gold-light: #f4d03f;
+$green-light: #86c27c;
+$silver-light: #e8e8e8;
+
+$gray-var1-light: #d9af92;
+$gray-var2-light: #efded2;
+
+/////////////////////////////////
+/// 
+/// The themes above may be subject to change
+/// 
+
 @font-face {
     font-family: 'Josefin Sans';
     src: url('/fonts/josefin-semibold.woff2') format('woff2');
@@ -54,12 +193,12 @@ html, body {
     @extend %max-view;
     overflow-x: hidden;
     font-family: $open-sans;
-    color: #fff;
-    background-color: #181818;
+    color: $text-dark;
+    background-color: darken($background-dark, 1%);
 }
 
 .stickbox {
-    background-color: #303030;
+    background-color: lighten($background-dark, 3%);
     position: fixed;
     top: 0;
     left: 0;
@@ -72,7 +211,7 @@ html, body {
         justify-content: space-between;
         padding: 15px;
         a {
-            color: #108dcc;
+            color: $primary-dark;
             font-size: x-large;
             font-family: $josefin-sans;
             text-decoration: none;
@@ -86,11 +225,11 @@ a {
     border-bottom: 1px solid transparent;
 
     &:hover:not(.l-hovergray) {
-        border-color: #108dcc;
+        border-color: $primary-dark;
     }
 
     &:link {
-        color: #108dcc;
+        color: $primary-dark;
         font-weight: bold;
     }
 }
@@ -113,7 +252,7 @@ pre {
 }
 
 .subinfo {
-    background-color: #202020;
+    background-color: $background-dark;
     padding-bottom: 10px;
 }
 
@@ -134,14 +273,14 @@ pre {
 .ltype1 {
     display: block;
     text-indent: 15px;
-    @include fontsettings(24px, 700, 1.7em, #fff);
+    @include fontsettings(24px, 700, 1.7em, $text-dark);
 }
 
 .ltype2 {
     display: block;
     text-indent: 15px;
     width: 50%;
-    @include fontsettings(13px, 600, 20px, #808080);
+    @include fontsettings(13px, 600, 20px, $gray-dark);
 }
 
 .primarycolorcase {
@@ -159,21 +298,21 @@ pre {
         margin-top: 25px;
         width: 720px;
         height: auto;
-        background-color: #292828;
+        background-color: lighten($background-dark, 1%);
         border-radius: 4px;    
     }
 }
 
 .authorflair {
-    color: #eee;
-    background-color: #646464;
+    color: $text-dark;
+    background-color: $gray-var1;
     padding: 1px;
     border-radius: 2px;
 }
 
 .postdata {
     font-size: 12px;
-    color: #909090;
+    color: $gray-dark;
     display: block;
     padding: 15px;
 }
@@ -196,7 +335,7 @@ pre {
 
 .licon {
     @extend %badge;
-    fill: #75d377;
+    fill: $green-dark;
 
     &.scale {
         transform: scaleX(1.4)
@@ -205,25 +344,25 @@ pre {
 
 .goldicon {
     @extend %badge;
-    fill: #ffd635;
+    fill: $gold-dark;
 }
 
 .gicon {
     @extend %badge;
-    fill: #909090;
+    fill: $gray-dark;
 }
 
 .ricon {
     @extend %badge;
-    fill: #ea0027;
+    fill: $red-dark;
 }
 
 .sicon {
-    fill: #C0C0C0;
+    fill: $silver-dark;
 }
 
 .gtext {
-    @include fontsettings(12px, 700, initial, #909090);
+    @include fontsettings(12px, 700, initial, $gray-dark);
 }
 
 .malign {
@@ -246,7 +385,7 @@ pre {
         transition: 0.5s;
 
         &:hover {
-            background-color: #646464;
+            background-color: $gray-var1;
         }
     }
 }
@@ -287,10 +426,10 @@ pre {
     position: absolute;
     right: 0;
     bottom: 0;
-    background-color: #0079D3;
+    background-color: $primary-dark;
     text-align: center;
     border-radius: 4px 0px;
-    fill: #fff;
+    fill: $text-dark;
 }
 
 .m-top10 {
@@ -307,7 +446,7 @@ img:not(.malign), video {
     margin: auto;
 
     &.preview {
-        box-shadow: 0 0 2px #0079D3;
+        box-shadow: 0 0 2px $primary-dark;
         border-radius: 4px;
         max-width: 144px
     }
@@ -348,9 +487,9 @@ img:not(.malign), video {
             width: 10px;
             height: 10px;
             border-radius: 100%;
-            background-color: #C0C0C0;
+            background-color: $silver-dark;
             margin: 0px 3px;
-            border: 2px solid #108dcc;
+            border: 2px solid $primary-dark;
             cursor: pointer;
         }
     }
@@ -366,11 +505,11 @@ img:not(.malign), video {
 }
 
 .nsfwtag {
-    @include tag(#ff585b)
+    @include tag($red-dark)
 }
 
 .spoilertag {
-    @include tag(#757575)
+    @include tag($gray-var2)
 }
 
 .configform {

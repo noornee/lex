@@ -183,7 +183,7 @@ func internalDecode(comments *types.Comments) {
 		First, we construct a similar type of that to the JSON's
 		Then, we decode the Replies field to that, and iterate until it's over
 			(instead of blindly guessing)
-				(decode again? / create seperate fields for reply?)
+				(decode again? / create separate fields for reply?)
 		Then, we do the same iteration in the HTML as well
 			(this will be more flexible, as it will be easier to indent, and also may help provide a way to collapse it.)
 

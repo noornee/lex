@@ -178,25 +178,9 @@ func GetAccount(name, after string) types.Posts {
 }
 
 func internalDecode(comments *types.Comments) {
-	/*
-		CURRENT PLAN:
-		First, we construct a similar type of that to the JSON's
-		Then, we decode the Replies field to that, and iterate until it's over
-			(instead of blindly guessing)
-				(decode again? / create separate fields for reply?)
-		Then, we do the same iteration in the HTML as well
-			(this will be more flexible, as it will be easier to indent, and also may help provide a way to collapse it.)
-
-		ISSUE:
-		This is ancient code. DO NOT TOUCH material.
-		I do not remember how it fully works.
-	*/
 	for _, v := range comments.Data.Children {
-		var newdecoded types.Comments
-
-		if err := json.Unmarshal(v.Data.Replies, &newdecoded); err == nil {
-			// No decoding failure.
-			internalDecode(&newdecoded)
+		if comment, convok := v.Data.Replies.(types.Comments); convok {
+			internalDecode(&comment)
 		}
 	}
 }

@@ -251,11 +251,14 @@
     <hr>
 
     {{if not $.DisableComments}}
-        {{ (index .Comments 0).Data.Author }}
-        <br>
-        {{ (index .Comments 0).Data.Body }}
-        <br>
-        {{ (index .Comments 0).Data.Replies|stringifyDEVELOPERFUNCTIONREMOVEME }}
+        {{range $itmp, $v := .Comments}}
+            {{ $v.Data.Author }}
+            <br>
+            {{ $v.Data.Body }}
+            <br>
+            {{ $v.Data.Replies }}
+            <br><br><hr>
+        {{end}}
     {{else}}
         <p>Comments were disabled</p>
     {{end}}

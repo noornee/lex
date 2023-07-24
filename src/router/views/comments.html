@@ -252,12 +252,13 @@
 
     {{if not $.DisableComments}}
         {{range $itmp, $v := .Comments}}
-            {{ $v.Data.Author }}
-            <br>
-            {{ $v.Data.Body }}
-            <br>
-            {{ $v.Data.Replies }}
-            <br><br><hr>
+            <p style="text-indent: 15px;">{{ $v.Data.Author }}</p>
+            <p style="text-indent: 15px;">{{ $v.Data.Body }}</p>
+            {{ range $ktmp, $info := $v.Data.VReplies }}
+                <p style="text-indent: 30px;">{{$info.Author}}</p>
+                <p style="text-indent: 30px;">{{$info.Body}}</p>
+            {{ end }}
+            <hr>
         {{end}}
     {{else}}
         <p>Comments were disabled</p>

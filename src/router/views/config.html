@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="{{.PreferredTheme}}">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -123,14 +123,9 @@
             <label>
                 Preferred Resolution
                 <select name="PrefRes">
-                    <!-- dear lord -->
-                    <option {{if eq .PreferredResolution 0}} selected {{end}}>0</option>
-                    <option {{if eq .PreferredResolution 1}} selected {{end}}>1</option>
-                    <option {{if eq .PreferredResolution 2}} selected {{end}}>2</option>
-                    <option {{if eq .PreferredResolution 3}} selected {{end}}>3</option>
-                    <option {{if eq .PreferredResolution 4}} selected {{end}}>4</option>
-                    <option {{if eq .PreferredResolution 5}} selected {{end}}>5</option>
-                    <option {{if eq .PreferredResolution 11037}} selected {{end}}>Source</option>
+                    {{range $itmp, $rhelp := .ResHelper}}
+                        <option value="{{$rhelp.Value}}" {{if eq $.PreferredResolution $rhelp.Value}} selected {{end}}>{{$rhelp.Name}}</option>
+                    {{end}}
                 </select>
             </label>
             <pre>
@@ -144,15 +139,11 @@
             </pre>
 
             <label>
-                Preferred Style
-                <select name="PrefStyle" disabled>
-                    <option>Dark (default)</option>
-                    <option>Dracula</option>
-                    <option>Solarized</option>
-                    <option>Abyss</option>
-                    <option>Monokai</option>
-                    <option>Red</option>
-                    <option>Light</option>
+                Preferred Theme
+                <select name="PrefTheme">
+                    {{range $ktmp, $thelp := .ThemeHelper}}
+                        <option value="{{$thelp.Value}}" {{if eq $.PreferredTheme $thelp.Value}} selected {{end}}>{{$thelp.Name}}</option>
+                    {{end}}
                 </select>
             </label>
 

@@ -52,8 +52,32 @@ var (
 	//go:embed favicon.ico
 	faviconFS embed.FS
 
-	//nolint:gochecknoglobals // required for backgroundJanitor
 	jsonCache sync.Map
+
+	resolutionHelper = []struct {
+		Name  string
+		Value int
+	}{
+		{Name: "Very Low", Value: 1},
+		{Name: "Low", Value: 2},
+		{Name: "Average", Value: 3},
+		{Name: "Good", Value: 4},
+		{Name: "Very Good", Value: 5},
+		{Name: "Source", Value: 11037},
+	}
+
+	themeHelper = []struct {
+		Name  string
+		Value string
+	}{
+		{Name: "Dark (default)", Value: "dark"},
+		{Name: "Dracula", Value: "dracula"},
+		{Name: "Solarized", Value: "solarized"},
+		{Name: "Abyss", Value: "abyss"},
+		{Name: "Monokai", Value: "monokai"},
+		{Name: "Red", Value: "redtheme"},
+		{Name: "Light", Value: "lighttheme"},
+	}
 )
 
 const (
@@ -64,6 +88,7 @@ const (
 	INFCookie     = "INFScroll"
 	NSFWCookie    = "NSFWAllowed"
 	ResCookie     = "PreferredResolution"
+	ThemeCookie   = "PreferredTheme"
 	GalleryCookie = "GalleryNav"
 	USRCCookie    = "TrustUSrc"
 	MathCookie    = "UseAdvMath"
@@ -74,6 +99,7 @@ const (
 	INFCookieValue     = "infscroll_enabled"
 	NSFWCookieValue    = "nsfw_allowed"
 	ResCookieValue     = "preferred_resolution"
+	ThemeCookieValue   = "preferred_theme"
 	GalleryCookieValue = "gallery_navigation"
 	USRCCookieValue    = "trust_unknownsources"
 	MathCookieValue    = "advanced_math"
@@ -173,7 +199,6 @@ func StartServer() {
 		"EnableJS":         JSCookieValue,
 		"EnableInfScroll":  INFCookieValue,
 		"AllowNSFW":        NSFWCookieValue,
-		"PrefRes":          ResCookieValue,
 		"EnableGalleryNav": GalleryCookieValue,
 		"TrustUnknownSrc":  USRCCookieValue,
 		"UseAdvancedMath":  MathCookieValue,
@@ -228,6 +253,14 @@ func StartServer() {
 			disableawards := ctx.Cookies(AwardCookieValue)
 			disablecomments := ctx.Cookies(CommentCookieValue)
 
+			theme := "dark"
+			for i := range themeHelper {
+				if ctx.Cookies(ThemeCookieValue) == themeHelper[i].Value {
+					theme = ctx.Cookies(ThemeCookieValue)
+					break
+				}
+			}
+
 			ctx.Bind(fiber.Map{ //nolint:errcheck,gosec // ctx.Bind always returns nil
 				JSCookie:      jsenabled == "1",
 				INFCookie:     infscrollenabled == "1",
@@ -237,6 +270,7 @@ func StartServer() {
 				MathCookie:    advmath == "1",
 				AwardCookie:   disableawards == "1",
 				CommentCookie: disablecomments == "1",
+				ThemeCookie:   theme,
 			})
 
 			return ctx.Next()
@@ -361,7 +395,9 @@ func StartServer() {
 		}
 
 		return ctx.Render("views/config", fiber.Map{
-			ResCookie: preferredres,
+			"ResHelper":   resolutionHelper,
+			"ThemeHelper": themeHelper,
+			ResCookie:     preferredres,
 		})
 	})
 
@@ -369,28 +405,24 @@ func StartServer() {
 		for cookiekey, cookievalue := range cfgMap {
 			switch formvalue := ctx.FormValue(cookiekey); formvalue {
 			case "on":
-				if cookiekey != "PrefRes" {
-					SetcfgCookie(ctx, cookievalue, "1")
-				}
+				SetcfgCookie(ctx, cookievalue, "1")
 			case "off":
-				if cookiekey != "PrefRes" {
-					SetcfgCookie(ctx, cookievalue, "0")
-				}
-			case "0", "1", "2", "3", "4", "5":
-				if cookiekey == "PrefRes" {
-					SetcfgCookie(ctx, cookievalue, formvalue)
-				}
-			case "Source":
-				if cookiekey == "PrefRes" {
-					/*
-						ctx.Cookies returns a string, which we will convert to
-						int via strconv.Atoi, but if we set the cookie value to
-						"Source", then it will error out, so set it to a high
-						value that doesn't exist, but is still valid.
-					*/
+				SetcfgCookie(ctx, cookievalue, "0")
+			}
+		}
 
-					SetcfgCookie(ctx, cookievalue, "11037")
-				}
+		for i := range resolutionHelper {
+			resStr := strconv.Itoa(resolutionHelper[i].Value)
+			if ctx.FormValue("PrefRes") == resStr {
+				SetcfgCookie(ctx, ResCookieValue, resStr)
+				break
+			}
+		}
+
+		for k := range themeHelper {
+			if ctx.FormValue("PrefTheme") == themeHelper[k].Value {
+				SetcfgCookie(ctx, ThemeCookieValue, themeHelper[k].Value)
+				break
 			}
 		}
 
@@ -562,7 +594,7 @@ func SortPostData(posts *types.Posts, resolutionToUse int) {
 		func() {
 			defer func() {
 				if rec := recover(); rec != nil {
-					log.Warnf("Recovered from fatal panic: %w", rec)
+					log.Warnf("Recovered from panic: %w", rec)
 				}
 			}()
 

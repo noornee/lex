@@ -154,6 +154,12 @@ html.solarized {
     .spoilertag {
         @include tag($gray-var2-solarized)
     }
+
+    .configform {
+        label, pre {
+            color: $text-solarized;
+        }
+    }
 }
 
 /////////////////////////////////
@@ -276,6 +282,12 @@ html.dracula {
 
     .spoilertag {
         @include tag($gray-var2-dracula)
+    }
+
+    .configform {
+        label, pre {
+            color: $text-dracula;
+        }
     }
 }
 
@@ -400,6 +412,12 @@ html.abyss {
     .spoilertag {
         @include tag($gray-var2-abyss)
     }
+
+    .configform {
+        label, pre {
+            color: $text-abyss;
+        }
+    }
 }
 
 /////////////////////////////////
@@ -522,6 +540,12 @@ html.monokai {
 
     .spoilertag {
         @include tag($gray-var2-monokai)
+    }
+
+    .configform {
+        label, pre {
+            color: $text-monokai;
+        }
     }
 }
 
@@ -647,6 +671,12 @@ html.redtheme {
     .spoilertag {
         @include tag($gray-var2-redtheme)
     }
+
+    .configform {
+        label, pre {
+            color: $text-redtheme;
+        }
+    }
 }
 
 /////////////////////////////////
@@ -770,6 +800,12 @@ html.lighttheme {
 
     .spoilertag {
         @include tag($gray-var2-lighttheme)
+    }
+
+    .configform {
+        label, pre {
+            color: $text-lighttheme;
+        }
     }
 }
 
@@ -1143,13 +1179,15 @@ img:not(.malign), video {
         float: left;
         clear: both;
         margin-top: 20px;
-        width: 100%
+        width: 100%;
+        color: $text;
     }
 
     pre {
         float: left;
         clear: both;
         white-space: pre-line;
+        color: $text;
     }
 
     input[type="submit"] {

@@ -137,7 +137,7 @@ rm $(go env GOPATH)/bin/lex
 
 | ![](https://raw.githubusercontent.com/cmd777/lex/main/docs/images/chrome.svg) Chrome | ![](https://raw.githubusercontent.com/cmd777/lex/main/docs/images/edge.svg) Edge | ![](https://raw.githubusercontent.com/cmd777/lex/main/docs/images/safari.svg) Safari | ![](https://raw.githubusercontent.com/cmd777/lex/main/docs/images/firefox.svg) Firefox | ![](https://raw.githubusercontent.com/cmd777/lex/main/docs/images/opera.svg) Opera | ![](https://raw.githubusercontent.com/cmd777/lex/main/docs/images/iexplorer.svg) IE |
 |:------:|:----:|:------:|:-------:|:-----:|:----------------:|
-| 26>    | 19>  | 6.1>   | 49>     | 12.1> | 11<sup>(?)</sup> |
+| 26>    | 19>  | 6.1>   | 49>     | 15> | 11<sup>(?)</sup> |
 
 <details>
 <summary>INFScroll Setting Enabled</summary>

@@ -114,9 +114,10 @@
                 Don't load Comments
             </label>
             <pre>
-                For now, this is a debug option, a cheap fix, if you may.
-                Disables loading of comments, that may cause a panic.
-                HIGHLY recommended to turn this on!
+                Disables loading of comments, preventing any potential future panics.
+                From version 299799 to 299836, an inefficient way was used to unmarshal & range comments,
+                often resulting in a panic, since version 299837 a new method is used, that should avoid
+                such panics. This is a backup option in case anything breaks.
             </pre>
 
             <label>

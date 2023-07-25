@@ -252,11 +252,12 @@
 
     {{if not $.DisableComments}}
         {{range $itmp, $v := .Comments}}
-            <p style="text-indent: 15px;">{{ $v.Data.Author }}</p>
-            <p style="text-indent: 15px;">{{ $v.Data.Body }}</p>
+            <p style="text-indent: calc({{$v.Data.Depth}} * 15px);">{{ $v.Data.Author }}</p>
+            <p style="text-indent: calc({{$v.Data.Depth}} * 15px);">{{ $v.Data.Body }}</p>
             {{ range $ktmp, $info := $v.Data.VReplies }}
-                <p style="text-indent: 30px;">{{$info.Author}}</p>
-                <p style="text-indent: 30px;">{{$info.Body}}</p>
+                <p style="text-indent: calc({{$info.Depth}} * 15px);">{{$info.Author}}</p>
+                <p style="text-indent: calc({{$info.Depth}} * 15px);">{{$info.Body}}</p>
+                {{template "views/replyrecursion" $info.VReplies}}
             {{ end }}
             <hr>
         {{end}}

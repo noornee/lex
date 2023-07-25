@@ -187,12 +187,13 @@ func internalDecode(comments *types.Comments) {
 			post := &comments.Data.Children[i]
 
 			// This is awful.
-			for i := range post.Data.Replies.(map[string]any)["data"].(map[string]any)["children"].([]any) {
-				replyChild := post.Data.Replies.(map[string]any)["data"].(map[string]any)["children"].([]any)[i].(map[string]any)["data"].(map[string]any)
+			for k := range post.Data.Replies.(map[string]any)["data"].(map[string]any)["children"].([]any) {
+				replyChild := post.Data.Replies.(map[string]any)["data"].(map[string]any)["children"].([]any)[k].(map[string]any)["data"].(map[string]any)
 
 				var newReply = types.InternalCommentData{
 					Author:  replyChild["author"].(string),
 					Body:    replyChild["body"].(string),
+					Depth:   replyChild["depth"].(float64),
 					Replies: replyChild["replies"],
 				}
 				post.Data.VReplies = append(post.Data.VReplies, newReply)
@@ -206,6 +207,29 @@ func internalDecode(comments *types.Comments) {
 }
 
 func subDecode(vRep *[]types.InternalCommentData) {
-	// scan over each one (for range vRep)
-	// then set the stuff to that, then run subDecode on the new vRep again
+	t := *vRep
+	for i := range t {
+		func() {
+			defer func() {
+				recover()
+			}()
+
+			for k := range t[i].Replies.(map[string]any)["data"].(map[string]any)["children"].([]any) {
+				childReply := t[i].Replies.(map[string]any)["data"].(map[string]any)["children"].([]any)[k].(map[string]any)["data"].(map[string]any)
+
+				var newReply = types.InternalCommentData{
+					Author:  childReply["author"].(string),
+					Body:    childReply["body"].(string),
+					Depth:   childReply["depth"].(float64),
+					Replies: childReply["replies"],
+				}
+
+				t[i].VReplies = append(t[i].VReplies, newReply)
+			}
+
+			subDecode(&t[i].VReplies)
+
+			vRep = &t
+		}()
+	}
 }

@@ -119,9 +119,10 @@ type internalPostData struct {
 }
 
 type InternalCommentData struct {
-	Author   string `json:"author"`
-	Body     string `json:"body"`
-	Replies  any    `json:"replies"`
+	Author   string  `json:"author"`
+	Body     string  `json:"body"`
+	Depth    float64 `json:"depth"`
+	Replies  any     `json:"replies"`
 	VReplies []InternalCommentData
 }
 

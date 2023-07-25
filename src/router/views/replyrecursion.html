@@ -1,0 +1,5 @@
+{{ range $tmp, $data := $ }}
+    <p style="text-indent: calc({{$data.Depth}} * 15px);">{{$data.Author}}</p>
+    <p style="text-indent: calc({{$data.Depth}} * 15px);">{{$data.Body}}</p>
+    {{template "views/replyrecursion" $data.VReplies}}
+{{end}}

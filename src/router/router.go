@@ -196,9 +196,6 @@ func StartServer() {
 		"fmtHumanComma":  humanize.Comma,
 		"fmtHumanDate":   FmtHumanDate,
 		"toPercentage":   ToPercentage,
-		"stringifyDEVELOPERFUNCTIONREMOVEME": func(input []byte) string {
-			return string(input)
-		},
 	})
 	// endregion
 

@@ -1,17 +1,33 @@
+@mixin tag($color) {
+    border: 1px solid $color;
+    text-align: center;
+    color: $color;
+    font-size: 12px;
+    padding: 0px 4px;
+    margin-left: 5px;
+}
+
+@mixin fontsettings($size, $weight, $lheight, $color) {
+    font-size: $size;
+    font-weight: $weight;
+    line-height: $lheight;
+    color: $color;
+}
+
 /////////////////////////////////
 /// 
 /// https://github.com/cmd777
 /// 
 
-$text-dark: #e2eeed;
-$background-dark: #202020;
-$primary-dark: #108dcc;
+$text: #e2eeed;
+$background: #202020;
+$primary: #108dcc;
 
-$red-dark: #d60628;
-$gray-dark: #909090;
-$gold-dark: #f8cf29;
-$green-dark: #5dc55e;
-$silver-dark: #C0C0C0;
+$red: #d60628;
+$gray: #909090;
+$gold: #f8cf29;
+$green: #5dc55e;
+$silver: #C0C0C0;
 
 $gray-var1: #646464;
 $gray-var2: #757575;
@@ -35,6 +51,111 @@ $silver-solarized: #657b83;
 $gray-var1-solarized: #93a1a1;
 $gray-var2-solarized: #839496;
 
+html.solarized {
+    color: $text-solarized;
+    background-color: darken($background-solarized, 1%);
+
+    body {
+        color: $text-solarized;
+        background-color: darken($background-solarized, 1%);    
+    }
+
+    .stickbox {
+        background-color: lighten($background-solarized, 3%);
+    
+        .navbox a {
+            color: $primary-solarized;
+        }
+    }
+
+    a {
+        &:hover:not(.l-hovergray) {
+            border-color: $primary-solarized;
+        }
+    
+        &:link {
+            color: $primary-solarized;
+        }
+    }
+
+    .subinfo {
+        background-color: $background-solarized;
+    }
+
+    .ltype1 {
+        @include fontsettings(24px, 700, 1.7em, $text-solarized);
+    }
+    
+    .ltype2 {
+        @include fontsettings(13px, 600, 20px, $gray-solarized);
+    }
+
+    #posts div.post {
+        background-color: lighten($background-solarized, 1%);
+    }
+    
+    .authorflair {
+        color: $text-solarized;
+        background-color: $gray-var1-solarized;
+    }
+    
+    .postdata {
+        color: $gray-solarized;
+    }
+
+    .licon {
+        fill: $green-solarized;
+    }
+    
+    .goldicon {
+        fill: $gold-solarized;
+    }
+    
+    .gicon {
+        fill: $gray-solarized;
+    }
+    
+    .ricon {
+        fill: $red-solarized;
+    }
+    
+    .sicon {
+        fill: $silver-solarized;
+    }
+    
+    .gtext {
+        @include fontsettings(12px, 700, initial, $gray-solarized);
+    }
+
+    .extlinkicon {
+        background-color: $primary-solarized;
+        fill: $text-solarized;
+    }
+    
+    img:not(.malign), video {
+        &.preview {
+            box-shadow: 0 0 2px $primary-solarized;
+        }
+    }
+
+    .gallery .gallery-nav label { 
+        background-color: $silver-solarized;
+        border: 2px solid $primary-solarized;
+    }
+    
+    .nsfwtag {
+        @include tag($red-solarized)
+    }
+
+    .post-footer .l-hovergray:hover {
+        background-color: $gray-var1-solarized;
+    }
+
+    .spoilertag {
+        @include tag($gray-var2-solarized)
+    }
+}
+
 /////////////////////////////////
 /// 
 /// https://draculatheme.com/contribute
@@ -53,21 +174,121 @@ $silver-dracula: #bfbfbf;
 $gray-var1-dracula: #5a5a5a;
 $gray-var2-dracula: #6b6b6b;
 
+html.dracula {
+    color: $text-dracula;
+    background-color: darken($background-dracula, 1%);
+
+    body {
+        color: $text-dracula;
+        background-color: darken($background-dracula, 1%);    
+    }
+
+    .stickbox {
+        background-color: lighten($background-dracula, 3%);
+    
+        .navbox a {
+            color: $primary-dracula;
+        }
+    }
+
+    a {
+        &:hover:not(.l-hovergray) {
+            border-color: $primary-dracula;
+        }
+    
+        &:link {
+            color: $primary-dracula;
+        }
+    }
+
+    .subinfo {
+        background-color: $background-dracula;
+    }
+
+    .ltype1 {
+        @include fontsettings(24px, 700, 1.7em, $text-dracula);
+    }
+    
+    .ltype2 {
+        @include fontsettings(13px, 600, 20px, $gray-dracula);
+    }
+
+    #posts div.post {
+        background-color: lighten($background-dracula, 1%);
+    }
+    
+    .authorflair {
+        color: $text-dracula;
+        background-color: $gray-var1-dracula;
+    }
+    
+    .postdata {
+        color: $gray-dracula;
+    }
+
+    .licon {
+        fill: $green-dracula;
+    }
+    
+    .goldicon {
+        fill: $gold-dracula;
+    }
+    
+    .gicon {
+        fill: $gray-dracula;
+    }
+    
+    .ricon {
+        fill: $red-dracula;
+    }
+    
+    .sicon {
+        fill: $silver-dracula;
+    }
+    
+    .gtext {
+        @include fontsettings(12px, 700, initial, $gray-dracula);
+    }
+
+    .extlinkicon {
+        background-color: $primary-dracula;
+        fill: $text-dracula;
+    }
+    
+    img:not(.malign), video {
+        &.preview {
+            box-shadow: 0 0 2px $primary-dracula;
+        }
+    }
+
+    .gallery .gallery-nav label { 
+        background-color: $silver-dracula;
+        border: 2px solid $primary-dracula;
+    }
+    
+    .nsfwtag {
+        @include tag($red-dracula)
+    }
+
+    .post-footer .l-hovergray:hover {
+        background-color: $gray-var1-dracula;
+    }
+
+    .spoilertag {
+        @include tag($gray-var2-dracula)
+    }
+}
+
 /////////////////////////////////
 ///
 /// https://github.com/gerane/VSCodeThemes/tree/master/gerane.Theme-Abyss
 /// 
-/// LOL, okay, so I haven't tested this yet,
-/// cause I first want to get all of them, 
-/// then look at it afterwards, and adjust if needed.
-/// But this? I guess will need a LOT of re-adjusting.
-///
 
 $text-abyss: #6688cc;
 $background-abyss: #000c18;
-$primary-abyss: #223355;
+$primary-abyss: #60508a;
 
-$red-abyss: #770811;
+$red-abyss: #c1361f;
 $gray-abyss: #f92672;
 $gold-abyss: #050505;
 $green-abyss: #22aa44;
@@ -75,6 +296,111 @@ $silver-abyss: #ae81ff;
 
 $gray-var1-abyss: #9966b8;
 $gray-var2-abyss: #f280d0;
+
+html.abyss {
+    color: $text-abyss;
+    background-color: darken($background-abyss, 1%);
+
+    body {
+        color: $text-abyss;
+        background-color: darken($background-abyss, 1%);    
+    }
+
+    .stickbox {
+        background-color: lighten($background-abyss, 3%);
+    
+        .navbox a {
+            color: $primary-abyss;
+        }
+    }
+
+    a {
+        &:hover:not(.l-hovergray) {
+            border-color: $primary-abyss;
+        }
+    
+        &:link {
+            color: $primary-abyss;
+        }
+    }
+
+    .subinfo {
+        background-color: $background-abyss;
+    }
+
+    .ltype1 {
+        @include fontsettings(24px, 700, 1.7em, $text-abyss);
+    }
+    
+    .ltype2 {
+        @include fontsettings(13px, 600, 20px, $gray-abyss);
+    }
+
+    #posts div.post {
+        background-color: lighten($background-abyss, 1%);
+    }
+    
+    .authorflair {
+        color: $text-abyss;
+        background-color: $gray-var1-abyss;
+    }
+    
+    .postdata {
+        color: $gray-abyss;
+    }
+
+    .licon {
+        fill: $green-abyss;
+    }
+    
+    .goldicon {
+        fill: $gold-abyss;
+    }
+    
+    .gicon {
+        fill: $gray-abyss;
+    }
+    
+    .ricon {
+        fill: $red-abyss;
+    }
+    
+    .sicon {
+        fill: $silver-abyss;
+    }
+    
+    .gtext {
+        @include fontsettings(12px, 700, initial, $gray-abyss);
+    }
+
+    .extlinkicon {
+        background-color: $primary-abyss;
+        fill: $text-abyss;
+    }
+    
+    img:not(.malign), video {
+        &.preview {
+            box-shadow: 0 0 2px $primary-abyss;
+        }
+    }
+
+    .gallery .gallery-nav label { 
+        background-color: $silver-abyss;
+        border: 2px solid $primary-abyss;
+    }
+    
+    .nsfwtag {
+        @include tag($red-abyss)
+    }
+
+    .post-footer .l-hovergray:hover {
+        background-color: $gray-var1-abyss;
+    }
+
+    .spoilertag {
+        @include tag($gray-var2-abyss)
+    }
+}
 
 /////////////////////////////////
 /// 
@@ -94,6 +420,111 @@ $silver-monokai: #49483E;
 $gray-var1-monokai: #9D550F;
 $gray-var2-monokai: #75715E;
 
+html.monokai {
+    color: $text-monokai;
+    background-color: darken($background-monokai, 1%);
+
+    body {
+        color: $text-monokai;
+        background-color: darken($background-monokai, 1%);
+    }
+
+    .stickbox {
+        background-color: lighten($background-monokai, 3%);
+    
+        .navbox a {
+            color: $primary-monokai;
+        }
+    }
+
+    a {
+        &:hover:not(.l-hovergray) {
+            border-color: $primary-monokai;
+        }
+    
+        &:link {
+            color: $primary-monokai;
+        }
+    }
+
+    .subinfo {
+        background-color: $background-monokai;
+    }
+
+    .ltype1 {
+        @include fontsettings(24px, 700, 1.7em, $text-monokai);
+    }
+    
+    .ltype2 {
+        @include fontsettings(13px, 600, 20px, $gray-monokai);
+    }
+
+    #posts div.post {
+        background-color: lighten($background-monokai, 1%);
+    }
+    
+    .authorflair {
+        color: $text-monokai;
+        background-color: $gray-var1-monokai;
+    }
+    
+    .postdata {
+        color: $gray-monokai;
+    }
+
+    .licon {
+        fill: $green-monokai;
+    }
+    
+    .goldicon {
+        fill: $gold-monokai;
+    }
+    
+    .gicon {
+        fill: $gray-monokai;
+    }
+    
+    .ricon {
+        fill: $red-monokai;
+    }
+    
+    .sicon {
+        fill: $silver-monokai;
+    }
+    
+    .gtext {
+        @include fontsettings(12px, 700, initial, $gray-monokai);
+    }
+
+    .extlinkicon {
+        background-color: $primary-monokai;
+        fill: $text-monokai;
+    }
+    
+    img:not(.malign), video {
+        &.preview {
+            box-shadow: 0 0 2px $primary-monokai;
+        }
+    }
+
+    .gallery .gallery-nav label { 
+        background-color: $silver-monokai;
+        border: 2px solid $primary-monokai;
+    }
+    
+    .nsfwtag {
+        @include tag($red-monokai)
+    }
+
+    .post-footer .l-hovergray:hover {
+        background-color: $gray-var1-monokai;
+    }
+
+    .spoilertag {
+        @include tag($gray-var2-monokai)
+    }
+}
+
 /////////////////////////////////
 /// 
 /// https://realtimecolors.com
@@ -102,7 +533,7 @@ $gray-var2-monokai: #75715E;
 
 $text-redtheme: #f7fdfb;
 $background-redtheme: #440716;
-$primary-redtheme: #721d32;
+$primary-redtheme: #cf325e;
 
 $red-redtheme: #bf3154;
 $gray-redtheme: #6c6c6c;
@@ -113,24 +544,234 @@ $silver-redtheme: #d0d0d0;
 $gray-var1-redtheme: #888888;
 $gray-var2-redtheme: #b0b0b0;
 
+html.redtheme {
+    color: $text-redtheme;
+    background-color: darken($background-redtheme, 1%);
+
+    body {
+        color: $text-redtheme;
+        background-color: darken($background-redtheme, 1%);
+    }
+
+    .stickbox {
+        background-color: lighten($background-redtheme, 3%);
+    
+        .navbox a {
+            color: $primary-redtheme;
+        }
+    }
+
+    a {
+        &:hover:not(.l-hovergray) {
+            border-color: $primary-redtheme;
+        }
+    
+        &:link {
+            color: $primary-redtheme;
+        }
+    }
+
+    .subinfo {
+        background-color: $background-redtheme;
+    }
+
+    .ltype1 {
+        @include fontsettings(24px, 700, 1.7em, $text-redtheme);
+    }
+    
+    .ltype2 {
+        @include fontsettings(13px, 600, 20px, $gray-redtheme);
+    }
+
+    #posts div.post {
+        background-color: lighten($background-redtheme, 1%);
+    }
+    
+    .authorflair {
+        color: $text-redtheme;
+        background-color: $gray-var1-redtheme;
+    }
+    
+    .postdata {
+        color: $gray-redtheme;
+    }
+
+    .licon {
+        fill: $green-redtheme;
+    }
+    
+    .goldicon {
+        fill: $gold-redtheme;
+    }
+    
+    .gicon {
+        fill: $gray-redtheme;
+    }
+    
+    .ricon {
+        fill: $red-redtheme;
+    }
+    
+    .sicon {
+        fill: $silver-redtheme;
+    }
+    
+    .gtext {
+        @include fontsettings(12px, 700, initial, $gray-redtheme);
+    }
+
+    .extlinkicon {
+        background-color: $primary-redtheme;
+        fill: $text-redtheme;
+    }
+    
+    img:not(.malign), video {
+        &.preview {
+            box-shadow: 0 0 2px $primary-redtheme;
+        }
+    }
+
+    .gallery .gallery-nav label { 
+        background-color: $silver-redtheme;
+        border: 2px solid $primary-redtheme;
+    }
+    
+    .nsfwtag {
+        @include tag($red-redtheme)
+    }
+
+    .post-footer .l-hovergray:hover {
+        background-color: $gray-var1-redtheme;
+    }
+
+    .spoilertag {
+        @include tag($gray-var2-redtheme)
+    }
+}
+
 /////////////////////////////////
 /// 
 /// https://realtimecolors.com
 /// https://github.com/cmd777
 /// 
 
-$text-light: #0f0905;
-$background-light: #faf4f0;
-$primary-light: #b95f22;
+$text-lighttheme: #0f0905;
+$background-lighttheme: #faf4f0;
+$primary-lighttheme: #b95f22;
 
-$red-light: #fd7070;
-$gray-light: #e6e6e6;
-$gold-light: #f4d03f;
-$green-light: #86c27c;
-$silver-light: #e8e8e8;
+$red-lighttheme: #fd7070;
+$gray-lighttheme: #585858;
+$gold-lighttheme: #f4d03f;
+$green-lighttheme: #86c27c;
+$silver-lighttheme: #585858;
 
-$gray-var1-light: #d9af92;
-$gray-var2-light: #efded2;
+$gray-var1-lighttheme: #d9af92;
+$gray-var2-lighttheme: #efded2;
+
+html.lighttheme {
+    color: $text-lighttheme;
+    background-color: darken($background-lighttheme, 1%);
+
+    body {
+        color: $text-lighttheme;
+        background-color: darken($background-lighttheme, 1%);    
+    }
+
+    .stickbox {
+        background-color: lighten($background-lighttheme, 3%);
+    
+        .navbox a {
+            color: $primary-lighttheme;
+        }
+    }
+
+    a {
+        &:hover:not(.l-hovergray) {
+            border-color: $primary-lighttheme;
+        }
+    
+        &:link {
+            color: $primary-lighttheme;
+        }
+    }
+
+    .subinfo {
+        background-color: $background-lighttheme;
+    }
+
+    .ltype1 {
+        @include fontsettings(24px, 700, 1.7em, $text-lighttheme);
+    }
+    
+    .ltype2 {
+        @include fontsettings(13px, 600, 20px, $gray-lighttheme);
+    }
+
+    #posts div.post {
+        background-color: lighten($background-lighttheme, 1%);
+    }
+    
+    .authorflair {
+        color: $text-lighttheme;
+        background-color: $gray-var1-lighttheme;
+    }
+    
+    .postdata {
+        color: $gray-lighttheme;
+    }
+
+    .licon {
+        fill: $green-lighttheme;
+    }
+    
+    .goldicon {
+        fill: $gold-lighttheme;
+    }
+    
+    .gicon {
+        fill: $gray-lighttheme;
+    }
+    
+    .ricon {
+        fill: $red-lighttheme;
+    }
+    
+    .sicon {
+        fill: $silver-lighttheme;
+    }
+    
+    .gtext {
+        @include fontsettings(12px, 700, initial, $gray-lighttheme);
+    }
+
+    .extlinkicon {
+        background-color: $primary-lighttheme;
+        fill: $text-lighttheme;
+    }
+    
+    img:not(.malign), video {
+        &.preview {
+            box-shadow: 0 0 2px $primary-lighttheme;
+        }
+    }
+
+    .gallery .gallery-nav label { 
+        background-color: $silver-lighttheme;
+        border: 2px solid $primary-lighttheme;
+    }
+    
+    .nsfwtag {
+        @include tag($red-lighttheme)
+    }
+
+    .post-footer .l-hovergray:hover {
+        background-color: $gray-var1-lighttheme;
+    }
+
+    .spoilertag {
+        @include tag($gray-var2-lighttheme)
+    }
+}
 
 /////////////////////////////////
 /// 
@@ -170,13 +811,6 @@ $max-height: 100vh;
 $open-sans: 'Open Sans', sans-serif;
 $josefin-sans: 'Josefin Sans', sans-serif;
 
-@mixin fontsettings($size, $weight, $lheight, $color) {
-    font-size: $size;
-    font-weight: $weight;
-    line-height: $lheight;
-    color: $color;
-}
-
 %badge {
     vertical-align: middle;
     text-indent: 5px;
@@ -193,12 +827,12 @@ html, body {
     @extend %max-view;
     overflow-x: hidden;
     font-family: $open-sans;
-    color: $text-dark;
-    background-color: darken($background-dark, 1%);
+    color: $text;
+    background-color: darken($background, 1%);
 }
 
 .stickbox {
-    background-color: lighten($background-dark, 3%);
+    background-color: lighten($background, 3%);
     position: fixed;
     top: 0;
     left: 0;
@@ -211,7 +845,7 @@ html, body {
         justify-content: space-between;
         padding: 15px;
         a {
-            color: $primary-dark;
+            color: $primary;
             font-size: x-large;
             font-family: $josefin-sans;
             text-decoration: none;
@@ -225,11 +859,11 @@ a {
     border-bottom: 1px solid transparent;
 
     &:hover:not(.l-hovergray) {
-        border-color: $primary-dark;
+        border-color: $primary;
     }
 
     &:link {
-        color: $primary-dark;
+        color: $primary;
         font-weight: bold;
     }
 }
@@ -252,7 +886,7 @@ pre {
 }
 
 .subinfo {
-    background-color: $background-dark;
+    background-color: $background;
     padding-bottom: 10px;
 }
 
@@ -273,14 +907,14 @@ pre {
 .ltype1 {
     display: block;
     text-indent: 15px;
-    @include fontsettings(24px, 700, 1.7em, $text-dark);
+    @include fontsettings(24px, 700, 1.7em, $text);
 }
 
 .ltype2 {
     display: block;
     text-indent: 15px;
     width: 50%;
-    @include fontsettings(13px, 600, 20px, $gray-dark);
+    @include fontsettings(13px, 600, 20px, $gray);
 }
 
 .primarycolorcase {
@@ -298,13 +932,13 @@ pre {
         margin-top: 25px;
         width: 720px;
         height: auto;
-        background-color: lighten($background-dark, 1%);
+        background-color: lighten($background, 1%);
         border-radius: 4px;    
     }
 }
 
 .authorflair {
-    color: $text-dark;
+    color: $text;
     background-color: $gray-var1;
     padding: 1px;
     border-radius: 2px;
@@ -312,7 +946,7 @@ pre {
 
 .postdata {
     font-size: 12px;
-    color: $gray-dark;
+    color: $gray;
     display: block;
     padding: 15px;
 }
@@ -335,7 +969,7 @@ pre {
 
 .licon {
     @extend %badge;
-    fill: $green-dark;
+    fill: $green;
 
     &.scale {
         transform: scaleX(1.4)
@@ -344,25 +978,25 @@ pre {
 
 .goldicon {
     @extend %badge;
-    fill: $gold-dark;
+    fill: $gold;
 }
 
 .gicon {
     @extend %badge;
-    fill: $gray-dark;
+    fill: $gray;
 }
 
 .ricon {
     @extend %badge;
-    fill: $red-dark;
+    fill: $red;
 }
 
 .sicon {
-    fill: $silver-dark;
+    fill: $silver;
 }
 
 .gtext {
-    @include fontsettings(12px, 700, initial, $gray-dark);
+    @include fontsettings(12px, 700, initial, $gray);
 }
 
 .malign {
@@ -426,10 +1060,10 @@ pre {
     position: absolute;
     right: 0;
     bottom: 0;
-    background-color: $primary-dark;
+    background-color: $primary;
     text-align: center;
     border-radius: 4px 0px;
-    fill: $text-dark;
+    fill: $text;
 }
 
 .m-top10 {
@@ -446,7 +1080,7 @@ img:not(.malign), video {
     margin: auto;
 
     &.preview {
-        box-shadow: 0 0 2px $primary-dark;
+        box-shadow: 0 0 2px $primary;
         border-radius: 4px;
         max-width: 144px
     }
@@ -487,25 +1121,16 @@ img:not(.malign), video {
             width: 10px;
             height: 10px;
             border-radius: 100%;
-            background-color: $silver-dark;
+            background-color: $silver;
             margin: 0px 3px;
-            border: 2px solid $primary-dark;
+            border: 2px solid $primary;
             cursor: pointer;
         }
     }
 }
 
-@mixin tag($color) {
-    border: 1px solid $color;
-    text-align: center;
-    color: $color;
-    font-size: 12px;
-    padding: 0px 4px;
-    margin-left: 5px;
-}
-
 .nsfwtag {
-    @include tag($red-dark)
+    @include tag($red)
 }
 
 .spoilertag {

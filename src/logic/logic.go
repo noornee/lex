@@ -177,6 +177,7 @@ func GetAccount(name, after string) types.Posts {
 	return posts
 }
 
+//nolint:errcheck,forcetypeassert // if a type assertion fails, we recover from it, and we do not check the error in the defer func because it would be very noisy
 func internalDecode(comments *types.Comments) {
 	for i := range comments.Data.Children {
 		func() {
@@ -190,7 +191,7 @@ func internalDecode(comments *types.Comments) {
 			for k := range post.Data.Replies.(map[string]any)["data"].(map[string]any)["children"].([]any) {
 				replyChild := post.Data.Replies.(map[string]any)["data"].(map[string]any)["children"].([]any)[k].(map[string]any)["data"].(map[string]any)
 
-				var newReply = types.InternalCommentData{
+				newReply := types.InternalCommentData{
 					Author:  replyChild["author"].(string),
 					Body:    replyChild["body"].(string),
 					Depth:   replyChild["depth"].(float64),
@@ -206,6 +207,7 @@ func internalDecode(comments *types.Comments) {
 	}
 }
 
+//nolint:errcheck,forcetypeassert // if a type assertion fails, we recover from it, and we do not check the error in the defer func because it would be very noisy
 func subDecode(vRep *[]types.InternalCommentData) {
 	t := *vRep
 	for i := range t {
@@ -217,7 +219,7 @@ func subDecode(vRep *[]types.InternalCommentData) {
 			for k := range t[i].Replies.(map[string]any)["data"].(map[string]any)["children"].([]any) {
 				childReply := t[i].Replies.(map[string]any)["data"].(map[string]any)["children"].([]any)[k].(map[string]any)["data"].(map[string]any)
 
-				var newReply = types.InternalCommentData{
+				newReply := types.InternalCommentData{
 					Author:  childReply["author"].(string),
 					Body:    childReply["body"].(string),
 					Depth:   childReply["depth"].(float64),

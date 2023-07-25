@@ -91,7 +91,7 @@ func GetPosts(subreddit, after, flair string) types.Posts {
 	return posts
 }
 
-func GetComments(subreddit, id string) (types.Posts, []types.InternalCommentData) {
+func GetComments(subreddit, id string) (types.Posts, types.Comments) {
 	url := fmt.Sprintf("https://www.reddit.com/r/%v/comments/%v.json?raw_json=1", subreddit, id)
 
 	req, err := http.NewRequestWithContext(context.Background(), http.MethodGet, url, http.NoBody)
@@ -135,7 +135,7 @@ func GetComments(subreddit, id string) (types.Posts, []types.InternalCommentData
 
 	internalDecode(&comments)
 
-	return post, comments.MReplies
+	return post, comments
 }
 
 func GetAccount(name, after string) types.Posts {
@@ -177,16 +177,61 @@ func GetAccount(name, after string) types.Posts {
 	return posts
 }
 
+//nolint:errcheck,forcetypeassert // if a type assertion fails, we recover from it, and we do not check the error in the defer func because it would be very noisy
 func internalDecode(comments *types.Comments) {
-	for _, v := range comments.Data.Children {
-		comments.MReplies = append(comments.MReplies, v.Data)
+	for i := range comments.Data.Children {
+		func() {
+			defer func() {
+				recover()
+			}()
 
-		var newdecoded types.Comments
+			post := &comments.Data.Children[i]
 
-		if err := json.Unmarshal(v.Data.Replies, &newdecoded); err == nil {
-			// No decoding failure.
-			internalDecode(&newdecoded)
-			comments.MReplies = append(comments.MReplies, newdecoded.MReplies...)
-		}
+			// This is awful.
+			for k := range post.Data.Replies.(map[string]any)["data"].(map[string]any)["children"].([]any) {
+				replyChild := post.Data.Replies.(map[string]any)["data"].(map[string]any)["children"].([]any)[k].(map[string]any)["data"].(map[string]any)
+
+				newReply := types.InternalCommentData{
+					Author:  replyChild["author"].(string),
+					Body:    replyChild["body"].(string),
+					Depth:   replyChild["depth"].(float64),
+					Replies: replyChild["replies"],
+				}
+				post.Data.VReplies = append(post.Data.VReplies, newReply)
+			}
+
+			subDecode(&post.Data.VReplies)
+
+			comments.Data.Children[i] = *post
+		}()
+	}
+}
+
+//nolint:errcheck,forcetypeassert // if a type assertion fails, we recover from it, and we do not check the error in the defer func because it would be very noisy
+func subDecode(vRep *[]types.InternalCommentData) {
+	t := *vRep
+	for i := range t {
+		func() {
+			defer func() {
+				recover()
+			}()
+
+			for k := range t[i].Replies.(map[string]any)["data"].(map[string]any)["children"].([]any) {
+				childReply := t[i].Replies.(map[string]any)["data"].(map[string]any)["children"].([]any)[k].(map[string]any)["data"].(map[string]any)
+
+				newReply := types.InternalCommentData{
+					Author:  childReply["author"].(string),
+					Body:    childReply["body"].(string),
+					Depth:   childReply["depth"].(float64),
+					Replies: childReply["replies"],
+				}
+
+				t[i].VReplies = append(t[i].VReplies, newReply)
+			}
+
+			subDecode(&t[i].VReplies)
+
+			vRep = &t
+		}()
 	}
 }

@@ -1,4 +1,4 @@
-# LEX <br> <a href="https://github.com/cmd777/lex/actions/workflows/build_all_os.yml">![](https://img.shields.io/github/actions/workflow/status/cmd777/lex/build_all_os.yml?logo=github&style=flat-square)</a> <a href="https://github.com/cmd777/lex/blob/main/LICENSE">![](https://img.shields.io/github/license/cmd777/lex?logo=opensourceinitiative&style=flat-square)</a>
+# LEX <br> <a href="https://github.com/cmd777/lex/actions/workflows/build_all_os.yml">![](https://img.shields.io/github/actions/workflow/status/cmd777/lex/build_all_os.yml?logo=github&style=for-the-badge)</a> <a href="https://github.com/cmd777/lex/blob/main/LICENSE">![](https://img.shields.io/github/license/cmd777/lex?logo=opensourceinitiative&style=for-the-badge)</a> <a href="https://github.com/cmd777/lex/blob/main/go.mod">![](https://img.shields.io/github/go-mod/go-version/cmd777/lex?style=for-the-badge&logo=go)</a>
 
 ## Table of Contents
 
@@ -78,7 +78,7 @@ If Go is installed, run the following commands in your terminal
 git clone https://github.com/cmd777/lex.git &&
 cd lex/cmd/lex &&
 go get -u &&
-go build
+go run main.go
 ```
 That's everything! All you need to do next, is just navigate to `http://localhost:9090/r/{your_favorite_subreddit}`
 
@@ -86,7 +86,7 @@ That's everything! All you need to do next, is just navigate to `http://localhos
 
 LEX provides downloadable, pre-built binaries for all major operating systems, including Windows, Linux, and MacOS.
 
-To install LEX via these automatically built binaries, go to the [releases](https://github.com/cmd777/lex/releases/latest) tab, and download the appropriate zip for your OS + ARCH, and extract it.
+To install LEX via these automatically built binaries, go to the [releases](https://github.com/cmd777/lex/releases/latest) tab, and within the `snapshot` tag, download the appropriate zip for your OS + ARCH, and extract it.
 
 - For 32 bit Windows machines, download `lex-windows.zip`, then launch lex-i386-windows.exe
 - For 64 bit Windows machines, download `lex-windows.zip`, then launch lex-amd64-windows.exe
@@ -118,7 +118,13 @@ which will install the latest version of LEX.
 
 Afterwards, simply run `lex` in your terminal, and that's everything!
 
-> **Note** you may need to add `export PATH=$PATH:$(go env GOPATH)/bin` to your `.profile` file to be able to use the command `lex`!
+> **Note**
+>
+> you may need to add `export PATH=$PATH:$(go env GOPATH)/bin` to your `.profile` file to be able to use the command `lex`!
+
+> **Warning**
+>
+> Since version 299833, an auto-updater has been implemented, but go install does not install the auto-updater.
 
 If you wish to uninstall LEX, simply run the following command:
 ```shell
@@ -131,7 +137,7 @@ rm $(go env GOPATH)/bin/lex
 
 | ![](https://raw.githubusercontent.com/cmd777/lex/main/docs/images/chrome.svg) Chrome | ![](https://raw.githubusercontent.com/cmd777/lex/main/docs/images/edge.svg) Edge | ![](https://raw.githubusercontent.com/cmd777/lex/main/docs/images/safari.svg) Safari | ![](https://raw.githubusercontent.com/cmd777/lex/main/docs/images/firefox.svg) Firefox | ![](https://raw.githubusercontent.com/cmd777/lex/main/docs/images/opera.svg) Opera | ![](https://raw.githubusercontent.com/cmd777/lex/main/docs/images/iexplorer.svg) IE |
 |:------:|:----:|:------:|:-------:|:-----:|:----------------:|
-| 26>    | 19>  | 6.1>   | 49>     | 12.1> | 11<sup>(?)</sup> |
+| 26>    | 19>  | 6.1>   | 49>     | 15> | 11<sup>(?)</sup> |
 
 <details>
 <summary>INFScroll Setting Enabled</summary>
@@ -190,7 +196,7 @@ rm $(go env GOPATH)/bin/lex
 
 | ![](https://raw.githubusercontent.com/cmd777/lex/main/docs/images/windows.svg) Windows | ![](https://raw.githubusercontent.com/cmd777/lex/main/docs/images/linux.svg) Linux | ![](https://raw.githubusercontent.com/cmd777/lex/main/docs/images/macos.svg) macOS |
 | :-----: | :---: | :---: |
-| Windows 7 and higher | Kernel version 2.6.32 or later | macOS High Sierra 10.13 or newer
+| Windows 7 or newer | Kernel version 2.6.32 or newer | macOS High Sierra 10.13 or newer
 
 <sub>The table displays the **required** minimum versions for operating systems.</sub>
 
@@ -206,13 +212,13 @@ I try to fix most of the critical bugs before pushing any changes, but if you fi
 
 For the features that are planned to be added, or the things that need to be fixed, you can once again, take a look at the [issues tab](https://github.com/cmd777/lex/issues) 
 
-I work on LEX in my free time as a hobby, so development may be slow, thank you for your patience!
+I work on LEX in my free time as a hobby, therefore development may be slow, thank you for your patience!
 
 # 📜 Legal Disclaimer
 
 LEX is not affiliated with, sponsored, or endorsed by Reddit.
 
-All content that is displayed on LEX has been sourced from Reddit. LEX does not host any of the content
+All content that is displayed on LEX has been sourced from Reddit. LEX does not host any of the content.
 
 In case of any issues with a post, such as copyright infringement, trademark infringement, or violation of Reddit's community rules, the reports should be directed to Reddit.
 
@@ -270,6 +276,11 @@ LEX does not endorse <a href="https://www.merriam-webster.com/dictionary/libel">
 <details>
   <summary><a href="https://github.com/googlefonts/opensans">Open Sans</a> ➡️ Subreddit font</summary>
   https://github.com/googlefonts/opensans/blob/main/OFL.txt
+</details>
+
+<details>
+  <summary><a href="https://fonts.google.com/specimen/Teko/about">Teko</a> ➡️ Favicon font</summary>
+  https://fonts.google.com/specimen/Teko/about (OFL)
 </details>
 
 <details>

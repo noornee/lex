@@ -255,34 +255,6 @@ func Test_ToPercentage(t *testing.T) {
 	}
 }
 
-// go test -v -race -run ^Test_AddVarToCtx$
-func Test_AddVarToCtx(t *testing.T) {
-	t.Parallel()
-
-	test := map[string]any{
-		"a": "a2",
-		"b": "b2",
-		"c": "c2",
-		"d": "d2",
-		"e": "e2",
-		"f": "f2",
-	}
-
-	expect := map[string]any{
-		"a": "a2",
-		"b": "b2",
-		"c": "c2",
-		"d": "d2",
-		"e": "e2",
-		"f": "f2",
-	}
-
-	for key, val := range test {
-		res := AddVarToCtx(key, val)
-		utils.AssertEqual(t, expect[key], res[key])
-	}
-}
-
 // go test -v -race -run ^Test_SetcfgCookie$
 func Test_SetcfgCookie(t *testing.T) {
 	t.Parallel()

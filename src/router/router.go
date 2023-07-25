@@ -385,7 +385,7 @@ func StartServer() {
 	})
 
 	router.Get("/", func(ctx *fiber.Ctx) error {
-		return ctx.Render("views/index", nil)
+		return ctx.Render("views/index", fiber.Map{})
 	})
 
 	router.Get("/config", func(ctx *fiber.Ctx) error {
@@ -444,7 +444,7 @@ func StartServer() {
 		}
 
 		if len(posts.Data.Children) == 0 {
-			return ctx.Render("views/404", nil)
+			return ctx.Render("views/404", fiber.Map{})
 		}
 
 		// Cache subreddit data, so we don't have to keep making requests every single time.
@@ -568,7 +568,7 @@ func StartServer() {
 
 	// NoRoute
 	router.Use(func(ctx *fiber.Ctx) error {
-		return ctx.Status(fiber.StatusNotFound).Render("views/404", nil)
+		return ctx.Status(fiber.StatusNotFound).Render("views/404", fiber.Map{})
 	})
 
 	// Shutting down

@@ -11,7 +11,7 @@
 <body>
     {{template "views/navbar" .}}
 
-    <div class="flexbox flex-center column sicon pad-10" style="margin-top: 100px; color: #fff;">
+    <div class="flexbox flex-center column sicon pad-10" style="margin-top: 100px;">
         <p style="font-size:42px; font-family: 'Josefin Sans', sans-serif; color: #108dcc">Settings</p>
 
         <form action="/config" method="post" class="configform">
@@ -151,6 +151,143 @@
                 <input type="submit" value="Save Changes">
             </label>
         </form>
+
+        <div class="content">
+            <div class="subinfo">
+                <div class="ext">
+                    <img class="img" style="background-color: #777;">
+                    <span class="ltext ltype1">r/example - example text</span>
+                    <span class="ltext ltype2">r/example &bullet; Created Jun 1, 2023 (time ago) &bullet; 500,000 Active Users &bullet; 12,345,678 Members &bullet; <span class="primarycolorcase" style="background-color: #777;">&nbsp;</span> #777 Primary color</span>
+                    <span class="ltext ltype2">example description</span>
+                </div>
+            </div>
+            <div id="posts">
+                <div class="post">
+                    <div class="postdata">
+                        <span>
+                            <svg width="16" height="16" viewBox="0 0 512 512" version="1.1" class="licon">
+                                <path fill-rule="evenodd" d="M335.719 0l-49.953 49.953 26.453 26.438c0 0-20.563 20.578-55.844 55.828-61.688 61.703-133.813 48.891-165.859 16.828l-45.406 45.406 272.438 272.453 45.406-45.422c-32.047-32.047-44.859-104.172 16.828-165.859 35.25-35.266 55.828-55.828 55.828-55.828l26.438 26.438L512 176.297 335.719 0M158 306 3.719 460.234 0 512 51.781 508.297 202 350z"></path>
+                            </svg>
+                            Pinned by Moderators &bullet;
+        
+                            Posted by <a>u/Example</a>
+        
+                            <span class="authorflair">Example Author Flair</span>
+        
+                            <svg width="16" height="16" viewBox="0 0 32 32" version="1.1" class="licon scale">
+                                <path fill-rule="evenodd" d="M16 1c1.562 1.5 6.25 4.5 9.375 4.5 0 1.5 0 4.5 0 6 0 6-4.688 15-9.375 19.5-4.688-4.5-9.375-13.5-9.375-19.5 0-1.5 0-4.5 0-6 3.126 0.001 7.813-2.999 9.375-4.5v0z"></path>
+                            </svg>
+        
+                            <svg width="16" height="16" viewBox="0 0 260 260" version="1.1" class="ricon">
+                                <path fill-rule="evenodd" d="M258 2l-16 48L97.06 181.76l-7.23-11.14-11.68-7.58L210 18 258 2zM101.029 238.26l11.314-11.314-31.176-48.02-48.02-31.176-11.314 11.314 31.386 31.386-34.26 37.693c-4.464-.586-9.138.82-12.568 4.249-5.858 5.858-5.858 15.355 0 21.213 5.858 5.858 15.355 5.858 21.213 0 3.428-3.428 4.834-8.1 4.25-12.562l37.695-34.262L101.029 238.26z"></path>
+                            </svg>
+        
+                            Posted 7 minutes ago
+        
+                            <svg width="16" height="16" viewBox="0 0 24 24" version="1.1" class="goldicon">
+                                <path fill-rule="evenodd" d="M0 4.6A2.6 2.6 0 0 1 2.6 2h18.8A2.6 2.6 0 0 1 24 4.6v.8A2.6 2.6 0 0 1 21.4 8H21v10.6c0 1.33-1.07 2.4-2.4 2.4H5.4C4.07 21 3 19.93 3 18.6V8h-.4A2.6 2.6 0 0 1 0 5.4v-.8ZM2.6 4a.6.6 0 0 0-.6.6v.8a.6.6 0 0 0 .6.6h18.8a.6.6 0 0 0 .6-.6v-.8a.6.6 0 0 0-.6-.6H2.6ZM8 10a1 1 0 1 0 0 2h8a1 1 0 1 0 0-2H8z"></path>
+                            </svg>
+        
+                            <svg width="16" height="16" viewBox="0 0 1024 1024" version="1.1" class="goldicon">
+                                <path fill-rule="evenodd" d="M829.4 1024H194.6c-60.3 0-109.3-49-109.3-109.3v-464c0-60.3 49-109.3 109.3-109.3h634.7c60.3 0 109.3 49 109.3 109.3v464c.1 60.3-49 109.3-109.2 109.3zM726 385c-18-18-17-17-42.7-42.7V256c0-94.1-76.6-170.7-170.7-170.7S341.3 161.9 341.3 256v88S341 344 256 342V256C256 114.8 370.8 0 512 0s256 114.8 256 256v87zc-17-17-26-26-42.7-42.7z"></path>
+                            </svg>
+                        </span>
+                    </div>
+        
+                    <div class="post-content flexbox">
+                        <div class="flex-auto">
+                            <a style="color: inherit; border: none;">
+                                <span class="post-flair flex-start" style="background-color: #777">Example Flair</span>
+                            </a>
+                            <span class="post-title">This is an example title
+                                <span class="nsfwtag">nsfw</span>
+                                <span class="spoilertag">spoiler</span>
+                            </span>
+                            <div class="m-top10">
+                                <span style="font-size: 14px;">This is example content</span>
+                            </div>
+        
+                            <p style="text-align: center;">Sorry, crossposting is not supported yet. here is a link to the original post: <a>https://example.com</a></p>
+                        
+                            <div class="m-top10">
+                                <div class="gallery" tabindex="-1">
+                                    <input type="radio" name="gallery" id="slide-1" checked>
+                                    <input type="radio" name="gallery" id="slide-2">
+                                    <input type="radio" name="gallery" id="slide-3">
+                                    <input type="radio" name="gallery" id="slide-4">
+                                    <input type="radio" name="gallery" id="slide-5">
+        
+                                    <div class="gallery-nav">
+                                        <label for="slide-1"></label>
+                                        <label for="slide-2"></label>
+                                        <label for="slide-3"></label>
+                                        <label for="slide-4"></label>
+                                        <label for="slide-5"></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <div class="post-footer">
+                        <a class="l-hovergray">
+                            <svg width="16" height="16" viewBox="0 0 32 32" version="1.1" class="gicon">
+                                <path fill-rule="evenodd" d="M25.785 4.952h-19.57c-1.235 0-2.236 1.002-2.236 2.236v12.488c0 1.234 1.001 2.236 2.236 2.236h3.729l.001 5.137 5.704-5.137h10.137c1.236 0 2.236-1.002 2.236-2.236v-12.488c-.001-1.234-1.001-2.236-2.237-2.236z"></path>
+                            </svg>
+            
+                            <span class="gtext">1,234 Comments</span>
+                        </a>
+                        <a class="l-hovergray">
+                            <svg width="16" height="16" viewBox="0 0 24 24" version="1.1" class="gicon">
+                                <path fill-rule="evenodd" d="M18 1C15.7909 1 14 2.79086 14 5C14 5.19436 14.0139 5.38549 14.0407 5.57244L8.4479 8.83625C7.77136 8.31202 6.92212 8 6 8C3.79086 8 2 9.79086 2 12C2 14.2091 3.79086 16 6 16C6.92229 16 7.77167 15.6879 8.44827 15.1635L14.0414 18.4227C14.0141 18.6112 14 18.8039 14 19C14 21.2091 15.7909 23 18 23C20.2091 23 22 21.2091 22 19C22 16.7909 20.2091 15 18 15C17.0797 15 16.232 15.3108 15.5561 15.8332L9.95943 12.5719C9.98617 12.3851 10 12.1942 10 12C10 11.8057 9.98614 11.6146 9.95936 11.4277L15.5522 8.16382C16.2287 8.688 17.0779 9 18 9C20.2091 9 22 7.20914 22 5C22 2.79086 20.2091 1 18 1z"></path>
+                            </svg>
+            
+                            <span class="gtext">Link to Post</span>
+                        </a>
+                                    
+                        <div style="float: left; padding: 5px; margin-right: 15px;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" version="1.1" class="gicon">
+                                <path fill-rule="evenodd" d="M11.2929 4.29289C11.6834 3.90237 12.3166 3.90237 12.7071 4.29289L18.7071 10.2929C19.0976 10.6834 19.0976 11.3166 18.7071 11.7071C18.3166 12.0976 17.6834 12.0976 17.2929 11.7071L13 7.41421V19C13 19.5523 12.5523 20 12 20C11.4477 20 11 19.5523 11 19V7.41421L6.70711 11.7071C6.31658 12.0976 5.68342 12.0976 5.29289 11.7071C4.90237 11.3166 4.90237 10.6834 5.29289 10.2929L11.2929 4.29289z"></path>
+                            </svg>
+            
+                            <span class="gtext"> 5,000 Upvotes &bullet; 100% Upvote Ratio</span>
+                        </div>
+            
+                        <a class="l-hovergray">
+                            <svg width="16" height="16" viewBox="0 0 24 24" version="1.1" class="gicon">
+                                <path fill-rule="evenodd" d="M21.7092 2.295C21.8041 2.3904 21.8757 2.5001 21.9241 2.6172 21.9727 2.7342 21.9996 2.8625 22 2.997L22 3V9C22 9.5523 21.5523 10 21 10 20.4477 10 20 9.5523 20 9V5.4142L14.7071 10.7071C14 10 14 10 13.2929 9.2929L18.5858 4H15C14.4477 4 14 3.5523 14 3 14 2.4477 14.4477 2 15 2H20.9998C21.2749 2 21.5242 2.1111 21.705 2.2908L21.7092 2.295M14.709 10.707 5.4142 20H9C9.5523 20 10 20.4477 10 21 10 21.5523 9.5523 22 9 22H3.0007L2.997 22C2.743 21.9992 2.4892 21.9023 2.295 21.7092L2.2908 21.705C2.1959 21.6096 2.1243 21.4999 2.0759 21.3828 2.027 21.2649 2 21.1356 2 21V15C2 14.4477 2.4477 14 3 14 3.5523 14 4 14.4477 4 15V18.5858L13.291 9.292z"></path>
+                            </svg>
+                            
+                            <span class="gtext">GIF</span>
+                        </a>
+        
+                        <a class="l-hovergray">
+                            <svg width="16" height="16" viewBox="0 0 24 24" version="1.1" class="gicon">
+                                <path fill-rule="evenodd" d="M21.7092 2.295C21.8041 2.3904 21.8757 2.5001 21.9241 2.6172 21.9727 2.7342 21.9996 2.8625 22 2.997L22 3V9C22 9.5523 21.5523 10 21 10 20.4477 10 20 9.5523 20 9V5.4142L14.7071 10.7071C14 10 14 10 13.2929 9.2929L18.5858 4H15C14.4477 4 14 3.5523 14 3 14 2.4477 14.4477 2 15 2H20.9998C21.2749 2 21.5242 2.1111 21.705 2.2908L21.7092 2.295M14.709 10.707 5.4142 20H9C9.5523 20 10 20.4477 10 21 10 21.5523 9.5523 22 9 22H3.0007L2.997 22C2.743 21.9992 2.4892 21.9023 2.295 21.7092L2.2908 21.705C2.1959 21.6096 2.1243 21.4999 2.0759 21.3828 2.027 21.2649 2 21.1356 2 21V15C2 14.4477 2.4477 14 3 14 3.5523 14 4 14.4477 4 15V18.5858L13.291 9.292z"></path>
+                            </svg>
+        
+                            <span class="gtext">MP4</span>
+                        </a>
+        
+                        <a class="l-hovergray">
+                            <svg width="16" height="16" viewBox="0 0 24 24" version="1.1" class="gicon">
+                                <path fill-rule="evenodd" d="M21.7092 2.295C21.8041 2.3904 21.8757 2.5001 21.9241 2.6172 21.9727 2.7342 21.9996 2.8625 22 2.997L22 3V9C22 9.5523 21.5523 10 21 10 20.4477 10 20 9.5523 20 9V5.4142L14.7071 10.7071C14 10 14 10 13.2929 9.2929L18.5858 4H15C14.4477 4 14 3.5523 14 3 14 2.4477 14.4477 2 15 2H20.9998C21.2749 2 21.5242 2.1111 21.705 2.2908L21.7092 2.295M14.709 10.707 5.4142 20H9C9.5523 20 10 20.4477 10 21 10 21.5523 9.5523 22 9 22H3.0007L2.997 22C2.743 21.9992 2.4892 21.9023 2.295 21.7092L2.2908 21.705C2.1959 21.6096 2.1243 21.4999 2.0759 21.3828 2.027 21.2649 2 21.1356 2 21V15C2 14.4477 2.4477 14 3 14 3.5523 14 4 14.4477 4 15V18.5858L13.291 9.292z"></path>
+                            </svg>
+        
+                            <span class="gtext">Source Image</span>
+                        </a>
+        
+                        <a class="l-hovergray">
+                            <svg width="16" height="16" viewBox="0 0 24 24" version="1.1" class="gicon">
+                                <path fill-rule="evenodd" d="M21.7092 2.295C21.8041 2.3904 21.8757 2.5001 21.9241 2.6172 21.9727 2.7342 21.9996 2.8625 22 2.997L22 3V9C22 9.5523 21.5523 10 21 10 20.4477 10 20 9.5523 20 9V5.4142L14.7071 10.7071C14 10 14 10 13.2929 9.2929L18.5858 4H15C14.4477 4 14 3.5523 14 3 14 2.4477 14.4477 2 15 2H20.9998C21.2749 2 21.5242 2.1111 21.705 2.2908L21.7092 2.295M14.709 10.707 5.4142 20H9C9.5523 20 10 20.4477 10 21 10 21.5523 9.5523 22 9 22H3.0007L2.997 22C2.743 21.9992 2.4892 21.9023 2.295 21.7092L2.2908 21.705C2.1959 21.6096 2.1243 21.4999 2.0759 21.3828 2.027 21.2649 2 21.1356 2 21V15C2 14.4477 2.4477 14 3 14 3.5523 14 4 14.4477 4 15V18.5858L13.291 9.292z"></path>
+                            </svg>
+        
+                            <span class="gtext">Source Video</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 </html>

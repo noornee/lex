@@ -116,7 +116,9 @@ func GetComments(subreddit, id string) (types.Posts, types.Comments) {
 		}
 	}()
 
-	var commentsunmarshal types.CommentsToUnmarshal
+	var commentsunmarshal struct {
+		Data []json.RawMessage `json:"data"`
+	}
 
 	if err = json.NewDecoder(resp.Body).Decode(&commentsunmarshal.Data); err != nil {
 		log.Errorf("json NewDecoder failed to decode JSON: %w", err)
@@ -126,11 +128,11 @@ func GetComments(subreddit, id string) (types.Posts, types.Comments) {
 	var comments types.Comments
 
 	if err = json.Unmarshal(commentsunmarshal.Data[0], &post); err != nil {
-		log.Errorf("json failed to unmarshal JSON: %w", err)
+		log.Errorf("json failed to unmarshal post JSON: %w", err)
 	}
 
 	if err = json.Unmarshal(commentsunmarshal.Data[1], &comments); err != nil {
-		log.Errorf("json failed to unmarshal JSON: %w", err)
+		log.Errorf("json failed to unmarshal comments JSON: %w", err)
 	}
 
 	internalDecode(&comments)

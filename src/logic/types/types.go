@@ -1,9 +1,5 @@
 package types
 
-import (
-	"github.com/goccy/go-json"
-)
-
 // The Subreddit and Posts themselves
 type Subreddit struct {
 	Data struct {
@@ -143,11 +139,6 @@ type InternalMetaData struct {
 		MP4 string `json:"mp4"`
 	} `json:"s"`
 	// HLSUrl string `json:"hlsUrl"`
-}
-
-// Comments
-type CommentsToUnmarshal struct {
-	Data []json.RawMessage `json:"data"`
 }
 
 type Comments struct {

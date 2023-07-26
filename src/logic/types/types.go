@@ -26,36 +26,19 @@ type Posts struct {
 }
 
 type internalPostData struct {
-	Title        string  `json:"title"`
-	SelfText     string  `json:"selftext"`
-	Body         string  `json:"body"`
-	SubNamePref  string  `json:"subreddit_name_prefixed"`
-	PostFlair    string  `json:"link_flair_text"`
-	PostFlairHex string  `json:"link_flair_background_color"`
-	UpvoteRatio  float64 `json:"upvote_ratio"`
-	Ups          float64 `json:"ups"`
-	Created      float64 `json:"created"`
-	Pinned       bool    `json:"stickied"`
-	Locked       bool    `json:"locked"`
-	Archived     bool    `json:"archived"`
-	Awardings    []struct {
-		AwardSubType string `json:"award_sub_type"`
-		Name         string `json:"name"`
-		ResizedIcons []struct {
-			URL string `json:"url"`
-		} `json:"resized_icons"`
-		Count float64 `json:"count"`
-	} `json:"all_awardings"`
-	Author        string  `json:"author"`
-	AuthorFlair   string  `json:"author_flair_text"`
-	NSFW          bool    `json:"over_18"`
-	Spoiler       bool    `json:"spoiler"`
-	PostHint      string  `json:"post_hint"`
-	Distinguished string  `json:"distinguished"`
-	PostID        string  `json:"id"`
-	CommentCount  float64 `json:"num_comments"`
-	Permalink     string  `json:"permalink"`
-	LinkURL       string  `json:"url"`
+	Title         string `json:"title"`
+	SelfText      string `json:"selftext"`
+	Body          string `json:"body"`
+	SubNamePref   string `json:"subreddit_name_prefixed"`
+	PostFlair     string `json:"link_flair_text"`
+	PostFlairHex  string `json:"link_flair_background_color"`
+	Author        string `json:"author"`
+	AuthorFlair   string `json:"author_flair_text"`
+	PostHint      string `json:"post_hint"`
+	Distinguished string `json:"distinguished"`
+	PostID        string `json:"id"`
+	Permalink     string `json:"permalink"`
+	LinkURL       string `json:"url"`
 
 	// videos
 	SecureMedia struct {
@@ -112,6 +95,25 @@ type internalPostData struct {
 		// todo: finish
 		Permalink string `json:"permalink"`
 	} `json:"crosspost_parent_list"`
+
+	Awardings []struct {
+		AwardSubType string `json:"award_sub_type"`
+		Name         string `json:"name"`
+		ResizedIcons []struct {
+			URL string `json:"url"`
+		} `json:"resized_icons"`
+		Count float64 `json:"count"`
+	} `json:"all_awardings"`
+
+	UpvoteRatio  float64 `json:"upvote_ratio"`
+	Ups          float64 `json:"ups"`
+	Created      float64 `json:"created"`
+	CommentCount float64 `json:"num_comments"`
+	Pinned       bool    `json:"stickied"`
+	Locked       bool    `json:"locked"`
+	Archived     bool    `json:"archived"`
+	NSFW         bool    `json:"over_18"`
+	Spoiler      bool    `json:"spoiler"`
 }
 
 type InternalCommentData struct {

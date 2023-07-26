@@ -324,12 +324,12 @@ func Test_SortPostData(t *testing.T) {
 
 	utils.AssertEqual(t, false, testpost.Data.Archived)
 	utils.AssertEqual(t, "jerf", testpost.Data.Author)
-	utils.AssertEqual(t, int64(0), testpost.Data.CommentCount)
+	utils.AssertEqual(t, float64(0), testpost.Data.CommentCount)
 	utils.AssertEqual(t, "/r/golang/comments/147zgzw/reddit_api_protest/", testpost.Data.Permalink)
 	utils.AssertEqual(t, "147zgzw", testpost.Data.PostID)
 	utils.AssertEqual(t, "r/golang", testpost.Data.SubNamePref)
 	utils.AssertEqual(t, "Reddit API Protest", testpost.Data.Title)
-	utils.AssertEqual(t, int64(279), testpost.Data.Ups)
+	utils.AssertEqual(t, float64(279), testpost.Data.Ups)
 	utils.AssertEqual(t, float64(0.84), testpost.Data.UpvoteRatio)
 	utils.AssertEqual(t, "", testpost.Data.Body)
 }

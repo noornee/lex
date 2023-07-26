@@ -105,15 +105,16 @@ type internalPostData struct {
 		Count float64 `json:"count"`
 	} `json:"all_awardings"`
 
-	UpvoteRatio  float64 `json:"upvote_ratio"`
-	Ups          float64 `json:"ups"`
-	Created      float64 `json:"created"`
-	CommentCount float64 `json:"num_comments"`
-	Pinned       bool    `json:"stickied"`
-	Locked       bool    `json:"locked"`
-	Archived     bool    `json:"archived"`
-	NSFW         bool    `json:"over_18"`
-	Spoiler      bool    `json:"spoiler"`
+	UpvoteRatio     float64 `json:"upvote_ratio"`
+	Ups             float64 `json:"ups"`
+	Created         float64 `json:"created"`
+	CommentCount    float64 `json:"num_comments"`
+	Pinned          bool    `json:"stickied"`
+	Locked          bool    `json:"locked"`
+	Archived        bool    `json:"archived"`
+	NSFW            bool    `json:"over_18"`
+	Spoiler         bool    `json:"spoiler"`
+	OriginalContent bool    `json:"is_original_content"`
 }
 
 type InternalCommentData struct {

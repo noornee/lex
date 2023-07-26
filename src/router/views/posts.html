@@ -67,6 +67,7 @@
                 <span class="post-title">{{.Data.Title}}
                     {{if .Data.NSFW}}<span class="nsfwtag">nsfw</span>{{end}}
                     {{if .Data.Spoiler}}<span class="spoilertag">spoiler</span>{{end}}
+                    {{if .Data.OriginalContent}}<span class="originaltag">OC</span>{{end}}
                 </span>
 
                 {{if .Data.SelfText}}

@@ -1,10 +1,11 @@
-@mixin tag($color) {
-    border: 1px solid $color;
+@mixin tag($color, $bordercolor) {
+    border: 1px solid $bordercolor;
     text-align: center;
     color: $color;
     font-size: 12px;
     padding: 0px 4px;
     margin-left: 5px;
+    border-radius: 5px;
 }
 
 @mixin fontsettings($size, $weight, $lheight, $color) {
@@ -144,7 +145,7 @@ html.solarized {
     }
     
     .nsfwtag {
-        @include tag($red-solarized)
+        @include tag($red-solarized, $red-solarized)
     }
 
     .post-footer .l-hovergray:hover {
@@ -152,7 +153,12 @@ html.solarized {
     }
 
     .spoilertag {
-        @include tag($gray-var2-solarized)
+        @include tag($gray-var2-solarized, $gray-var2-solarized)
+    }
+
+    .originaltag {
+        @include tag($text-solarized, $primary-solarized);
+        background-color: $primary-solarized;
     }
 
     .configform {
@@ -273,7 +279,7 @@ html.dracula {
     }
     
     .nsfwtag {
-        @include tag($red-dracula)
+        @include tag($red-dracula, $red-dracula)
     }
 
     .post-footer .l-hovergray:hover {
@@ -281,7 +287,12 @@ html.dracula {
     }
 
     .spoilertag {
-        @include tag($gray-var2-dracula)
+        @include tag($gray-var2-dracula, $gray-var2-dracula)
+    }
+
+    .originaltag {
+        @include tag($text-dracula, $primary-dracula);
+        background-color: $primary-dracula;
     }
 
     .configform {
@@ -402,7 +413,7 @@ html.abyss {
     }
     
     .nsfwtag {
-        @include tag($red-abyss)
+        @include tag($red-abyss, $red-abyss)
     }
 
     .post-footer .l-hovergray:hover {
@@ -410,7 +421,12 @@ html.abyss {
     }
 
     .spoilertag {
-        @include tag($gray-var2-abyss)
+        @include tag($gray-var2-abyss, $gray-var2-abyss)
+    }
+
+    .originaltag {
+        @include tag($text-abyss, $primary-abyss);
+        background-color: $primary-abyss;
     }
 
     .configform {
@@ -531,7 +547,7 @@ html.monokai {
     }
     
     .nsfwtag {
-        @include tag($red-monokai)
+        @include tag($red-monokai, $red-monokai)
     }
 
     .post-footer .l-hovergray:hover {
@@ -539,7 +555,12 @@ html.monokai {
     }
 
     .spoilertag {
-        @include tag($gray-var2-monokai)
+        @include tag($gray-var2-monokai, $gray-var2-monokai)
+    }
+
+    .originaltag {
+        @include tag($text-monokai, $primary-monokai);
+        background-color: $primary-monokai;
     }
 
     .configform {
@@ -661,7 +682,7 @@ html.redtheme {
     }
     
     .nsfwtag {
-        @include tag($red-redtheme)
+        @include tag($red-redtheme, $red-redtheme)
     }
 
     .post-footer .l-hovergray:hover {
@@ -669,7 +690,12 @@ html.redtheme {
     }
 
     .spoilertag {
-        @include tag($gray-var2-redtheme)
+        @include tag($gray-var2-redtheme, $gray-var2-redtheme)
+    }
+
+    .originaltag {
+        @include tag($text-redtheme, $primary-redtheme);
+        background-color: $primary-redtheme;
     }
 
     .configform {
@@ -791,7 +817,7 @@ html.lighttheme {
     }
     
     .nsfwtag {
-        @include tag($red-lighttheme)
+        @include tag($red-lighttheme, $red-lighttheme)
     }
 
     .post-footer .l-hovergray:hover {
@@ -799,7 +825,12 @@ html.lighttheme {
     }
 
     .spoilertag {
-        @include tag($gray-var2-lighttheme)
+        @include tag($gray-var2-lighttheme, $gray-var2-lighttheme)
+    }
+
+    .originaltag {
+        @include tag($text-lighttheme, $primary-lighttheme);
+        background-color: $primary-lighttheme;
     }
 
     .configform {
@@ -1166,11 +1197,16 @@ img:not(.malign), video {
 }
 
 .nsfwtag {
-    @include tag($red)
+    @include tag($red, $red);
 }
 
 .spoilertag {
-    @include tag($gray-var2)
+    @include tag($gray-var2, $gray-var2);
+}
+
+.originaltag {
+    @include tag($text, $primary);
+    background-color: $primary;
 }
 
 .configform {

@@ -218,7 +218,7 @@ func StartServer() {
 		"sanitize":       Sanitize,
 		"qualifiesAsImg": QualifiesAsImg,
 		"fmtEpochDate":   FmtEpochDate,
-		"fmtHumanComma":  humanize.Comma,
+		"fmtHumanComma":  humanize.Commaf,
 		"fmtHumanDate":   FmtHumanDate,
 		"toPercentage":   ToPercentage,
 	})

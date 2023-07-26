@@ -39,12 +39,12 @@ type internalPostData struct {
 	Locked       bool    `json:"locked"`
 	Archived     bool    `json:"archived"`
 	Awardings    []struct {
-		AwardSubType string  `json:"award_sub_type"`
-		Count        float64 `json:"count"`
-		Name         string  `json:"name"`
+		AwardSubType string `json:"award_sub_type"`
+		Name         string `json:"name"`
 		ResizedIcons []struct {
 			URL string `json:"url"`
 		} `json:"resized_icons"`
+		Count float64 `json:"count"`
 	} `json:"all_awardings"`
 	Author        string  `json:"author"`
 	AuthorFlair   string  `json:"author_flair_text"`
@@ -67,13 +67,13 @@ type internalPostData struct {
 
 	// images
 	Preview struct {
+		AutoChosenImageQuality  string
+		AutoChosenPosterQuality string
+		RedditVideoPreview      struct {
+			HLSURL      string `json:"hls_url"`
+			FallbackURL string `json:"fallback_url"`
+		} `json:"reddit_video_preview"`
 		Images []struct {
-			Source struct {
-				URL string `json:"url"`
-			} `json:"source"`
-			Resolutions []struct {
-				URL string `json:"url"`
-			} `json:"resolutions"`
 			Variants struct {
 				GIF struct {
 					Source struct {
@@ -89,13 +89,13 @@ type internalPostData struct {
 					} `json:"resolutions"`
 				} `json:"mp4"`
 			} `json:"variants"`
+			Source struct {
+				URL string `json:"url"`
+			} `json:"source"`
+			Resolutions []struct {
+				URL string `json:"url"`
+			} `json:"resolutions"`
 		} `json:"images"`
-		RedditVideoPreview struct {
-			HLSURL      string `json:"hls_url"`
-			FallbackURL string `json:"fallback_url"`
-		} `json:"reddit_video_preview"`
-		AutoChosenImageQuality  string
-		AutoChosenPosterQuality string
 	} `json:"preview"`
 
 	// gallery

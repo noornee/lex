@@ -1,20 +1,16 @@
 package types
 
-import (
-	"github.com/goccy/go-json"
-)
-
 // The Subreddit and Posts themselves
 type Subreddit struct {
 	Data struct {
 		Title               string  `json:"title"`
 		PrimaryColor        string  `json:"primary_color"`
 		DisplayNamePrefixed string  `json:"display_name_prefixed"`
-		ActiveUserCount     int64   `json:"accounts_active"`
-		MemberCount         int64   `json:"subscribers"`
 		Description         string  `json:"public_description"`
 		CommunityIcon       string  `json:"community_icon"`
 		Banner              string  `json:"banner_background_image"`
+		ActiveUserCount     float64 `json:"accounts_active"`
+		MemberCount         float64 `json:"subscribers"`
 		Created             float64 `json:"created"`
 		NSFW                bool    `json:"over18"`
 	} `json:"data"`
@@ -30,34 +26,17 @@ type Posts struct {
 }
 
 type internalPostData struct {
-	Title        string  `json:"title"`
-	SelfText     string  `json:"selftext"`
-	Body         string  `json:"body"`
-	SubNamePref  string  `json:"subreddit_name_prefixed"`
-	PostFlair    string  `json:"link_flair_text"`
-	PostFlairHex string  `json:"link_flair_background_color"`
-	UpvoteRatio  float64 `json:"upvote_ratio"`
-	Ups          int64   `json:"ups"`
-	Created      float64 `json:"created"`
-	Pinned       bool    `json:"stickied"`
-	Locked       bool    `json:"locked"`
-	Archived     bool    `json:"archived"`
-	Awardings    []struct {
-		AwardSubType string `json:"award_sub_type"`
-		Count        int64  `json:"count"`
-		Name         string `json:"name"`
-		ResizedIcons []struct {
-			URL string `json:"url"`
-		} `json:"resized_icons"`
-	} `json:"all_awardings"`
+	Title         string `json:"title"`
+	SelfText      string `json:"selftext"`
+	Body          string `json:"body"`
+	SubNamePref   string `json:"subreddit_name_prefixed"`
+	PostFlair     string `json:"link_flair_text"`
+	PostFlairHex  string `json:"link_flair_background_color"`
 	Author        string `json:"author"`
 	AuthorFlair   string `json:"author_flair_text"`
-	NSFW          bool   `json:"over_18"`
-	Spoiler       bool   `json:"spoiler"`
 	PostHint      string `json:"post_hint"`
 	Distinguished string `json:"distinguished"`
 	PostID        string `json:"id"`
-	CommentCount  int64  `json:"num_comments"`
 	Permalink     string `json:"permalink"`
 	LinkURL       string `json:"url"`
 
@@ -71,14 +50,19 @@ type internalPostData struct {
 
 	// images
 	Preview struct {
+		AutoChosenImageQuality  string
+		AutoChosenPosterQuality string
+		RedditVideoPreview      struct {
+			HLSURL      string `json:"hls_url"`
+			FallbackURL string `json:"fallback_url"`
+		} `json:"reddit_video_preview"`
 		Images []struct {
-			Source struct {
-				URL string `json:"url"`
-			} `json:"source"`
-			Resolutions []struct {
-				URL string `json:"url"`
-			} `json:"resolutions"`
 			Variants struct {
+				GIF struct {
+					Source struct {
+						URL string `json:"url"`
+					} `json:"source"`
+				} `json:"gif"`
 				MP4 struct {
 					Source struct {
 						URL string `json:"url"`
@@ -87,19 +71,14 @@ type internalPostData struct {
 						URL string `json:"url"`
 					} `json:"resolutions"`
 				} `json:"mp4"`
-				GIF struct {
-					Source struct {
-						URL string `json:"url"`
-					} `json:"source"`
-				} `json:"gif"`
 			} `json:"variants"`
+			Source struct {
+				URL string `json:"url"`
+			} `json:"source"`
+			Resolutions []struct {
+				URL string `json:"url"`
+			} `json:"resolutions"`
 		} `json:"images"`
-		RedditVideoPreview struct {
-			HLSURL      string `json:"hls_url"`
-			FallbackURL string `json:"fallback_url"`
-		} `json:"reddit_video_preview"`
-		AutoChosenImageQuality  string
-		AutoChosenPosterQuality string
 	} `json:"preview"`
 
 	// gallery
@@ -116,38 +95,52 @@ type internalPostData struct {
 		// todo: finish
 		Permalink string `json:"permalink"`
 	} `json:"crosspost_parent_list"`
+
+	Awardings []struct {
+		AwardSubType string `json:"award_sub_type"`
+		Name         string `json:"name"`
+		ResizedIcons []struct {
+			URL string `json:"url"`
+		} `json:"resized_icons"`
+		Count float64 `json:"count"`
+	} `json:"all_awardings"`
+
+	UpvoteRatio  float64 `json:"upvote_ratio"`
+	Ups          float64 `json:"ups"`
+	Created      float64 `json:"created"`
+	CommentCount float64 `json:"num_comments"`
+	Pinned       bool    `json:"stickied"`
+	Locked       bool    `json:"locked"`
+	Archived     bool    `json:"archived"`
+	NSFW         bool    `json:"over_18"`
+	Spoiler      bool    `json:"spoiler"`
 }
 
 type InternalCommentData struct {
-	Author   string  `json:"author"`
-	Body     string  `json:"body"`
-	Depth    float64 `json:"depth"`
-	Replies  any     `json:"replies"`
+	Replies  any    `json:"replies"`
+	Author   string `json:"author"`
+	Body     string `json:"body"`
 	VReplies []InternalCommentData
+	Depth    float64 `json:"depth"`
 }
 
 // MediaMetaData - Galleries
 type InternalVData struct {
-	Video                   bool
 	Link                    string
 	AutoChosenPosterQuality string
+	Video                   bool
 }
 
 type InternalMetaData struct {
 	// M string `json:"m"`
-	P []struct {
-		U string `json:"u"`
-	} `json:"p"`
 	S struct {
 		U   string `json:"u"`
 		MP4 string `json:"mp4"`
 	} `json:"s"`
+	P []struct {
+		U string `json:"u"`
+	} `json:"p"`
 	// HLSUrl string `json:"hlsUrl"`
-}
-
-// Comments
-type CommentsToUnmarshal struct {
-	Data []json.RawMessage `json:"data"`
 }
 
 type Comments struct {

@@ -11,15 +11,53 @@ on:
   pull_request:
   workflow_dispatch:
 
+env:
+  latest_version: '1.20'
+
 jobs:
+  checkvalidity:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Go Environment
+        uses: actions/setup-go@v4
+        with:
+          go-version: ${{ env.latest_version }}
+          check-latest: true
+          cache: false
+    
+      - name: Install Prerequisites
+        run: |
+          go install golang.org/x/tools/go/analysis/passes/fieldalignment/cmd/fieldalignment@latest
+          npm install -g sass
+
+      - name: Check fieldalignment
+        run: |
+          fieldalignment types.go
+          didFail=$?
+          if [ $didFail -ne 0 ]; then
+            exit 1
+          fi
+        working-directory: src/logic/types
+      
+      - name: Check SCSS
+        run: |
+          sass --style=compressed --no-source-map main.scss main.min.css
+          didFail=$?
+          if [ $didFail -ne 0 ]; then
+            exit 1
+          fi
+        working-directory: src/router/css
+      
   runtests:
     strategy:
       matrix:
-        goversion:
-          - '1.19'
-          - '1.20'
+        goversion: ['1.19', '1.20']
         platform: [ubuntu-latest, windows-latest, macos-latest]
     runs-on: ${{ matrix.platform }}
+    needs: checkvalidity
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -28,6 +66,8 @@ jobs:
         uses: actions/setup-go@v4
         with:
           go-version: ${{ matrix.goversion }}
+          check-latest: true
+          cache: false
       
       - name: Run Tests
         run: go test -v -race .
@@ -41,7 +81,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
     
-    - name: Bump Version
+    - name: Bump Version and Compile SCSS
       run: |
         version=$(cat "src/logic/version/VERSION.txt")
         files=("src/logic/version/VERSION.txt")
@@ -50,6 +90,8 @@ jobs:
         do
           echo -n "$(($version + 1))" > "$i"
         done
+
+        sass --style=compressed --no-source-map src/router/css/main.scss src/router/css/main.min.css
 
         git config --local user.name "github-actions[bot]"
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
@@ -68,8 +110,9 @@ jobs:
     - name: Setup Go Environment
       uses: actions/setup-go@v4
       with:
-        go-version: '1.20'
+        go-version: ${{ env.latest_version }}
         check-latest: true
+        cache: false
         
     - name: Main Linux Build
       run: |
@@ -118,8 +161,9 @@ jobs:
     - name: Setup Go Environment
       uses: actions/setup-go@v4
       with:
-        go-version: '1.20'
+        go-version: ${{ env.latest_version }}
         check-latest: true
+        cache: false
     
     - name: Main MacOS Build
       run: |
@@ -168,8 +212,9 @@ jobs:
     - name: Setup Go Environment
       uses: actions/setup-go@v4
       with:
-        go-version: '1.20'
+        go-version: ${{ env.latest_version }}
         check-latest: true
+        cache: false
 
     - name: Main Windows Build
       run: |

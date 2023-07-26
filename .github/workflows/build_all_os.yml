@@ -97,7 +97,7 @@ jobs:
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
 
         git add .
-        git commit -m "Version bump to $(($version + 1))" -m "For any changes, check the previous (${{github.event.after}}) commit."
+        git commit -m "🤖 [AUTO]: Version bump to $(($version + 1))" -m "For any changes, check the previous (${{github.event.after}}) commit."
         git push
 
   linuxbuild:

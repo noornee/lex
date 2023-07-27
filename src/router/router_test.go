@@ -171,6 +171,7 @@ func Test_Incrementbyone(t *testing.T) {
 	t.Parallel()
 
 	test := []int{
+		0,
 		1,
 		15,
 		18,
@@ -183,6 +184,7 @@ func Test_Incrementbyone(t *testing.T) {
 	}
 
 	expect := []int{
+		1,
 		2,
 		16,
 		19,
@@ -196,6 +198,42 @@ func Test_Incrementbyone(t *testing.T) {
 
 	for i := range test {
 		utils.AssertEqual(t, expect[i], Incrementbyone(test[i]))
+	}
+}
+
+// Ah shit, here we go again.
+// go test -v -race -run ^Test_Incrementbyonefloat$
+func Test_Incrementbyonefloat(t *testing.T) {
+	t.Parallel()
+
+	test := []float64{
+		0,
+		1,
+		15,
+		18,
+		29,
+		48,
+		64,
+		79,
+		94,
+		100,
+	}
+
+	expect := []float64{
+		1,
+		2,
+		16,
+		19,
+		30,
+		49,
+		65,
+		80,
+		95,
+		101,
+	}
+
+	for i := range test {
+		utils.AssertEqual(t, expect[i], Incrementbyonefloat(test[i]))
 	}
 }
 

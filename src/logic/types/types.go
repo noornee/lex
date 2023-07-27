@@ -118,11 +118,15 @@ type internalPostData struct {
 }
 
 type InternalCommentData struct {
-	Replies  any    `json:"replies"`
-	Author   string `json:"author"`
-	Body     string `json:"body"`
-	VReplies []InternalCommentData
-	Depth    float64 `json:"depth"`
+	Replies     any    `json:"replies"`
+	Author      string `json:"author"`
+	AuthorFlair string `json:"author_flair_text"`
+	Body        string `json:"body"`
+	Permalink   string `json:"permalink"`
+	VReplies    []InternalCommentData
+	Depth       float64 `json:"depth"`
+	Ups         float64 `json:"ups"`
+	Created     float64 `json:"created"`
 }
 
 // MediaMetaData - Galleries

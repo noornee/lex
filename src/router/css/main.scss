@@ -79,6 +79,10 @@ html.solarized {
         }
     }
 
+    blockquote {
+        border-left: 3px solid $gray-var1-solarized;
+    }
+
     .subinfo {
         background-color: $background-solarized;
     }
@@ -211,6 +215,10 @@ html.dracula {
         &:link {
             color: $primary-dracula;
         }
+    }
+
+    blockquote {
+        border-left: 3px solid $gray-var1-dracula;
     }
 
     .subinfo {
@@ -347,6 +355,10 @@ html.abyss {
         }
     }
 
+    blockquote {
+        border-left: 3px solid $gray-var1-abyss;
+    }
+
     .subinfo {
         background-color: $background-abyss;
     }
@@ -479,6 +491,10 @@ html.monokai {
         &:link {
             color: $primary-monokai;
         }
+    }
+
+    blockquote {
+        border-left: 3px solid $gray-var1-monokai;
     }
 
     .subinfo {
@@ -616,6 +632,10 @@ html.redtheme {
         }
     }
 
+    blockquote {
+        border-left: 3px solid $gray-var1-redtheme;
+    }
+
     .subinfo {
         background-color: $background-redtheme;
     }
@@ -749,6 +769,10 @@ html.lighttheme {
         &:link {
             color: $primary-lighttheme;
         }
+    }
+
+    blockquote {
+        border-left: 3px solid $gray-var1-lighttheme;
     }
 
     .subinfo {
@@ -937,6 +961,11 @@ a {
 
 pre {
     white-space: pre-wrap;
+}
+
+blockquote {
+    border-left: 3px solid $gray-var1;
+    text-indent: 15px;
 }
 
 .l-index {

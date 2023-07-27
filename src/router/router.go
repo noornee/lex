@@ -177,6 +177,10 @@ func Incrementbyone(input int) int {
 	return input + 1
 }
 
+func Incrementbyonefloat(input float64) float64 {
+	return input + 1
+}
+
 func FmtHumanDate(input float64) string {
 	return humanize.Time(time.Unix(int64(input), 0))
 }
@@ -214,6 +218,7 @@ func StartServer() {
 		"contains":       strings.Contains,
 		"sterilizepath":  RewriteURL,
 		"add":            Incrementbyone,
+		"addf":           Incrementbyonefloat,
 		"ugidgen":        UGIDGen,
 		"sanitize":       Sanitize,
 		"qualifiesAsImg": QualifiesAsImg,

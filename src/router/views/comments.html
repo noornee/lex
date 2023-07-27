@@ -52,7 +52,7 @@
                             </svg>
                         {{end}}
                     </span>
-                    {{if .Data.Awardings}}
+                    {{if and (.Data.Awardings) (not $.DisableAwards)}}
                     <div style="display: inline;">
                         {{range .Data.Awardings}}
                             {{if contains .AwardSubType "MODERATOR"}}
@@ -62,7 +62,7 @@
                             {{else}}
                                 <span style="padding-left: 5px;">
                                     <img class="malign" width="16" height="16" src="{{(index .ResizedIcons 0).URL|sterilizepath}}">
-                                    {{if gt .Count 1}}
+                                    {{if gt .Count 1.0}}
                                         {{.Count}}
                                     {{end}}
                                 </span>
@@ -252,14 +252,20 @@
 
     {{if not $.DisableComments}}
         {{range $itmp, $v := .Comments}}
-            <p style="text-indent: calc({{$v.Data.Depth}} * 15px);">{{ $v.Data.Author }}</p>
-            <p style="text-indent: calc({{$v.Data.Depth}} * 15px);">{{ $v.Data.Body }}</p>
-            {{ range $ktmp, $info := $v.Data.VReplies }}
-                <p style="text-indent: calc({{$info.Depth}} * 15px);">{{$info.Author}}</p>
-                <p style="text-indent: calc({{$info.Depth}} * 15px);">{{$info.Body}}</p>
-                {{template "views/replyrecursion" $info.VReplies}}
-            {{ end }}
-            <hr>
+            <div style="border-left: 1px solid white; margin-left: calc({{$v.Data.Depth|addf}} * 15px); text-indent: calc({{$v.Data.Depth|addf}} * 15px); width: 60%">
+                <a href="/u/{{$v.Data.Author}}" target="_blank" rel="noreferrer noopener nofollow">{{$v.Data.Author}}</a>
+                {{if $v.Data.AuthorFlair}}
+                    <span class="authorflair">{{$v.Data.AuthorFlair}}</span>
+                {{end}}
+
+                &bullet; {{$v.Data.Created|fmtHumanDate}}
+                
+                <div style="text-indent: 0px; margin-left: calc({{$v.Data.Depth|addf}} * 15px);">{{$v.Data.Body|sanitize}}</div>
+
+                <p class="gtext">{{$v.Data.Ups|fmtHumanComma}} Upvotes</p>
+
+                {{template "views/replyrecursion" $v.Data.VReplies}}
+            </div>
         {{end}}
     {{else}}
         <p>Comments were disabled</p>

@@ -222,10 +222,14 @@ func subDecode(vRep *[]types.InternalCommentData) {
 				childReply := t[i].Replies.(map[string]any)["data"].(map[string]any)["children"].([]any)[k].(map[string]any)["data"].(map[string]any)
 
 				newReply := types.InternalCommentData{
-					Author:  childReply["author"].(string),
-					Body:    childReply["body"].(string),
-					Depth:   childReply["depth"].(float64),
-					Replies: childReply["replies"],
+					Replies:     childReply["replies"],
+					Author:      childReply["author"].(string),
+					AuthorFlair: childReply["author_flair_text"].(string),
+					Body:        childReply["body"].(string),
+					Permalink:   childReply["permalink"].(string),
+					Depth:       childReply["depth"].(float64),
+					Ups:         childReply["ups"].(float64),
+					Created:     childReply["created"].(float64),
 				}
 
 				t[i].VReplies = append(t[i].VReplies, newReply)

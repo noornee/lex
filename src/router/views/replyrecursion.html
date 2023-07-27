@@ -1,5 +1,16 @@
 {{ range $tmp, $data := $ }}
-    <p style="text-indent: calc({{$data.Depth}} * 15px);">{{$data.Author}}</p>
-    <p style="text-indent: calc({{$data.Depth}} * 15px);">{{$data.Body}}</p>
-    {{template "views/replyrecursion" $data.VReplies}}
+    <div style="border-left: 1px solid white; margin-left: calc({{$data.Depth|addf}} * 15px); text-indent: calc({{$data.Depth|addf}} * 15px); width: 60%">
+        <a href="/u/{{$data.Author}}" target="_blank" rel="noreferrer noopener nofollow">{{$data.Author}}</a>
+        {{if $data.AuthorFlair}}
+            <span class="authorflair">{{$data.AuthorFlair}}</span>
+        {{end}}
+
+        &bullet; {{$data.Created|fmtHumanDate}}
+        
+        <div style="text-indent: 0px; margin-left: calc({{$data.Depth|addf}} * 15px);">{{$data.Body|sanitize}}</div>
+        
+        <p class="gtext">{{$data.Ups|fmtHumanComma}} Upvotes</p>
+
+        {{template "views/replyrecursion" $data.VReplies}}
+    </div>
 {{end}}

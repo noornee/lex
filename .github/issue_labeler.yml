@@ -1,10 +1,10 @@
 '🐛 Bug':
-  - '(bug|issue|error|problem|fail|invalid|crash)'
+  - '/(bug|issue|error|problem|fail|invalid|crash)/gmi'
 '📚 Documentation':
-  - '(doc|markdown|readme)'
+  - '/(doc|markdown|readme)/gmi'
 '💭 Question':
-  - '(question|how|why|\?)'
+  - '/(question|how|why|\?)/gmi'
 '🌟 New Feature':
-  - '(ft|feat|implement|create)'
+  - '/(ft|feat|implement|create)/gmi'
 '🎨 SCSS':
-  - '(scss|css|style|theme)'
+  - '/(scss|css|style|theme)/gmi'

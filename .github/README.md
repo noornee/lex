@@ -105,6 +105,8 @@ That's everything! All you need to do next, is just navigate to `http://localhos
 
 <sub>* Pre-built binaries are published around every two weeks.</sub>
 
+<sub>** This is not definitive, releases can be published earlier, or later, depending on functionality, and current it's current status. (example; a hotfix release would be published as soon as possible)</sub>
+
 ## Go Install
 
 LEX can also be installed via the `go install` command.

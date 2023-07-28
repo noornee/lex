@@ -1,13 +1,9 @@
-'🐛 Bug':
-  - '(bug|issue|error|problem|fail|invalid|crash)'
 '📚 Documentation':
   - '(doc|markdown|readme)'
 '🔧 Fix':
   - '(fix)'
 '🌟 New Feature':
-  - '(ft|feat|implement|add|create)'
-'💭 Question':
-  - '(question|how|why|?)'
+  - '(ft|feat|implement|create)'
 '🔄 Refactor':
   - '(refactor|update|change|optimize|improve|remove)'
 '🎨 SCSS':

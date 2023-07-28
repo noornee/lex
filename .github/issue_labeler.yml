@@ -1,0 +1,10 @@
+'🐛 Bug':
+  - '(bug|issue|error|problem|fail|invalid|crash)'
+'📚 Documentation':
+  - '(doc|markdown|readme)'
+'💭 Question':
+  - '(question|how|why|\?)'
+'🌟 New Feature':
+  - '(ft|feat|implement|create)'
+'🎨 SCSS':
+  - '(scss|css|style|theme)'

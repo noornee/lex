@@ -4,7 +4,7 @@ package main
 import (
 	"flag"
 
-	"github.com/cmd777/lex/src/logic/version"
+	"github.com/cmd777/lex/src/logic/update"
 	"github.com/cmd777/lex/src/router"
 	"github.com/gofiber/fiber/v2/log"
 )
@@ -14,7 +14,7 @@ func main() {
 	flag.Parse()
 
 	if *checkUpdate {
-		version.CheckForUpdates()
+		update.CheckForUpdates()
 	} else {
 		log.Warn("update checking disabled")
 	}

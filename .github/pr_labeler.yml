@@ -1,0 +1,10 @@
+'📚 Documentation':
+  - '/(doc|markdown|readme)/gmi'
+'🔧 Fix':
+  - '/(fix)/gmi'
+'🌟 New Feature':
+  - '/(ft|feat|implement|create)/gmi'
+'🔄 Refactor':
+  - '/(refactor|update|change|optimize|improve|remove)/gmi'
+'🎨 SCSS':
+  - '/(scss|css|style|theme)/gmi'

@@ -1,0 +1,10 @@
+'🐛 Bug':
+  - '/(bug|issue|error|problem|fail|invalid|crash)/gmi'
+'📚 Documentation':
+  - '/(doc|markdown|readme)/gmi'
+'💭 Question':
+  - '/(question|how|why|\?)/gmi'
+'🌟 New Feature':
+  - '/(ft|feat|implement|create)/gmi'
+'🎨 SCSS':
+  - '/(scss|css|style|theme)/gmi'

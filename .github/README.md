@@ -86,7 +86,7 @@ That's everything! All you need to do next, is just navigate to `http://localhos
 
 LEX provides downloadable, pre-built binaries for all major operating systems, including Windows, Linux, and MacOS.
 
-To install LEX via these automatically built binaries, go to the [releases](https://github.com/cmd777/lex/releases/latest) tab, and within the `snapshot` tag, download the appropriate zip for your OS + ARCH, and extract it.
+To install LEX via these automatically built binaries, go to the [releases](https://github.com/cmd777/lex/releases/latest) tab, and download the appropriate zip for your OS + ARCH, and extract it.
 
 - For 32 bit Windows machines, download `lex-windows.zip`, then launch lex-i386-windows.exe
 - For 64 bit Windows machines, download `lex-windows.zip`, then launch lex-amd64-windows.exe
@@ -103,7 +103,7 @@ To install LEX via these automatically built binaries, go to the [releases](http
 
 That's everything! All you need to do next, is just navigate to `http://localhost:9090/r/{your_favorite_subreddit}`
 
-<sub>* Pre-built binaries are published every time there is a push to the main branch.</sub>
+<sub>* Pre-built binaries are published around every two weeks.</sub>
 
 ## Go Install
 
@@ -121,10 +121,6 @@ Afterwards, simply run `lex` in your terminal, and that's everything!
 > **Note**
 >
 > you may need to add `export PATH=$PATH:$(go env GOPATH)/bin` to your `.profile` file to be able to use the command `lex`!
-
-> **Warning**
->
-> Since version 299833, an auto-updater has been implemented, but go install does not install the auto-updater.
 
 If you wish to uninstall LEX, simply run the following command:
 ```shell
@@ -221,8 +217,6 @@ LEX is not affiliated with, sponsored, or endorsed by Reddit.
 All content that is displayed on LEX has been sourced from Reddit. LEX does not host any of the content.
 
 In case of any issues with a post, such as copyright infringement, trademark infringement, or violation of Reddit's community rules, the reports should be directed to Reddit.
-
-LEX does not endorse <a href="https://www.merriam-webster.com/dictionary/libel">libel</a> in the form of <a href="https://old.reddit.com/r/apolloapp/comments/14dkqrw/i_want_to_debunk_reddits_claims_and_talk_about">false blackmail claims</a><a href="https://bindingofisaacrebirth.fandom.com/wiki/Cards_and_Runes#XII_-_The_Hanged_Man?">.</a>
 
 # 🧰 Technologies that were used to create LEX
 

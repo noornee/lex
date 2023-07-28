@@ -1,12 +1,10 @@
-name: Label Issues and Pull Requests
+name: Label Pull Requests
 on:
-  issues:
-    types: [opened, edited]
   pull_request:
     types: [opened, edited]
 
 permissions:
-  issues: write
+  pull-requests: write
   contents: read
 
 jobs:
@@ -15,8 +13,9 @@ jobs:
     steps:
       - uses: github/issue-labeler@v3.2
         with:
-          configuration-path: '.github/labeler.yml'
+          configuration-path: '.github/pr_labeler.yml'
           include-title: 1
           include-body: 0
+          enable-versioned-regex: 0
           sync-labels: 1
           repo-token: ${{ github.token }}

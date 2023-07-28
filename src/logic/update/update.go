@@ -73,11 +73,9 @@ const (
 	versionPath = "https://raw.githubusercontent.com/cmd777/lex/main/src/logic/version/version.go"
 )
 
-var (
-	SemRegex = regexp.MustCompile(`(?m)v(?P<Major>\d+)\.(?P<Minor>\d+)\.(?P<Patch>\d+)`)
-)
+var SemRegex = regexp.MustCompile(`(?m)v(?P<Major>\d+)\.(?P<Minor>\d+)\.(?P<Patch>\d+)`)
 
-func checkForAppUpdates() (bool, []string) {
+func checkForAppUpdates() (_ bool, _ []string) {
 	req, err := http.NewRequestWithContext(context.Background(), http.MethodGet, versionPath, http.NoBody)
 	if err != nil {
 		log.Errorf("Failed to create New Request with Context: %w", err)
@@ -136,20 +134,22 @@ func CheckForUpdates() {
 		gitminor := gitversion[1]
 		gitpatch := gitversion[2]
 
-		if gitmajor > localmajor {
+		switch {
+		case gitmajor > localmajor:
 			log.Infof("There is a new major version available: %d (%s)", gitmajor, submatches[0])
-		} else if gitminor > localminor {
+		case gitminor > localminor:
 			log.Infof("There is a new minor version available: %d (%s)", gitminor, submatches[0])
-		} else if gitpatch > localpatch {
+		case gitpatch > localpatch:
 			log.Infof("There is a new patch available: %d (%s)", gitpatch, submatches[0])
+		default:
+			log.Infof("You are running the latest version of LEX. (%s)", version.VERSION)
 		}
-		log.Infof("You are running the latest version of LEX. (%s)", version.VERSION)
 	} else {
 		log.Error("There was an error while attempting to check for updates, try again later.")
 	}
 }
 
-func ReadSemVer(ver []string) (bool, []int) {
+func ReadSemVer(ver []string) (_ bool, _ []int) {
 	major, err := strconv.Atoi(ver[0])
 	if err != nil {
 		log.Errorf("failed to convert major string to int: %w", err)
@@ -169,7 +169,7 @@ func ReadSemVer(ver []string) (bool, []int) {
 	return true, []int{major, minor, patch}
 }
 
-/*func inputHandler() bool {
+/* func inputHandler() bool {
 	inputchan := make(chan string, 1)
 	timer := time.NewTimer(1 * time.Minute)
 

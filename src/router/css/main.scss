@@ -31,7 +31,6 @@ $green: #5dc55e;
 $silver: #C0C0C0;
 
 $gray-var1: #646464;
-$gray-var2: #757575;
 
 /////////////////////////////////
 /// 
@@ -50,7 +49,6 @@ $green-solarized: #859900;
 $silver-solarized: #657b83;
 
 $gray-var1-solarized: #93a1a1;
-$gray-var2-solarized: #839496;
 
 html.solarized {
     color: $text-solarized;
@@ -157,7 +155,7 @@ html.solarized {
     }
 
     .spoilertag {
-        @include tag($gray-var2-solarized, $gray-var2-solarized)
+        @include tag($gray-var1-solarized, $gray-var1-solarized)
     }
 
     .originaltag {
@@ -188,7 +186,6 @@ $green-dracula: #50fa7b;
 $silver-dracula: #bfbfbf;
 
 $gray-var1-dracula: #5a5a5a;
-$gray-var2-dracula: #6b6b6b;
 
 html.dracula {
     color: $text-dracula;
@@ -295,7 +292,7 @@ html.dracula {
     }
 
     .spoilertag {
-        @include tag($gray-var2-dracula, $gray-var2-dracula)
+        @include tag($gray-var1-dracula, $gray-var1-dracula)
     }
 
     .originaltag {
@@ -326,7 +323,6 @@ $green-abyss: #22aa44;
 $silver-abyss: #ae81ff;
 
 $gray-var1-abyss: #9966b8;
-$gray-var2-abyss: #f280d0;
 
 html.abyss {
     color: $text-abyss;
@@ -433,7 +429,7 @@ html.abyss {
     }
 
     .spoilertag {
-        @include tag($gray-var2-abyss, $gray-var2-abyss)
+        @include tag($gray-var1-abyss, $gray-var1-abyss)
     }
 
     .originaltag {
@@ -464,7 +460,6 @@ $green-monokai: #a6e22e;
 $silver-monokai: #49483E;
 
 $gray-var1-monokai: #9D550F;
-$gray-var2-monokai: #75715E;
 
 html.monokai {
     color: $text-monokai;
@@ -571,7 +566,7 @@ html.monokai {
     }
 
     .spoilertag {
-        @include tag($gray-var2-monokai, $gray-var2-monokai)
+        @include tag($gray-var1-monokai, $gray-var1-monokai)
     }
 
     .originaltag {
@@ -603,7 +598,6 @@ $green-redtheme: #4caf50;
 $silver-redtheme: #d0d0d0;
 
 $gray-var1-redtheme: #888888;
-$gray-var2-redtheme: #b0b0b0;
 
 html.redtheme {
     color: $text-redtheme;
@@ -710,7 +704,7 @@ html.redtheme {
     }
 
     .spoilertag {
-        @include tag($gray-var2-redtheme, $gray-var2-redtheme)
+        @include tag($gray-var1-redtheme, $gray-var1-redtheme)
     }
 
     .originaltag {
@@ -742,7 +736,6 @@ $green-lighttheme: #86c27c;
 $silver-lighttheme: #585858;
 
 $gray-var1-lighttheme: #d9af92;
-$gray-var2-lighttheme: #efded2;
 
 html.lighttheme {
     color: $text-lighttheme;
@@ -849,7 +842,7 @@ html.lighttheme {
     }
 
     .spoilertag {
-        @include tag($gray-var2-lighttheme, $gray-var2-lighttheme)
+        @include tag($gray-var1-lighttheme, $gray-var1-lighttheme)
     }
 
     .originaltag {
@@ -1230,7 +1223,7 @@ img:not(.malign), video {
 }
 
 .spoilertag {
-    @include tag($gray-var2, $gray-var2);
+    @include tag($gray-var1, $gray-var1);
 }
 
 .originaltag {

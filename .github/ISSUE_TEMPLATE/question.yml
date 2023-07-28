@@ -1,0 +1,27 @@
+name: "💭 Question"
+title: "💭 [Question]: "
+description: "Ask about anything related to LEX"
+labels: ["💭 Question"]
+
+body:
+  - type: textarea
+    attributes:
+      label: "Question Description"
+      description: "Describe your question"
+      placeholder: "A concise question about LEX"
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        **Note: if you believe this is a bug, then open a bug report instead**
+        **If you have a feature suggestion (eg: can "xyz" be added), then open a feature suggestion instead**
+    
+  - type: checkboxes
+    attributes:
+      label: "Checklist"
+      description: "Check these boxes, to confirm that: "
+      options:
+        - label: "I have checked existing issues and questions, and none are similar to mine"
+          required: true

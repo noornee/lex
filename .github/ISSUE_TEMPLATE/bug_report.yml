@@ -1,5 +1,5 @@
-name: "Bug Report"
-title: "[BUG]: "
+name: "🐛 Bug Report"
+title: "🐛 [BUG]: "
 description: "Create a bug report so that I can fix it"
 
 body:

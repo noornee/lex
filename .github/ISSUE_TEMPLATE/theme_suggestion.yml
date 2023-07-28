@@ -1,0 +1,103 @@
+name: "🎨 Theme Suggestion"
+title: "🎨 [Theme]: "
+description: "Create a suggestion for a theme"
+labels: ["🎨 SCSS", "🌟 New Feature"]
+
+body:
+  - type: input
+    attributes:
+      label: "Theme Name"
+      description: "What is the name of the theme?"
+      placeholder: "Name of the theme"
+    validations:
+      required: true
+  
+  - type: markdown
+    attributes:
+      value: "---"
+
+  - type: input
+    attributes:
+      label: "Text color"
+      description: "Color for most texts -- Post content, Subreddit name, etc"
+      placeholder: "Color code in hex format (eg: #fff - #ffffff)"
+    validations:
+      required: true
+
+  - type: input
+    attributes:
+      label: "Background color"
+      description: "Background color for all pages"
+      placeholder: "Color code in hex format (eg: #000 - #000000)"
+    validations:
+      required: true
+
+  - type: input
+    attributes:
+      label: "Primary color"
+      description: "Primary color that will be used in links"
+      placeholder: "Color code in hex format (eg: #eee - #eeeeee)"
+    validations:
+      required: true
+  
+  - type: markdown
+    attributes:
+      value: "---"
+
+  - type: input
+    attributes:
+      label: "Red primary color"
+      description: "Everything red will be this color"
+      placeholder: "Color code in hex format (eg: #f00 - #ff0000)"
+    validations:
+      required: true
+
+  - type: input
+    attributes:
+      label: "Gray primary color"
+      description: "Everything gray will be this color -- A majority of comment buttons, additional post information will be this color."
+      placeholder: "Color code in hex format (eg: #ccc - #cccccc)"
+    validations:
+      required: true
+  
+  - type: input
+    attributes:
+      label: "Gold primary color"
+      description: "Everything gold will be this color."
+      placeholder: "Color code in hex format (eg: #ffd700 - #d4af37)"
+    validations:
+      required: true
+  
+  - type: input
+    attributes:
+      label: "Green primary color"
+      description: "Everything green will be this color."
+      placeholder: "Color code in hex format (eg: #0f0 - #00ff00)"
+    validations:
+      required: true
+
+  - type: input
+    attributes:
+      label: "Silver primary color"
+      description: "Everything silver will be this color."
+      placeholder: "Color code in hex format (eg: #efefef - #c0c0c0)"
+    validations:
+      required: true
+  
+  - type: input
+    attributes:
+      label: "Another gray variant"
+      description: "A different shade of gray used in some areas of the Subreddit. (Hovering, author flair colors, spoiler tags)"
+      placeholder: "Color code in hex format (eg: #404040 - #505050)"
+    validations:
+      required: true
+
+  - type: checkboxes
+    attributes:
+      label: "Checklist"
+      description: "Check these boxes, to confirm that: "
+      options:
+        - label: "I have checked existing issues and themes, and none are similar to mine"
+          required: true
+        - label: "I have checked the unsafe branch, and it did not contain a similar theme to mine"
+          required: true

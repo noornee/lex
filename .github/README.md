@@ -196,7 +196,7 @@ rm $(go env GOPATH)/bin/lex
 
 | ![](https://raw.githubusercontent.com/cmd777/lex/main/docs/images/windows.svg) Windows | ![](https://raw.githubusercontent.com/cmd777/lex/main/docs/images/linux.svg) Linux | ![](https://raw.githubusercontent.com/cmd777/lex/main/docs/images/macos.svg) macOS |
 | :-----: | :---: | :---: |
-| Windows 7 or newer | Kernel version 2.6.32 or newer | macOS High Sierra 10.13 or newer
+| Windows 7 or newer | Kernel version 2.6.32 or newer | macOS 10.13 High Sierra or newer
 
 <sub>The table displays the **required** minimum versions for operating systems.</sub>
 

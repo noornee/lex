@@ -68,38 +68,10 @@ jobs:
         run: go test -v -race .
         working-directory: src/router
 
-  updateversion:
+  linuxbuild:
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     needs: runtests
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-    
-    - name: Bump Version and Compile SCSS
-      run: |
-        version=$(cat "src/logic/version/VERSION.txt")
-        files=("src/logic/version/VERSION.txt")
-
-        for i in "${files[@]}"
-        do
-          echo -n "$(($version + 1))" > "$i"
-        done
-        
-        npm install -g sass
-
-        sass --style=compressed --no-source-map src/router/css/main.scss src/router/css/main.min.css
-
-        git config --local user.name "github-actions[bot]"
-        git config --local user.email "github-actions[bot]@users.noreply.github.com"
-
-        git add .
-        git commit -m "🤖 [AUTO]: Version bump to $(($version + 1))" -m "For any changes, check the previous (${{github.event.after}}) commit."
-        git push
-
-  linuxbuild:
-    runs-on: ubuntu-latest
-    needs: updateversion
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -125,18 +97,12 @@ jobs:
 
         echo "Building for 64bit Linux"
         go build -ldflags="-s -w" -v -o lex-amd64-linux main.go
-
-        echo "Building 64bit Updater"
-        go build -ldflags="-s -w" -v -o updater-amd64 ../../src/logic/update/updater.go
         
         echo "Building for 32bit Linux"
         GOARCH=386 go build -ldflags="-s -w" -v -o lex-i386-linux main.go
-
-        echo "Building 32bit Updater"
-        GOARCH=386 go build -ldflags="-s -w" -v -o updater-i386 ../../src/logic/update/updater.go
         
         echo "Zipping Files"
-        7z a lex-linux.zip lex-i386-linux lex-amd64-linux updater-amd64 updater-i386 ../../LICENSE
+        7z a lex-linux.zip lex-i386-linux lex-amd64-linux ../../LICENSE
         
         echo "Ok."
       working-directory: cmd/lex/
@@ -144,13 +110,13 @@ jobs:
     - name: Release
       uses: softprops/action-gh-release@v1
       with:
-        tag_name: 'snapshot'
         files: |
           cmd/lex/lex-linux.zip
           
   macbuild:
+    if: github.event_name != 'pull_request'
     runs-on: macos-latest
-    needs: updateversion
+    needs: runtests
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -176,18 +142,12 @@ jobs:
 
         echo "Building for Intel macOS"
         go build -ldflags="-s -w" -v -o lex-amd64-darwin main.go
-
-        echo "Building Intel Updater"
-        go build -ldflags="-s -w" -v -o updater-amd64 ../../src/logic/update/updater.go
         
         echo "Building for M1 macOS"
         GOARCH=arm64 go build -ldflags="-s -w" -v -o lex-arm64-darwin main.go
-
-        echo "Building M1 Updater"
-        GOARCH=arm64 go build -ldflags="-s -w" -v -o updater-arm64 ../../src/logic/update/updater.go
         
         echo "Zipping Files"
-        7z a lex-darwin.zip lex-amd64-darwin lex-arm64-darwin updater-amd64 updater-arm64 ../../LICENSE
+        7z a lex-darwin.zip lex-amd64-darwin lex-arm64-darwin ../../LICENSE
         
         echo "Ok."
       working-directory: cmd/lex/
@@ -195,13 +155,13 @@ jobs:
     - name: Release
       uses: softprops/action-gh-release@v1
       with:
-        tag_name: 'snapshot'
         files: |
           cmd/lex/lex-darwin.zip
           
   winbuild:
+    if: github.event_name != 'pull_request'
     runs-on: windows-latest
-    needs: updateversion
+    needs: runtests
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -217,11 +177,7 @@ jobs:
       run: |
         echo "Updating Go Dependencies"
         go get -u
-        
-        echo "Adding Time to Github Env"
-        echo "RNAME=$(Get-Date -UFormat 'snapshot %Y-%m-%d %H:%M')" >> $env:GITHUB_ENV
-        echo "RTXT=$(Get-Date -UFormat '### This release was automatically generated on %A %Y/%m/%d at %H:%M')" >> $env:GITHUB_ENV
-        
+                
         echo "Installing Sass"
         npm install -g sass
         
@@ -231,20 +187,13 @@ jobs:
 
         echo "Building for 64bit Windows"
         go build -ldflags="-s -w" -v -o lex-amd64-windows.exe main.go
-
-        echo "Building 64bit Updater"
-        go build -ldflags="-s -w" -v -o updater-amd64.exe ../../src/logic/update/updater.go
         
         echo "Building for 32bit Windows"
         $Env:GOARCH = '386'
         go build -ldflags="-s -w" -v -o lex-i386-windows.exe main.go
-
-        echo "Building 32bit Updater"
-        $Env:GOARCH = '386'
-        go build -ldflags="-s -w" -v -o updater-i386.exe ../../src/logic/update/updater.go
         
         echo "Zipping Files"
-        7z a lex-windows.zip lex-i386-windows.exe lex-amd64-windows.exe updater-amd64.exe updater-i386.exe ../../LICENSE
+        7z a lex-windows.zip lex-i386-windows.exe lex-amd64-windows.exe ../../LICENSE
         
         echo "Ok."
       working-directory: cmd/lex/
@@ -252,8 +201,5 @@ jobs:
     - name: Release
       uses: softprops/action-gh-release@v1
       with:
-        name: ${{ env.RNAME }}
-        body: ${{ env.RTXT }}
-        tag_name: 'snapshot'
         files: |
           cmd/lex/lex-windows.zip

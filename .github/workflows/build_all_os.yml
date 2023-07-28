@@ -2,14 +2,9 @@ name: Building for all OSs
 
 on:
   push:
-    branches:
-      - main
-    paths-ignore:
-      - '.github/**'
-      - 'docs/**'
-      - '**.md'
+    tags:
+      - "v*"
   pull_request:
-  workflow_dispatch:
 
 env:
   latest_version: '1.20'

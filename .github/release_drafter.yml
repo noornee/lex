@@ -1,0 +1,38 @@
+name-template: 'v$RESOLVED_VERSION'
+tag-template: 'v$RESOLVED_VERSION'
+categories:
+  - title: '🌟 New Features'
+    labels:
+      - '🌟 New Feature'
+  - title: '🔧 Fixes'
+    labels:
+      - '🔧 Fix'
+  - title: '✨ Improvements / Refactoring'
+    labels:
+      - '🔄 Refactor'
+      - '🎨 SCSS'
+  - title: '📚 Documentation'
+    labels:
+      - '📚 Documentation'
+change-template: '- $TITLE by @$AUTHOR (#$NUMBER)'
+change-title-escapes: '\<*_&'
+version-resolver:
+  major:
+    labels:
+      - 'major'
+  minor:
+    labels:
+      - 'minor'
+      - '🌟 New Features'
+  patch:
+    labels:
+      - 'patch'
+      - '🔧 Fix'
+      - '🔄 Refactor'
+      - '🎨 SCSS'
+      - '📚 Documentation'
+  default: patch
+template: |
+  $CHANGES
+
+  **Changelog from previous ($PREVIOUS_TAG) version**: https://github.com/cmd777/lex/compare/$PREVIOUS_TAG...v$RESOLVED_VERSION
